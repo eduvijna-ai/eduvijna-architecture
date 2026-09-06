@@ -334,12 +334,12 @@ Conflict preference:
 
 | Field | Content |
 |-------|---------|
-| **Objective** | Propose architecture for Teacher OS TOS-DEV10 Development Ready experience boundary: Library v1 Content façade, Teacher Memory v1 preferences, contextual AI Assistant v1, Mission remediation presentation, DEV04 bounded planning sufficiency, MCP-READY posture. |
+| **Objective** | Freeze architecture for Teacher OS TOS-DEV10 Development Ready experience boundary: Library v1 Content façade, Teacher Memory v1 preferences, contextual AI Assistant v1, Mission remediation presentation, DEV04 bounded planning sufficiency, MCP-READY posture. |
 | **Architectural reason** | TOS-DEV10A readiness audit accepted; loop through Improve is implemented; Development Ready still requires Library / Memory / Assistant authority without inventing parallel SoRs, FE→provider paths, or Planner/MCP platforms. |
-| **What was implemented** | Architecture source only: [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) **PROPOSED / FREEZE CANDIDATE** (v1.0.0). Orientation reconciliation records TOS-DEV09 COMPLETE and TOS-DEV10 ACTIVE. |
-| **What was deliberately NOT implemented** | Founder freeze; Backend/Frontend Library/Memory/Assistant implementation; Chat SoR; Planner Agent; broad MCP; curriculum platform; production work. |
-| **Governing decisions** | ADR-AIEOS-057 (Proposed); ADR-AIEOS-056–052; ADR-AIEOS-027; ADR-044; ADR-042–048. |
-| **Current status** | **PROPOSED / FREEZE CANDIDATE.** Founder freeze **not** granted. TOS-DEV10A = READINESS AUDIT COMPLETE. TOS-DEV10 = ACTIVE. DEV10 implementation **not** complete. |
+| **What was implemented** | Architecture source only: [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) **Frozen / Approved** **2026-09-06** (v1.0.2). Chronology: TOS-DEV10A → TOS-DEV10P1 Proposed deposit (v1.0.0) → TOS-DEV10P1R1 Memory-owner / Proposed-wording correction (v1.0.1) → Chief Architect architecture review **ACCEPTED** → Founder / Product Architecture **Frozen / Approved 2026-09-06**. Orientation records TOS-DEV09 COMPLETE and TOS-DEV10 ACTIVE. |
+| **What was deliberately NOT implemented** | Backend/Frontend Library/Memory/Assistant implementation; Chat SoR; Planner Agent; broad MCP; curriculum platform; production work; TOS-DEV10-I02+. |
+| **Governing decisions** | ADR-AIEOS-057 (Frozen / Approved); ADR-AIEOS-056–052; ADR-AIEOS-027; ADR-044; ADR-042–048. |
+| **Current status** | **Frozen / Approved.** Founder / Product Architecture **APPROVED — 2026-09-06**. Chief Architect architecture review **ACCEPTED**. TOS-DEV10A = READINESS AUDIT COMPLETE / ACCEPTED. TOS-DEV10 = ACTIVE. DEV10 implementation **not** complete. Library / Teacher Memory / AI Assistant **NOT YET IMPLEMENTED**. Teacher OS Development Ready **not** claimed. |
 
 ---
 
