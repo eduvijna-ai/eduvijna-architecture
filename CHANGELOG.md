@@ -99,6 +99,6 @@ and this repository follows [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub configuration: pull request template, issue templates, and empty `workflows` folder.
 - Top-level workspace directories with `OVERVIEW.md` files.
 
-[Unreleased]: https://github.com/eduvijna/eduvijna-architecture/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/eduvijna/eduvijna-architecture/compare/v0.1.0...v1.0.0
-[0.1.0]: https://github.com/eduvijna/eduvijna-architecture/releases/tag/v0.1.0
+[Unreleased]: https://github.com/eduvijna-ai/eduvijna-architecture/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/eduvijna-ai/eduvijna-architecture/compare/v0.1.0...v1.0.0
+[0.1.0]: https://github.com/eduvijna-ai/eduvijna-architecture/releases/tag/v0.1.0

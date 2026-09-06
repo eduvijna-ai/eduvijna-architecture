@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Contribution guide
-    url: https://github.com/eduvijna/eduvijna-architecture/blob/main/CONTRIBUTING.md
+    url: https://github.com/eduvijna-ai/eduvijna-architecture/blob/main/CONTRIBUTING.md
     about: Read CONTRIBUTING.md before opening an issue.
   - name: Repository README
-    url: https://github.com/eduvijna/eduvijna-architecture/blob/main/README.md
+    url: https://github.com/eduvijna-ai/eduvijna-architecture/blob/main/README.md
     about: Mission, scope, structure, and contribution workflow.
