@@ -138,9 +138,17 @@ ADR-AIEOS-047 architecture freeze does **not** by itself authorize runtime API-k
 
 ## Current major program
 
-**Teacher OS / EBP-001 — Teacher OS Foundation (Wave 1)**
+**TOS-CX01 — Teacher OS Client Showcase Ready: COMPLETE**
 
-Philosophy: vertical-slice first on existing apps, behind `teacher_os_enabled`, architecture-bound by ADR-042…048 and EBP-000.
+Binding product declaration: **TEACHER OS — CLIENT SHOWCASE READY**
+
+Teacher OS remains a subsystem of AIEOS, architecture-bound by existing ADR-042…048 and ADR-AIEOS-052…057. TOS-CX01 did **not** reopen Teacher OS domain authority and created **no new ADR**.
+
+**Next active product programme: AIEOS 360 CLIENT SHOWCASE** (development-readiness target **2026-11-20**)
+
+Shared vertical scenario (thin but REAL integrated development path — not a fake clickable prototype; **not** “finish Student OS completely, then Principal OS completely, then Parent OS completely”):
+
+Teacher → Publish / Assign → Student → Attempt / Practice / Submit → Learning Evidence → Assessment Intelligence → Teacher Improve → Principal / School Intelligence → Parent Intelligence → Admin/ERP Context
 
 ---
 
@@ -154,6 +162,7 @@ Philosophy: vertical-slice first on existing apps, behind `teacher_os_enabled`, 
 | **TOS-DEV08** — Assessment & Learning Evidence | **IMPLEMENTED / COMPLETE** through Product E2E | ADR-AIEOS-055 Frozen / Approved; DEV08-I01–I04 formally closed; Backend `1fe28f4fd1a2a2070aa69d67daa49cd53ba5820d`; Frontend `30c94f3e0403b9a5a2e955c706766035490598f9` (I04 merge); OpenAPI SHA-256 `824B389D6D4EDB2EA5D8ED3A9E5411087B566DFDCA09C2AB0CD4FDED51C4D89D`; Alembic `tosd080002`; I04 post-merge CI `33853706361` SUCCESS |
 | **TOS-DEV09** — Class-level Improve & Remediation | **IMPLEMENTED / COMPLETE** through Product E2E | [ADR-AIEOS-056](../decisions/ADR-AIEOS-056-aieos-improve-remediation-authority.md) remains Frozen / Approved; DEV09-I01–I04 formally closed; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`; real-stack Improve Product E2E COMPLETE |
 | **TOS-DEV10** — Teacher OS Development Complete | **IMPLEMENTED / COMPLETE** — **TEACHER OS DEVELOPMENT READY** | [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) remains **Frozen / Approved**; I01–I04 / I04R1 formally closed; Backend `0bb2a9cb09bda41370b89c2e4dcc3239074bcc92`; Frontend `070276145623c889d5db6346150cf420735b04f1`; OpenAPI SHA-256 `4BF6C88B662D99F1E0E21E6F0AF2D267B39644300D85D99A859A7720F1568411`; Alembic `tosd100001`; Backend CI `34081972651` SUCCESS; Frontend CI `34082275817` SUCCESS including Product E2E. **Development Ready ≠ Production Ready.** |
+| **TOS-CX01** — Teacher OS Client Showcase Ready | **IMPLEMENTED / COMPLETE** — **TEACHER OS CLIENT SHOWCASE READY** | I01–I03 **MERGED / POST-MERGE VERIFIED / FOUNDER VERIFIED / CLOSED**; I04 Founder Real-AI Experience Accepted **2026-09-07** **PASS**. Architecture record synchronization = **TOS-CX01-C01**. No new ADR. Backend `611f683140ee779cb9453f6310bf30f9f1df572d`; Frontend `6daf18db239069847697e74669ce0bbed30f7951`; OpenAPI SHA-256 `D5CC3A53C789406C69D0207CB0A8778C2730FBE9544C567503EB256BDA92CEFB`; Alembic `tosd100001`. **Client Showcase Ready ≠ Production Ready.** |
 
 **Boundaries preserved ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)):** Published ≠ Assigned; Assigned ≠ Externally Delivered; Assigned ≠ Attempted; Assigned ≠ Submitted; Assigned ≠ Graded. External LMS / Student OS learner delivery remains **deferred**.
 
@@ -164,6 +173,65 @@ Philosophy: vertical-slice first on existing apps, behind `teacher_os_enabled`, 
 **TOS-DEV09 Improve authority (Frozen / Approved — IMPLEMENTATION COMPLETE):** [ADR-AIEOS-056](../decisions/ADR-AIEOS-056-aieos-improve-remediation-authority.md) (v1.0.2) remains **Frozen / Approved** (Founder / Product Architecture **2026-09-04**; Chief Architect architecture review **ACCEPTED — 2026-09-04**). Architecture decision status is distinct from implementation status. **TOS-DEV09 implementation COMPLETE** (DEV09-I01–I04 formally closed; real-stack Product E2E COMPLETE). Governed baseline: Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`. OPTION B retained: class-level Improve as Teaching application capability — teacher-deliberate `remediate_class` TeachingWork + immutable `TeachingWorkRemediationOrigin` (pinned Assessment revision **and** `source_class_result_level_snapshot`). Teacher-confirmed `goal_text` is the authoritative remediation generator instruction; Assessment note / Observation body are display-only and not Teaching-owned copies. Assessed ≠ Improvement required. No Improve SoR/lifecycle. Reuses Content → Review → Publish → Assign. Teacher Memory remains **out of DEV09** (addressed under TOS-DEV10 / ADR-AIEOS-057 Frozen / Approved). Historical ADR-AIEOS-056 body text is **not** rewritten by this orientation sync.
 
 **TOS-DEV10 Development-Complete Experience authority (Frozen / Approved — IMPLEMENTATION COMPLETE — TEACHER OS DEVELOPMENT READY):** [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) (v1.0.2) remains **Frozen / Approved** (Founder / Product Architecture **2026-09-06**; Chief Architect architecture review **ACCEPTED**). Architecture decision status is distinct from implementation status. ADR-057 architecture freeze did **not** itself authorize I02+; I01–I04 / I04R1 were subsequently separately authorized, implemented, reviewed, merged, post-merge verified, and formally closed. **TOS-DEV10 — IMPLEMENTED / COMPLETE — TEACHER OS DEVELOPMENT READY.** Formal slices: **I01** Mission remediation-aware presentation; **I02** Library v1 (Generic Content read/reuse façade; no Library SoR); **I03** Teacher Memory v1 (durable represented-HUMAN teacher-owned explicit preferences); **I04 / I04R1** Contextual AI Assistant v1 (AIEOS API only; READ/REASON/SUGGEST; session-scoped history; no Chat SoR) + NON_PRODUCTION demo-data substrate. Governed baseline: Backend `0bb2a9cb09bda41370b89c2e4dcc3239074bcc92`; Frontend `070276145623c889d5db6346150cf420735b04f1`; OpenAPI SHA-256 `4BF6C88B662D99F1E0E21E6F0AF2D267B39644300D85D99A859A7720F1568411`; Alembic `tosd100001`; Backend CI `34081972651` SUCCESS; Frontend CI `34082275817` SUCCESS including Product E2E. Primary navigation contains real Library and AI Assistant pages; no required Development-Ready placeholder remains. Mission remains derived-on-read; remediation presented as remediation/improvement work; DEV04 bounded preparation planning remains sufficient; deterministic Educational Quality baseline remains active; MCP posture remains MCP-READY, not MCP-EVERYTHING; no Planner Agent required. Architecture record synchronization = **TOS-DEV10-C01**. Historical ADR-AIEOS-057 normative body is **not** rewritten. **Development Ready ≠ Production Ready** — no production deployment / UAT / HA / DR / load certification claim; no Student OS / Parent OS / Principal OS / full ERP claim; no broad MCP / Planner Agent / RAG / learner mastery claim.
+
+**TOS-CX01 — Teacher OS Client Showcase Ready (IMPLEMENTED / COMPLETE — no new ADR):** TOS-CX01 records implemented product state against existing Teacher OS architecture. Core domain authority was **not** reopened. Architecture record synchronization = **TOS-CX01-C01**. Governed evidence: Backend `611f683140ee779cb9453f6310bf30f9f1df572d`; Frontend `6daf18db239069847697e74669ce0bbed30f7951`; OpenAPI SHA-256 `D5CC3A53C789406C69D0207CB0A8778C2730FBE9544C567503EB256BDA92CEFB`; Alembic `tosd100001`.
+
+| Slice | Status | Implemented outcome |
+|-------|--------|---------------------|
+| **TOS-CX01-I01** Teacher-Friendly Educational Artifact Rendering | **MERGED / POST-MERGE VERIFIED / FOUNDER VERIFIED / CLOSED** | Structured educational payload internally → teacher-readable educational presentation externally. Shared `ArtifactRenderer` supports `lesson_plan`, `worksheet`, `quiz`, `homework`, `answer_key`, `teacher_notes`. Normal Library and Work Artifact views no longer expose raw JSON. |
+| **TOS-CX01-I02** Prepare & Review UX Excellence | **MERGED / POST-MERGE VERIFIED / FOUNDER VERIFIED / CLOSED** | Teacher-first Prepare presentation; professional six-resource Preparation Kit; human-readable Educational Quality (technical validation codes hidden from primary teacher presentation); teacher-centered Review Queue; `ArtifactRenderer` in Review Detail; ETag / schema / aggregate-revision hidden from normal teacher UI. Authority remains **Generated ≠ Approved ≠ Published**. Review remains Approve / Request Changes / Reject. |
+| **TOS-CX01-I03** Groq Real AI + Provider Aggregator | **MERGED / POST-MERGE CI VERIFIED / MERGED-MAIN REAL GROQ VERIFIED / CLOSED** | AIEOS Model Gateway → Groq provider adapter (`provider_id` = `groq`; development/showcase model `openai/gpt-oss-120b`). OpenAI provider remains supported. Fake provider remains deterministic CI / development-test capability. Teacher OS is **not** coupled to Groq: Teacher OS → AIEOS application capability → `StructuredModelGateway` → configured provider. Provider Aggregator is read-only runtime observability; no provider mutation UI; no frontend provider credential access. |
+| **TOS-CX01-I04** Founder Real-AI Experience Acceptance | **FOUNDER ACCEPTED / PASS** (**2026-09-07**) | Founder statement: “Founder Real-AI Experience Accepted.” Binding product declaration: **TEACHER OS — CLIENT SHOWCASE READY**. |
+
+Accepted Real-AI evidence (concise; prompts and generated payload bodies are **not** deposited here): Provider Aggregator **REAL / Groq / `openai/gpt-oss-120b`**; fresh Fractions scenario — six topic-specific artifacts; fresh Photosynthesis scenario — six topic-specific artifacts; cross-scenario lesson plans / worksheets / quizzes meaningfully different; generation provenance `provider_id` = `groq`, `model_id` = `openai/gpt-oss-120b`; Contextual AI Assistant real provider verified. Assistant remains **READ / REASON / SUGGEST**; no authoritative mutation.
+
+### Teacher OS readiness (TOS-CX01-C01)
+
+| Claim | Status |
+|-------|--------|
+| Teacher OS Functional Development | **COMPLETE** |
+| Teacher OS Development Ready | **YES** |
+| Teacher OS Client Showcase Ready | **YES** |
+| Teacher OS Production Ready | **NO** |
+
+Client Showcase Ready does **not** imply production deployment, production credentials, production UAT, HA/DR certification, load/performance certification, or production security completion. Those remain outside the current development-readiness programme.
+
+### Next programme — AIEOS 360 CLIENT SHOWCASE
+
+**Status:** next **active** product programme. This closeout does **not** start implementation.
+
+**Target:** **2026-11-20** (development readiness only — **not** a production date)
+
+**Next immediate technical package (NEXT / NOT YET IMPLEMENTED):** **AIEOS360-S01 — Student Assignment Consumption & Learner Attempt Architecture**
+
+Purpose: connect existing TeachingAssignment authority to the first real Student Intelligence vertical. Expected architecture questions belong to AIEOS360-S01 discovery and are **not** resolved in this closeout: learner assignment visibility; ClassRef → learner membership authority; live-vs-snapshot roster semantics; student Principal ownership; assignment eligibility/timing for learner access; LearnerAttempt aggregate authority; attempt lifecycle; submission authority; exact assigned ContentVersion binding; learning-evidence boundary; idempotency/concurrency; student home/assignment projection; teacher visibility boundary; assessment-intelligence handoff.
+
+Current state after this closeout (these are the next programme — **do not** read as implemented):
+
+| Capability | Status |
+|------------|--------|
+| Student Intelligence implementation | **NOT STARTED** |
+| Learner Attempt | **NOT IMPLEMENTED** |
+| Learner Submission | **NOT IMPLEMENTED** |
+| Learner-level Assessment Intelligence | **NOT IMPLEMENTED** |
+| Principal / School Intelligence | **NOT IMPLEMENTED** |
+| Parent Intelligence | **NOT IMPLEMENTED** |
+| Admin/ERP AIEOS360 path | **NOT IMPLEMENTED** |
+
+### Locked development-readiness programme targets
+
+Development readiness only. These are **not** production dates.
+
+| Programme | Target |
+|-----------|--------|
+| AIEOS 360 Client Showcase | **2026-11-20** |
+| AIEOS v1 Development Ready | **2026-12-18** |
+| Experience Depth Complete | **2027-01-29** |
+| ERP / School Operations Complete | **2027-02-26** |
+| Educational Intelligence + Knowledge | **2027-03-26** |
+| Agentic AI + MCP + AI Engineering Platform | **2027-04-23** |
+| Ecosystem / Founder / Developer / cross-platform | **2027-05-21** |
+| Full Original AIEOS Development Complete | **2027-05-28** |
 
 ---
 
@@ -191,6 +259,10 @@ EBP-001 product review package docs may lag the latest slice numbering; prefer s
 ---
 
 ## Current work
+
+### AIEOS 360 CLIENT SHOWCASE — next active programme (NOT STARTED)
+
+**AIEOS360-S01 — Student Assignment Consumption & Learner Attempt Architecture** is **NEXT / NOT YET IMPLEMENTED**. This closeout does **not** authorize or start that package. Student Intelligence / Learner Attempt / Learner Submission remain **NOT IMPLEMENTED**.
 
 ### EBP-001.9 — HISTORICAL discovery / preflight (superseded by current implementation)
 
@@ -241,6 +313,7 @@ Historical findings (read-only discovery at that time):
 | Shell owns UX, not generators/business engines | ADR-042 |
 | Foundation → Hardening → Review → Next Capability | ADR-043 |
 | Frontend → stable product services only; no direct Agents/MCP | ADR-044 |
+| AIEOS Model Gateway / configured providers (Groq, OpenAI, Fake) | ADR-044 — Teacher OS → AIEOS application capability → `StructuredModelGateway` → configured provider; Teacher OS is **not** coupled to Groq |
 | Teaching Intent owns goals; generators are capabilities | ADR-045 |
 | One Artifact lifecycle for all types | ADR-046 |
 | Outcome-first Prepare language | ADR-047 |
@@ -257,11 +330,13 @@ Historical findings (read-only discovery at that time):
 | Capability | Status |
 |------------|--------|
 | Teacher Memory v1 (durable explicit preferences) | **Implemented** (TOS-DEV10-I03 under ADR-AIEOS-057); represented-HUMAN teacher-owned; ≠ Continuous Context; inferred personalization / learn-from-edit remain **not** claimed |
-| Contextual AI Assistant v1 | **Implemented** (TOS-DEV10-I04 / I04R1 under ADR-AIEOS-057); AIEOS API only; READ/REASON/SUGGEST; session-scoped; no Chat SoR; broader assistant platforms remain **deferred** |
+| Teacher-friendly educational artifact rendering | **Implemented** (TOS-CX01-I01); shared `ArtifactRenderer` for `lesson_plan` / `worksheet` / `quiz` / `homework` / `answer_key` / `teacher_notes`; normal Library and Work Artifact views no longer expose raw JSON |
+| Prepare & Review teacher-first presentation | **Implemented** (TOS-CX01-I02); six-resource Preparation Kit; human-readable Educational Quality; technical validation codes / ETag / schema / aggregate-revision hidden from normal teacher UI; Review remains Approve / Request Changes / Reject; Generated ≠ Approved ≠ Published |
+| Contextual AI Assistant v1 | **Implemented** (TOS-DEV10-I04 / I04R1 under ADR-AIEOS-057); TOS-CX01-I03/I04 real-provider verified; AIEOS API only; READ/REASON/SUGGEST; session-scoped; no Chat SoR; no authoritative mutation; broader assistant platforms remain **deferred** |
 | Personalization / inferred preferences | Deferred |
 | Agents | Deferred / not currently authorized (ADR-044 boundary) |
 | MCP | Deferred / not currently authorized |
-| Orchestration (full Prepare multi-artifact depth) | TOS-DEV04 native Prepare kit **implemented**; live provider proof (**DEV04-I10**) and extended orchestration deferred |
+| Orchestration (full Prepare multi-artifact depth) | TOS-DEV04 native Prepare kit **implemented**; TOS-CX01-I03 development/showcase Groq Real AI via Model Gateway **implemented**; production provider credentials / production live-provider certification remain **not** claimed; extended orchestration deferred |
 | Publication (native AIEOS Content) | **Implemented** (TOS-DEV04 / DEV05 path) |
 | Native TeachingAssignment | **Implemented** (TOS-DEV06) |
 | Assignment Product E2E | **Complete** (TOS-DEV06-I05; retained under TOS-DEV07-I04 product harness) |
@@ -275,14 +350,21 @@ Historical findings (read-only discovery at that time):
 | ClassroomAssessment application/API / authority composition | **Complete** (DEV08-I02) |
 | Teacher OS Assess UX + concurrency / 409 correction | **Complete** (DEV08-I03 / I03R1) |
 | ClassroomAssessment real-stack Product E2E | **Complete** (DEV08-I04; Frontend merge `30c94f3e0403b9a5a2e955c706766035490598f9`; post-merge CI `33853706361` SUCCESS) |
-| External learner delivery / LMS / Student OS | Deferred — Assigned ≠ Externally Delivered ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)) |
+| External learner delivery / LMS / Student OS | **NOT STARTED** for Student Intelligence — Assigned ≠ Externally Delivered ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)); next package **AIEOS360-S01** is architecture discovery, not implementation |
 | Teach / classroom execution (Assigned ≠ Taught) | **ADR-AIEOS-054 Frozen / Approved** (Founder approved **2026-09-01**); **TOS-DEV07 implementation COMPLETE**; learner-specific observation / attendance / assessment / mastery remain **not authorized** |
 | Assess / class-level learning evidence (Taught ≠ Assessed) | **ADR-AIEOS-055 Frozen / Approved** (Founder approved **2026-09-03**); **TOS-DEV08 implementation COMPLETE** (DEV08-I01–I04 formally closed; Backend `1fe28f4fd1a2a2070aa69d67daa49cd53ba5820d`; Frontend `30c94f3e0403b9a5a2e955c706766035490598f9`); class-level ClassroomAssessment only; learner-specific / mastery remain **not authorized** |
 | Improve / class-level remediation (Assessed ≠ Improvement required) | **ADR-AIEOS-056 Frozen / Approved**; **TOS-DEV09 IMPLEMENTATION COMPLETE** (DEV09-I01–I04; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`); Teacher Memory out of DEV09 |
 | Teacher OS Development-Complete Experience (Library / Memory / Assistant / Mission presentation) | **ADR-AIEOS-057 Frozen / Approved**; **TOS-DEV10 IMPLEMENTATION COMPLETE — TEACHER OS DEVELOPMENT READY** (I01–I04 / I04R1 formally closed; Backend `0bb2a9cb09bda41370b89c2e4dcc3239074bcc92`; Frontend `070276145623c889d5db6346150cf420735b04f1`; OpenAPI `4BF6C88B662D99F1E0E21E6F0AF2D267B39644300D85D99A859A7720F1568411`; Alembic `tosd100001`); **Development Ready ≠ Production Ready** |
+| Teacher OS Client Showcase Ready | **TOS-CX01 COMPLETE** (I01–I04); **CLIENT SHOWCASE READY = YES**; **Production Ready = NO** |
+| AIEOS Model Gateway Groq adapter + Provider Aggregator | **Implemented** (TOS-CX01-I03); `provider_id` = `groq`; development/showcase model `openai/gpt-oss-120b`; OpenAI remains supported; Fake remains CI/development-test; Provider Aggregator read-only; no provider mutation UI; no frontend provider credentials; production credentials **not** claimed |
 | Full Prepare orchestration | Deferred (EBP-001 out of scope depth) |
-| Student OS / Parent OS / Principal OS | Out of Wave 1 scope |
-| New generators / new model providers | Out of Wave 1 scope |
+| Student Intelligence / Learner Attempt / Learner Submission | **NOT STARTED / NOT IMPLEMENTED** — next programme AIEOS 360 / **AIEOS360-S01** |
+| Learner-level Assessment Intelligence | **NOT IMPLEMENTED** |
+| Principal / School Intelligence | **NOT IMPLEMENTED** |
+| Parent Intelligence | **NOT IMPLEMENTED** |
+| Admin/ERP AIEOS360 path | **NOT IMPLEMENTED** |
+| Student OS / Parent OS / Principal OS as sequential complete products | **Not** the AIEOS 360 strategy; next path is the shared vertical scenario above |
+| New generators | Out of current programme |
 | Generic Content / ContentVersion SoR | **Implemented** (current Backend Generic Content path; historical EBP-001.9 “missing SoR” finding superseded) |
 | Durable generate → IN_REVIEW → Review Queue | **Implemented** (TOS-DEV03/DEV04 + Teacher OS Review Queue; historical EBP-001.9 gap superseded) |
 | Content SoR DB creation *(historical EBP-001.9 framing)* | **HISTORICAL / SATISFIED by current implementation** — do not reopen as active gap |
@@ -300,7 +382,7 @@ Historical findings (read-only discovery at that time):
 | Dual chrome | Classic MainLayout + TeacherShell until Mission is default production landing |
 | Discovery ≠ authorization | Discovery recommendations must not be treated as approved implementation without architecture approval |
 | Premature platform jumps | Risk of introducing Agents/MCP/Orchestration/Memory/DB without ADR + EBP authorization |
-| Development Ready ≠ Production Ready | ADR-AIEOS-057 remains Frozen / Approved; **TOS-DEV10 COMPLETE — TEACHER OS DEVELOPMENT READY** (I01–I04 / I04R1); Development Ready does **not** authorize production deployment, UAT/HA/DR/load certification, Student OS / Parent OS / Principal OS / full ERP, broad MCP / Planner Agent / RAG / learner mastery, Notification Center, or Student Intelligence |
+| Development Ready ≠ Production Ready | ADR-AIEOS-057 remains Frozen / Approved; **TOS-DEV10 COMPLETE — TEACHER OS DEVELOPMENT READY** (I01–I04 / I04R1); **TOS-CX01 COMPLETE — TEACHER OS CLIENT SHOWCASE READY**; Development Ready / Client Showcase Ready do **not** authorize production deployment, production credentials, production UAT, HA/DR/load certification, production security completion, Student OS / Parent OS / Principal OS / full ERP, broad MCP / Planner Agent / RAG / learner mastery, Notification Center, or Student Intelligence implementation |
 
 ---
 

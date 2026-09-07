@@ -344,6 +344,19 @@ Conflict preference:
 
 ---
 
+## 26. TOS-CX01 — Teacher OS Client Showcase Ready
+
+| Field | Content |
+|-------|---------|
+| **Objective** | Record implemented Teacher OS Client Showcase Ready product state against existing architecture, without reopening Teacher OS domain authority or inventing a new ADR. |
+| **Architectural reason** | TOS-DEV10 closed Development Ready. TOS-CX01 closed teacher-readable presentation, Prepare/Review UX excellence, Groq Real AI via the existing Model Gateway, and Founder Real-AI experience acceptance. Those outcomes do not require a new domain ADR. |
+| **What was implemented** | **TOS-CX01 COMPLETE — TEACHER OS CLIENT SHOWCASE READY.** **I01** — shared `ArtifactRenderer` (`lesson_plan`, `worksheet`, `quiz`, `homework`, `answer_key`, `teacher_notes`); structured payload internally, teacher-readable presentation externally; normal Library/Work Artifact views no longer expose raw JSON. **I02** — teacher-first Prepare; professional six-resource Preparation Kit; human-readable Educational Quality; technical validation codes hidden from primary teacher presentation; teacher-centered Review Queue; `ArtifactRenderer` in Review Detail; ETag/schema/aggregate-revision hidden from normal teacher UI; Generated ≠ Approved ≠ Published retained; Review remains Approve / Request Changes / Reject. **I03** — AIEOS Model Gateway Groq provider adapter (`provider_id` = `groq`; development/showcase model `openai/gpt-oss-120b`); OpenAI remains supported; Fake remains deterministic CI/development-test; Teacher OS → AIEOS application capability → `StructuredModelGateway` → configured provider; Provider Aggregator read-only runtime observability; no provider mutation UI; no frontend provider credential access. **I04** — Founder Real-AI Experience Accepted **2026-09-07** PASS. Evidence pins: Backend `611f683140ee779cb9453f6310bf30f9f1df572d`; Frontend `6daf18db239069847697e74669ce0bbed30f7951`; OpenAPI SHA-256 `D5CC3A53C789406C69D0207CB0A8778C2730FBE9544C567503EB256BDA92CEFB`; Alembic `tosd100001`. Accepted Real-AI evidence: Provider Aggregator REAL / Groq / `openai/gpt-oss-120b`; fresh Fractions and Photosynthesis six-artifact scenarios; cross-scenario artifacts meaningfully different; generation provenance `provider_id` = `groq`, `model_id` = `openai/gpt-oss-120b`; Contextual AI Assistant real provider verified; Assistant remains READ / REASON / SUGGEST. Architecture record synchronization = **TOS-CX01-C01**. |
+| **What was deliberately NOT claimed** | Production Ready; production deployment; production credentials; production UAT; HA/DR certification; load/performance certification; production security completion; Student Intelligence implementation; Learner Attempt; Learner Submission; learner-level Assessment Intelligence; Principal / School Intelligence; Parent Intelligence; Admin/ERP AIEOS360 path; a new ADR. |
+| **Governing decisions** | Existing ADR-042…048; ADR-044 Model Gateway / provider independence; ADR-AIEOS-052…057. **No new ADR.** |
+| **Current status** | **TEACHER OS — CLIENT SHOWCASE READY.** Functional Development **COMPLETE**. Development Ready **YES**. Client Showcase Ready **YES**. Production Ready **NO**. Next active product programme = **AIEOS 360 CLIENT SHOWCASE** (target **2026-11-20**). Next package **AIEOS360-S01 — Student Assignment Consumption & Learner Attempt Architecture** = **NEXT / NOT YET IMPLEMENTED**. Student Intelligence implementation **NOT STARTED**. |
+
+---
+
 ## Gaps / missing chronology
 
 Where older pre-Teacher-OS platform history (earlier Platform AI packages, ERP modules, etc.) is relevant but not part of this AIEOS journey spine: **Not established by current repository evidence** as a fully sequenced AIEOS chronology in this folder — treat as adjacent capability history under product/API repos.
