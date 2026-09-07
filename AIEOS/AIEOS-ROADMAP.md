@@ -41,6 +41,7 @@ Labels used below:
 | EBP-001.7 Mission Service Hardening | Approved | Closed hardening slice |
 | EBP-001.8 Teacher / School Context | Approved (slice tracking) | Read surface; not Memory |
 | TOS-DEV04 — Prepare Tomorrow native implementation | Approved / Complete | Backend `origin/main` `06e05277e73e0c71172cae4904efb37d771c3fad` |
+| TOS-DEV06 — TeachingAssignment native implementation + Product E2E | Approved / Complete | Backend `06e05277e73e0c71172cae4904efb37d771c3fad`; Frontend `89ee9f1330f635de3186d21e0102cb63c5c698e1` (TOS-DEV06-I05) |
 | TOS-DEV09 — Class-level Improve & Remediation | Approved / Complete | ADR-AIEOS-056 Frozen / Approved; DEV09-I01–I04 formally closed; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002` |
 | TOS-DEV10 — Teacher OS Development Ready | Approved / Complete | ADR-AIEOS-057 Frozen / Approved; I01–I04 / I04R1 formally closed; Backend `0bb2a9cb09bda41370b89c2e4dcc3239074bcc92`; Frontend `070276145623c889d5db6346150cf420735b04f1`; OpenAPI `4BF6C88B662D99F1E0E21E6F0AF2D267B39644300D85D99A859A7720F1568411`; Alembic `tosd100001`; **Development Ready ≠ Production Ready** |
 
