@@ -204,7 +204,7 @@ Client Showcase Ready does **not** imply production deployment, production crede
 
 **Next immediate technical package:** **AIEOS360-S01 — Student Assignment Consumption & Learner Attempt Architecture**
 
-Architecture status: **DESIGN / FREEZE CANDIDATE** — [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) is **Proposed / Freeze Candidate**. Founder freeze **not** granted. Implementation **NOT STARTED / NOT AUTHORIZED** (S01-I01+ not authorized). TeachingAssignment (ADR-AIEOS-053) is not reopened. ClassroomAssessment remains class-level.
+Architecture status: **FROZEN / APPROVED** — [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) is **Frozen / Approved** (Founder / Product Architecture **2026-09-08**; Chief Architect architecture review **ACCEPTED / PASS**). Architecture freeze does **not** itself authorize implementation. Implementation **NOT STARTED / NOT AUTHORIZED**. **S01-I01** = **NEXT CANDIDATE, NOT YET AUTHORIZED**. TeachingAssignment (ADR-AIEOS-053) is not reopened. ClassroomAssessment remains class-level.
 
 Current state after this closeout (these are the next programme — **do not** read as implemented):
 
@@ -262,7 +262,7 @@ EBP-001 product review package docs may lag the latest slice numbering; prefer s
 
 ### AIEOS 360 CLIENT SHOWCASE — next active programme
 
-**AIEOS360-S01** architecture is **DESIGN / FREEZE CANDIDATE** ([ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) **Proposed / Freeze Candidate**). Student Intelligence implementation / Learner Attempt / Learner Submission remain **NOT STARTED**. S01-I01+ implementation is **NOT AUTHORIZED**.
+**AIEOS360-S01** architecture is **FROZEN / APPROVED** ([ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) **Frozen / Approved**; Founder **2026-09-08**; Chief Architect **ACCEPTED / PASS**). Student Intelligence implementation / Learner Attempt / Learner Submission remain **NOT STARTED**. S01-I01+ implementation is **NOT AUTHORIZED**. **S01-I01** = **NEXT CANDIDATE, NOT YET AUTHORIZED**.
 
 ### EBP-001.9 — HISTORICAL discovery / preflight (superseded by current implementation)
 
@@ -350,7 +350,7 @@ Historical findings (read-only discovery at that time):
 | ClassroomAssessment application/API / authority composition | **Complete** (DEV08-I02) |
 | Teacher OS Assess UX + concurrency / 409 correction | **Complete** (DEV08-I03 / I03R1) |
 | ClassroomAssessment real-stack Product E2E | **Complete** (DEV08-I04; Frontend merge `30c94f3e0403b9a5a2e955c706766035490598f9`; post-merge CI `33853706361` SUCCESS) |
-| External learner delivery / LMS / Student OS | **NOT STARTED** for Student Intelligence implementation — Assigned ≠ Externally Delivered ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)); [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) **Proposed / Freeze Candidate**; implementation **not** authorized |
+| External learner delivery / LMS / Student OS | **NOT STARTED** for Student Intelligence implementation — Assigned ≠ Externally Delivered ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)); [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) **Frozen / Approved**; implementation **not** authorized |
 | Teach / classroom execution (Assigned ≠ Taught) | **ADR-AIEOS-054 Frozen / Approved** (Founder approved **2026-09-01**); **TOS-DEV07 implementation COMPLETE**; learner-specific observation / attendance / assessment / mastery remain **not authorized** |
 | Assess / class-level learning evidence (Taught ≠ Assessed) | **ADR-AIEOS-055 Frozen / Approved** (Founder approved **2026-09-03**); **TOS-DEV08 implementation COMPLETE** (DEV08-I01–I04 formally closed; Backend `1fe28f4fd1a2a2070aa69d67daa49cd53ba5820d`; Frontend `30c94f3e0403b9a5a2e955c706766035490598f9`); class-level ClassroomAssessment only; learner-specific / mastery remain **not authorized** |
 | Improve / class-level remediation (Assessed ≠ Improvement required) | **ADR-AIEOS-056 Frozen / Approved**; **TOS-DEV09 IMPLEMENTATION COMPLETE** (DEV09-I01–I04; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`); Teacher Memory out of DEV09 |
@@ -358,7 +358,7 @@ Historical findings (read-only discovery at that time):
 | Teacher OS Client Showcase Ready | **TOS-CX01 COMPLETE** (I01–I04); **CLIENT SHOWCASE READY = YES**; **Production Ready = NO** |
 | AIEOS Model Gateway Groq adapter + Provider Aggregator | **Implemented** (TOS-CX01-I03); `provider_id` = `groq`; development/showcase model `openai/gpt-oss-120b`; OpenAI remains supported; Fake remains CI/development-test; Provider Aggregator read-only; no provider mutation UI; no frontend provider credentials; production credentials **not** claimed |
 | Full Prepare orchestration | Deferred (EBP-001 out of scope depth) |
-| Student Intelligence / Learner Attempt / Learner Submission | **NOT STARTED / NOT IMPLEMENTED** — ADR-AIEOS-058 **Proposed / Freeze Candidate**; S01-I01+ **not** authorized |
+| Student Intelligence / Learner Attempt / Learner Submission | **NOT STARTED / NOT IMPLEMENTED** — ADR-AIEOS-058 **Frozen / Approved**; S01-I01 **NEXT CANDIDATE, NOT YET AUTHORIZED** |
 | Learner-level Assessment Intelligence | **NOT IMPLEMENTED** |
 | Principal / School Intelligence | **NOT IMPLEMENTED** |
 | Parent Intelligence | **NOT IMPLEMENTED** |

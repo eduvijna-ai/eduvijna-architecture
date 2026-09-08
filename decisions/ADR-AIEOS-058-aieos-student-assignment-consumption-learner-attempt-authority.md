@@ -2,8 +2,8 @@
 id: ADR-AIEOS-058
 title: AIEOS Student Assignment Consumption & Learner Attempt Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
-status: proposed
-version: 1.0.1
+status: approved
+version: 1.0.2
 created: 2026-09-08
 last_updated: 2026-09-08
 reviewers:
@@ -13,13 +13,13 @@ reviewers:
 
 # ADR-AIEOS-058 — AIEOS Student Assignment Consumption & Learner Attempt Authority
 
-**Status:** Proposed / Freeze Candidate  
-**Chief Architect architecture review:** Discovery **ACCEPTED**; freeze **not granted**  
-**Founder / Product Architecture freeze:** **NOT GRANTED**  
+**Status:** Frozen / Approved  
+**Chief Architect architecture review:** ACCEPTED / PASS  
+**Founder / Product Architecture freeze:** APPROVED — 2026-09-08  
 **Date:** 2026-09-08  
 **Related:** [ADR-AIEOS-023R1](ADR-AIEOS-023R1-aieos-identity-tenant-security-canonical-restatement.md) · [ADR-AIEOS-024](ADR-AIEOS-024-aieos-data-resource-sor-implementation-baseline.md) · [ADR-AIEOS-025](ADR-AIEOS-025-aieos-api-contract-integration-implementation-baseline.md) · [ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md) · [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-accountability.md) · [ADR-AIEOS-031](ADR-AIEOS-031-production-authorization-kernel.md) · [ADR-AIEOS-046](ADR-AIEOS-046-aieos-production-event-plane-identity-least-privilege-contract.md) · [ADR-AIEOS-046R1](ADR-AIEOS-046R1-aieos-production-event-plane-multi-domain-publisher-scope-revision.md) · [ADR-044](ADR-044-ai-platform-behind-stable-services.md) · [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) · [ADR-AIEOS-054](ADR-AIEOS-054-aieos-teaching-execution-observation-authority.md) · [ADR-AIEOS-055](ADR-AIEOS-055-aieos-assessment-learning-evidence-authority.md) · [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) · [ADR-AIEOS-057](ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md)
 
-**Catalogue note:** Proposed / Freeze Candidate is **ARCHITECTURE DEPOSITION ONLY**. This ADR proposes the **AIEOS Student Assignment Consumption & Learner Attempt Authority** for **AIEOS360-S01**. AIEOS360-S01 discovery is **ACCEPTED**. This deposit does **not** freeze, approve, or authorize implementation. Architecture freeze ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ migration authorization ≠ OpenAPI authorization ≠ NATS provisioning ≠ Temporal authorization ≠ deployment authorization ≠ production mutation authorization. Implementation slices **S01-I01+** remain **NOT AUTHORIZED**.
+**Catalogue note:** Frozen / Approved is **ARCHITECTURE AUTHORITY ONLY**. This ADR freezes the **AIEOS Student Assignment Consumption & Learner Attempt Authority** for **AIEOS360-S01**. Founder / Product Architecture approval was granted **2026-09-08**. Architecture freeze ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ migration authorization ≠ OpenAPI authorization ≠ NATS provisioning ≠ Temporal authorization ≠ deployment authorization ≠ production mutation authorization. This architecture freeze does **not** itself authorize implementation. Implementation slices **S01-I01+** remain **NOT AUTHORIZED**. **S01-I01** is the **NEXT CANDIDATE** and is **NOT YET AUTHORIZED**.
 
 **ID family note:** `ADR-AIEOS-058` is part of the AIEOS platform ADR family (`ADR-AIEOS-*`). It is distinct from Teacher OS product ADR-042–048 and from platform infrastructure ADR-AIEOS-048 / 048R1 / 048R2.
 
@@ -27,7 +27,9 @@ reviewers:
 
 Does **not** reopen or rewrite: ADR-AIEOS-053 TeachingAssignment; ADR-AIEOS-054 TeachingExecution; ADR-AIEOS-055 ClassroomAssessment; ADR-AIEOS-027 Generic Content; ADR-AIEOS-046R1 production EVENT publisher scope; ADR-AIEOS-023R1 Principal kinds.
 
-**AIEOS360-S01P1R1 (v1.0.1):** Chief Architect exact-head correction. S01 LearnerAttempt lifecycle is `IN_PROGRESS` → `SUBMITTED` only. `ABANDONED` / discard / reset = **DEFERRED FUTURE POLICY**. Current membership is evaluated at the command’s authoritative check; S01 does **not** claim atomic ERP↔AIEOS revocation ordering. Status remains **Proposed / Freeze Candidate**. Founder freeze remains **NOT GRANTED**. Implementation remains **NOT AUTHORIZED**.
+**AIEOS360-S01P1R1 (v1.0.1):** Chief Architect exact-head correction deposited while Proposed. S01 LearnerAttempt lifecycle is `IN_PROGRESS` → `SUBMITTED` only. `ABANDONED` / discard / reset = **DEFERRED FUTURE POLICY**. Current membership is evaluated at the command’s authoritative check; S01 does **not** claim atomic ERP↔AIEOS revocation ordering.
+
+AIEOS360-S01P1 design deposit and AIEOS360-S01P1R1 lifecycle/membership correction were deposited as Proposed (v1.0.0 / v1.0.1) before freeze. Founder / Product Architecture approval was granted on **2026-09-08**. Exact approval: **Freeze ADR-AIEOS-058 — AIEOS Student Assignment Consumption & Learner Attempt Authority — Approved.** Chief Architect architecture review: **ACCEPTED / PASS**. This freeze does **not** authorize implementation.
 
 Historical ADR-AIEOS-012 / 013 / 014 titles were not found in this repository and are **not** reconstructed here.
 
@@ -63,7 +65,7 @@ LearnerSubmission
 Learning Evidence boundary
 ```
 
-This ADR proposes that authority. It does **not** authorize implementation.
+This ADR freezes that authority. It does **not** authorize implementation.
 
 ---
 
@@ -681,7 +683,7 @@ S01 does **not** create: roster table, student-profile table, mastery table, gra
 
 ## Implementation sequence — planning only
 
-**NOT AUTHORIZED** by this deposit.
+This architecture freeze does **not** itself authorize implementation. **S01-I01** = **NEXT CANDIDATE, NOT YET AUTHORIZED**.
 
 | Slice | Purpose |
 |-------|---------|
@@ -691,7 +693,7 @@ S01 does **not** create: roster table, student-profile table, mastery table, gra
 | **S01-I04** | Student OS shell / assignment / attempt / submit UX |
 | **S01-I05** | Product E2E: Teacher Assign → Student sees → opens exact learner-safe version → attempts → submits → durable LearnerSubmission exists → ClassroomAssessment unchanged |
 
-No implementation begins from this ADR deposit.
+No implementation begins from this freeze.
 
 ---
 
