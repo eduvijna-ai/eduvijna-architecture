@@ -80,3 +80,4 @@ Historical ADR-AIEOS-023 Identity/Tenant/Security remains Frozen / Approved; ori
 | ADR-AIEOS-052 | AIEOS Preparation Kit & Multi-Artifact Generation Architecture | 2026-08-28 | Frozen / Approved | [ADR-AIEOS-052](ADR-AIEOS-052-aieos-preparation-kit-multi-artifact-generation-architecture.md) |
 | ADR-AIEOS-053 | AIEOS Teaching Assignment & Classroom Delivery Authority | 2026-08-31 | Frozen / Approved | [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) |
 | ADR-AIEOS-054 | AIEOS Teaching Execution & Observation Authority | 2026-09-01 | Frozen / Approved | [ADR-AIEOS-054](ADR-AIEOS-054-aieos-teaching-execution-observation-authority.md) |
+| ADR-AIEOS-058 | AIEOS Student Assignment Consumption & Learner Attempt Authority | 2026-09-08 | Proposed / Freeze Candidate | [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) |
