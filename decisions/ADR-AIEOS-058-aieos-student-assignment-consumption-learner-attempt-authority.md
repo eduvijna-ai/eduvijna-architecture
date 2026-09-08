@@ -3,7 +3,7 @@ id: ADR-AIEOS-058
 title: AIEOS Student Assignment Consumption & Learner Attempt Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: proposed
-version: 1.0.0
+version: 1.0.1
 created: 2026-09-08
 last_updated: 2026-09-08
 reviewers:
@@ -26,6 +26,8 @@ reviewers:
 **Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S01**. TOS-CX01 closed Teacher OS Client Showcase Ready. This ADR does **not** reopen Teacher OS domain authority.
 
 Does **not** reopen or rewrite: ADR-AIEOS-053 TeachingAssignment; ADR-AIEOS-054 TeachingExecution; ADR-AIEOS-055 ClassroomAssessment; ADR-AIEOS-027 Generic Content; ADR-AIEOS-046R1 production EVENT publisher scope; ADR-AIEOS-023R1 Principal kinds.
+
+**AIEOS360-S01P1R1 (v1.0.1):** Chief Architect exact-head correction. S01 LearnerAttempt lifecycle is `IN_PROGRESS` → `SUBMITTED` only. `ABANDONED` / discard / reset = **DEFERRED FUTURE POLICY**. Current membership is evaluated at the command’s authoritative check; S01 does **not** claim atomic ERP↔AIEOS revocation ordering. Status remains **Proposed / Freeze Candidate**. Founder freeze remains **NOT GRANTED**. Implementation remains **NOT AUTHORIZED**.
 
 Historical ADR-AIEOS-012 / 013 / 014 titles were not found in this repository and are **not** reconstructed here.
 
@@ -147,16 +149,30 @@ TeachingAssignment eligibility
 |------|------|
 | Current member + ACTIVE + available | Current access |
 | Joins after assignment creation | Eligible while the assignment remains ACTIVE / startable |
-| Leaves before starting | Cannot start |
-| Leaves while `IN_PROGRESS` | Cannot save or submit further |
+| Leaves before starting | Cannot start once removal is observed at the command membership check |
+| Leaves while `IN_PROGRESS` | If removal is observed at save/submit membership check → fail closed; existing attempt may remain `IN_PROGRESS`; no auto-delete / auto-submit / auto-abandon. An already-authorized command that received a positive membership decision before revocation becomes observable may complete. Subsequent current-access commands fail closed once removal is observed |
 | Leaves after `SUBMITTED` | Submitted evidence remains immutable |
-| Removed learner | Not present in the **current** assignment list |
+| Removed learner | Not present in the **current** assignment list once removal is observed |
 | Own already-submitted evidence | May remain readable subject to ACTIVE Principal / tenant authority |
 | Membership façade unavailable | **FAIL CLOSED** for current assignment activity |
 
 The façade is replaceable. It is **not** the ERP master. Production ERP/SIS remains later. NON_PRODUCTION synthetic membership is an implementation substrate after freeze — **not** authorized by this deposit.
 
-Membership checks are **external / current-authority façade checks** during command execution. They do **not** participate in the same database transaction as ERP/SIS. No distributed 2PC / XA with ERP. Unavailable or denied → **FAIL CLOSED**.
+A learner no longer observed as a current member receives **no new current-access command authorization**. S01 does **not** claim instantaneous cross-system revocation.
+
+Membership checks are **external / current-authority façade checks** during command execution. They do **not** participate in the same database transaction as ERP/SIS. No distributed 2PC / XA with ERP.
+
+Current learner membership is evaluated at the authoritative membership check used for the command.
+
+If membership is denied or unavailable at that check, the command fails closed.
+
+A membership change that occurs after a successful external authority check is not atomically ordered with the local AIEOS transaction in S01.
+
+AIEOS does not claim atomic ERP↔AIEOS revocation ordering without a future versioned/fenced membership contract.
+
+Such membership change governs subsequent current-access commands.
+
+S01 does **not** invent ERP locks, leases, distributed transactions, historical membership SoR, or an event-synchronization requirement.
 
 ### 5. Exact ContentVersion
 
@@ -229,7 +245,7 @@ Candidate minimum fields:
 | `content_version_id` | Exact assigned ContentVersion (copied at start) |
 | `class_ref` | Copied at start (audit; not live roster SoR) |
 | `attempt_number` | Forward-compatible sequence; S01 normally `1` |
-| `lifecycle_state` | `IN_PROGRESS` \| `SUBMITTED` \| `ABANDONED` |
+| `lifecycle_state` | `IN_PROGRESS` \| `SUBMITTED` |
 | `started_at` | Server-controlled |
 | `last_saved_at` | Server-controlled |
 | `submitted_at` | Set on submit |
@@ -250,19 +266,39 @@ Cross-domain identifiers use ResourceRef / opaque ID boundaries. **No** default 
 
 ### 8. Attempt lifecycle
 
+S01 minimum:
+
 ```text
 IN_PROGRESS → SUBMITTED
-IN_PROGRESS → ABANDONED
 ```
 
-`SUBMITTED` is **terminal** for that attempt.  
-`ABANDONED` is **terminal**.  
+`SUBMITTED` is **terminal**.  
 No reopen of the same submitted attempt.
 
-Late is **not** a lifecycle state.  
-Do **not** add `GRADED` or `MASTERED` to LearnerAttempt.
+`ABANDONED` / discard / reset semantics = **DEFERRED FUTURE POLICY**.
 
-Assignment `CLOSED` or `CANCELLED`: no start / save / submit. Do not auto-delete the attempt. Do not auto-submit.
+S01 has no governed actor or command for abandonment and freezes one-attempt business policy.
+
+Do **not** invent:
+
+- abandon endpoint
+- teacher abandon
+- system auto-abandon
+- new attempt after abandon
+- retry policy
+
+Late is **not** a lifecycle state.  
+Do **not** add `GRADED` or `MASTERED` to LearnerAttempt.  
+Do **not** add `ABANDONED` to the S01 `lifecycle_state` field.
+
+Assignment `CLOSED` or `CANCELLED`, membership loss, or other current-authority loss:
+
+- existing `IN_PROGRESS` attempt **may remain** `IN_PROGRESS`
+- save = **denied**
+- submit = **denied**
+- no auto-delete
+- no auto-submit
+- no auto-abandon
 
 ### 9. Attempt cardinality
 
@@ -440,7 +476,9 @@ The implementation must serialize Assignment lifecycle authority and Attempt tra
 - cancel/close wins first → submission fails
 - submit wins authoritative eligibility first and commits → immutable submission exists
 
-Exactly one authoritative outcome. Membership is a façade check during command execution, not ERP 2PC.
+Exactly one authoritative **internal AIEOS** outcome.
+
+ERP/SIS membership does **not** participate in that internal serialization. Membership is evaluated at the authoritative membership check used for the command. Denied or unavailable at that check → fail closed. A membership change after a successful external authority check is not atomically ordered with the local AIEOS transaction in S01. No distributed 2PC / XA. No atomic ERP↔AIEOS revocation ordering without a future versioned/fenced membership contract. Such a change governs subsequent current-access commands.
 
 ### 17. Idempotency
 
@@ -522,8 +560,9 @@ Fail-closed ownership:
 - One learner cannot access another learner’s attempt by UUID
 - A teacher cannot impersonate a learner through Student routes
 - Suspended / inactive Principal: no current access / mutation
-- Current class membership: required for current assignment activity
+- Current class membership: required for current assignment activity, evaluated at the command’s authoritative membership check
 - Already-submitted own evidence: may remain readable after class membership loss, subject to ACTIVE Principal / tenant authority
+- Membership revocation is not claimed as instantaneous or atomically ordered with the local AIEOS transaction
 - Support / delegation: **not S01**
 
 ### 23. Minimum Student experience
@@ -615,7 +654,7 @@ S01 does **not** create: roster table, student-profile table, mastery table, gra
 | S01-06 | `available_from` is in the future | Candidate **PASS** — not current work |
 | S01-07 | `due_at` passed, assignment remains ACTIVE | Candidate **PASS** — submit allowed; lateness vs snapshot |
 | S01-08 | Assignment CLOSED before attempt starts | Candidate **PASS** — no start |
-| S01-09 | Assignment CANCELLED while attempt is IN_PROGRESS | Candidate **PASS** — save/submit fail closed |
+| S01-09 | Assignment CANCELLED while attempt is IN_PROGRESS | Candidate **PASS** — save/submit fail closed; attempt may remain IN_PROGRESS; no auto-abandon |
 | S01-10 | Teacher publishes a newer ContentVersion after assignment creation | Candidate **PASS** — assignment unchanged |
 | S01-11 | Student opens existing assignment after newer version exists | Candidate **PASS** — assigned version |
 | S01-12 | Two browser tabs update same attempt | Candidate **PASS** — If-Match |
@@ -632,10 +671,11 @@ S01 does **not** create: roster table, student-profile table, mastery table, gra
 | S01-23 | Future ERP outage during membership resolution | Candidate **PASS** — fail closed |
 | S01-24 | Retry after ambiguous HTTP outcome | Candidate **PASS** — Idempotency-Key |
 | S01-25 | Tenant isolation attack | Candidate **PASS** — fail closed |
-| S01-26 | Learner leaves class after attempt started but before submit | Candidate **PASS** — current mutation authority revoked; save/submit fail closed; no automatic deletion of attempt; no automatic submission |
+| S01-26 | Learner leaves class after attempt started but before submit | Candidate **PASS** — no new current-access authorization once removal is observed at the command membership check; save/submit fail closed when observed; already-authorized command may complete if positive membership was decided before revocation becomes observable; no automatic deletion of attempt; no automatic submission; no auto-abandon; subsequent commands fail closed once removal is observed |
 | S01-27 | Teacher changes `due_at` after learner submitted | Candidate **PASS** — `due_at_at_submit` and lateness fact do not change |
-| S01-28 | Submit races assignment cancel/close | Candidate **PASS** — internal authority serialization; exactly one authoritative outcome |
+| S01-28 | Submit races assignment cancel/close | Candidate **PASS** — internal AIEOS authority serialization; exactly one authoritative internal outcome |
 | S01-29 | Future Content schema adds a teacher-only field | Candidate **PASS** — student projection does not expose it unless explicitly allowlisted |
+| S01-30 | ERP/SIS membership revocation races with LearnerAttempt submit | Candidate **PASS** with bounded semantics — Case A: revocation observed by the authoritative membership check → submit fails closed. Case B: membership positively authorized by the command check and revocation occurs/becomes observable afterward → already-authorized local command may commit. No atomic ERP↔AIEOS ordering claim. Subsequent current-access commands fail closed. No distributed 2PC |
 
 ---
 
@@ -667,6 +707,7 @@ No implementation begins from this ADR deposit.
 ### Negative / constraints
 
 - Live membership means late joiners can become eligible while the assignment remains startable.
+- S01 does not claim atomic ERP↔AIEOS membership revocation ordering; subsequent current-access commands fail closed once removal is observed.
 - S01 one-attempt policy is stricter than the persistence model; retry requires a later freeze.
 - Production Learning events cannot publish under current ADR-AIEOS-046R1 publisher ACL.
 - Real ERP/SIS membership is not in-repo; S01 depends on a façade + NON_PRODUCTION substrate after implementation authorization.
@@ -682,6 +723,8 @@ No implementation begins from this ADR deposit.
 - Temporal, Groq/OpenAI/Model Gateway on submit, Student Agent, MCP
 - Production NATS Learning publication
 - Production deployment
+- abandon endpoint; teacher abandon; system auto-abandon; new attempt after abandon; S01 retry policy
+- ERP locks / leases / 2PC / XA; historical membership SoR; event-synchronization requirement for S01 membership revocation
 
 ---
 
@@ -696,5 +739,7 @@ No implementation begins from this ADR deposit.
 | Learner-safe projection is allowlist, not subtractive | **PASS** |
 | ADR-AIEOS-046R1 not modified | **PASS** — production Learning PUB HOLD recorded |
 | Implementation not authorized | **PASS** |
+| S01 lifecycle is IN_PROGRESS → SUBMITTED only | **PASS** — ABANDONED deferred |
+| No atomic ERP↔AIEOS membership ordering claimed | **PASS** — check-time façade; subsequent commands fail closed |
 
 No exception invented where a conflict would exist.
