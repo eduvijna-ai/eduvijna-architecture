@@ -3,7 +3,7 @@ id: ADR-AIEOS-059
 title: AIEOS Learner Assessment Intelligence & Teacher Improve Handoff Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: in-review
-version: 1.0.0
+version: 1.0.1
 created: 2026-09-09
 last_updated: 2026-09-09
 reviewers:
@@ -30,6 +30,8 @@ reviewers:
 Does **not** reopen or rewrite historical ADR bodies: ADR-AIEOS-023R1, ADR-AIEOS-024, ADR-AIEOS-025, ADR-AIEOS-028, ADR-AIEOS-031, ADR-AIEOS-053, ADR-AIEOS-054, ADR-AIEOS-055, ADR-AIEOS-056, ADR-AIEOS-058.
 
 This deposit does **not** authorize implementation.
+
+**AIEOS360-S01P2R1 (v1.0.1):** Chief Architect exact-head unanswered-evidence correction deposited while Proposed. The evaluation question universe is the complete exact bound ContentVersion question set. Missing snapshot responses are `UNANSWERED` / `NO_RESPONSE`, not `INCORRECT`. Objective rollup is exact-version-question-complete. Incomplete and empty Learning submissions remain legal and evaluable. Founder freeze remains **not** granted.
 
 ---
 
@@ -194,27 +196,49 @@ OPTION D is the smallest safe architecture for the AIEOS360 path because:
 
 Do **not** add `aggregate_revision` merely because ClassroomAssessment uses one.
 
-#### 4.2 Per-question evaluation (minimum)
+#### 4.2 Exact question universe and per-question evaluation
 
-Each evaluation contains an ordered, submission-complete per-question result set. Minimum fields:
+The authoritative question universe for one `LearnerAssessmentEvaluation` is the **complete question set of the EXACT bound ContentVersion**.
+
+The evaluator **MUST NOT** iterate only `LearnerSubmission.response_snapshot`.
+
+```text
+exact ContentVersion questions
+  +
+immutable LearnerSubmission response_snapshot
+→ exact-version-question-complete evaluation
+```
+
+Every exact-version question **must** have one evaluation-item outcome.
+
+Submission response absence is itself derived evidence of **NO RESPONSE**. It is **not** `INCORRECT`, `UNEVALUATED_POLICY_REJECT`, or `OPEN_RESPONSE_UNEVALUATED`.
+
+Do **not** invent a synthetic Learning `AttemptResponseItem` or fake snapshot row. Learning remains unchanged. S01 incomplete and empty submissions remain legal Learning evidence (ADR-AIEOS-058). Assessment must not reject an otherwise valid immutable submission merely because it is incomplete or empty.
+
+Preferred per-question item shape:
 
 | Field | Semantics |
 |-------|-----------|
 | `question_id` | Exact ContentVersion question identity |
-| `response_kind` | `MULTIPLE_CHOICE` \| `TRUE_FALSE` \| `SHORT_ANSWER` from the submission |
-| `outcome` | Canonical item outcome (see §8–10) |
-| `evaluation_method` | How the outcome was produced (see §8–10) |
+| `question_type` | Expected kind from the exact ContentVersion question (`multiple_choice` / `true_false` / `short_answer`) |
+| `outcome` | Canonical item outcome (see §6–10) |
+| `evaluation_method` | How the outcome was produced (see §6–10) |
 | `objective_ids` | Copied from the **exact ContentVersion question**, never from the frontend |
+| `response_kind` | Present **only when** a submitted snapshot response exists for that `question_id`; validated against `question_type` |
+
+Do **not** require a nonexistent submitted `response_kind` for `UNANSWERED`. Do **not** force implementation to create fake response data.
 
 Frontend-supplied correctness, scores, objective mappings, or explanations are **ignored**. They are not inputs. Item outcomes and objective_ids are derived only from:
 
 ```text
-immutable LearnerSubmission
+exact ContentVersion questions
   +
-exact ContentVersion
+immutable LearnerSubmission response_snapshot
   +
 named evaluation policy / version
 ```
+
+Snapshot items whose `question_id` is **not** on the exact ContentVersion do **not** expand the question universe. That is a lineage / data-contract failure → **FAIL CLOSED** for the evaluation command. Do not mint extra evaluation items for unknown questions.
 
 #### 4.3 Lineage validation (fail closed)
 
@@ -226,6 +250,19 @@ Before insert, the Assessment application **must** validate:
 - the ContentVersion exists and is the exact bound version — **not** `Content.published_version_id` if that pointer has moved
 
 Mismatch → **FAIL CLOSED**. Do **not** evaluate against a newer ContentVersion.
+
+#### 4.4 Empty / partial submissions
+
+Learning allows incomplete and empty responses at SUBMIT. **Assessment MUST NOT change that Learning rule.**
+
+An otherwise valid immutable submission **MAY** be evaluated when incomplete or empty. Evaluation can still exist.
+
+| Submission snapshot | Assessment result |
+|---------------------|-------------------|
+| Missing response for an exact-version question | that item = `UNANSWERED` / `NO_RESPONSE` |
+| Empty snapshot | durable evaluation may be produced; **all** exact-version questions = `UNANSWERED`; tested objective evidence = `INSUFFICIENT_EVIDENCE` |
+
+No score. No grade fabrication. No mastery claim. Unanswered is **not** classified `INCORRECT`.
 
 ### 5. Evaluation policy versioning
 
@@ -249,7 +286,7 @@ The same exact business identity **must** be replay-safe: a repeated ensure / ev
 | `evaluation_policy_id` | `aieos.learner_assessment.deterministic` |
 | First `evaluation_policy_version` | `1` |
 
-Version 1 encodes: MULTIPLE_CHOICE exact-option deterministic grading; TRUE_FALSE strict `true`/`false` content-answer normalization; SHORT_ANSWER `OPEN_RESPONSE_UNEVALUATED`; submission-scoped objective rollup with incompleteness → `INSUFFICIENT_EVIDENCE`.
+Version 1 encodes: exact-version-question-complete evaluation; missing snapshot response = `UNANSWERED` / `NO_RESPONSE`; MULTIPLE_CHOICE exact-option deterministic grading; TRUE_FALSE strict `true`/`false` content-answer normalization; submitted SHORT_ANSWER `OPEN_RESPONSE_UNEVALUATED`; objective rollup over every exact-version question linked to the objective, with incompleteness including unanswered → `INSUFFICIENT_EVIDENCE`.
 
 A policy bugfix or changed evaluation rule **MUST** require a new `evaluation_policy_version`. No silent rewriting of previously issued evaluation facts.
 
@@ -283,7 +320,8 @@ Canonical item `outcome`:
 |------|---------|
 | `CORRECT` | Deterministic match of a legal submitted value against the exact ContentVersion answer under the named policy |
 | `INCORRECT` | Deterministic mismatch of a legal submitted value against the exact ContentVersion answer |
-| `OPEN_RESPONSE_UNEVALUATED` | Submitted open response; no authoritative deterministic grade in this baseline |
+| `UNANSWERED` | The exact bound ContentVersion contains the question, but the immutable LearnerSubmission contains **no** response for that question |
+| `OPEN_RESPONSE_UNEVALUATED` | A SHORT_ANSWER **was submitted**; no authoritative deterministic grade in this baseline |
 | `UNEVALUATED_POLICY_REJECT` | Fail-closed evaluation-policy / data-contract failure; **not** a normal incorrect answer |
 
 Canonical `evaluation_method`:
@@ -291,21 +329,33 @@ Canonical `evaluation_method`:
 | Code | Meaning |
 |------|---------|
 | `DETERMINISTIC_CONTENT_ANSWER` | MC or TF compared to exact ContentVersion answer under the named policy |
-| `OPEN_RESPONSE_BASELINE` | SHORT_ANSWER first baseline; no rubric |
+| `NO_RESPONSE` | Exact-version question has no snapshot response |
+| `OPEN_RESPONSE_BASELINE` | Submitted SHORT_ANSWER first baseline; no rubric |
 | `POLICY_REJECT` | Contract / policy failure; fail closed |
 
-`INCORRECT` and `UNEVALUATED_POLICY_REJECT` **must remain distinct**. An invalid option, kind mismatch, or illegal content answer is not “the learner got it wrong.”
+`UNANSWERED` is:
+
+- derived from exact ContentVersion + immutable submission
+- **neutral** with respect to correctness
+- **not** a learner-error classification
+- **not** policy failure
+- **not** mastery evidence
+- **not** misconception evidence
+
+Do **not** treat missing response as `INCORRECT`.  
+`INCORRECT` and `UNEVALUATED_POLICY_REJECT` **must remain distinct** from each other and from `UNANSWERED`. An invalid option, kind mismatch, or illegal content answer is not “the learner got it wrong,” and an omitted answer is not “the learner got it wrong.”
 
 ### 7. MULTIPLE_CHOICE policy (v1 deterministic)
 
-MULTIPLE_CHOICE is deterministic in v1.
+MULTIPLE_CHOICE is deterministic in v1 **when a snapshot response exists**.
 
-Evaluate the LearnerSubmission **string choice** against the exact ContentVersion `question.answer`.
+If the exact-version question has **no** snapshot response → `UNANSWERED` / `NO_RESPONSE`. Stop. Do not compare to `question.answer`.
+
+When a snapshot response exists, evaluate the LearnerSubmission **string choice** against the exact ContentVersion `question.answer`.
 
 **Require, else `UNEVALUATED_POLICY_REJECT` / `POLICY_REJECT`:**
 
-- the question exists on the exact ContentVersion
-- question kind is multiple-choice and matches submission `response_kind`
+- question kind is multiple-choice and matches submitted `response_kind`
 - submitted value is a legal option (`question.options`)
 - content `answer` is a legal option
 
@@ -314,6 +364,10 @@ If all of the above hold: exact string equality of submitted choice to `question
 Do **not** evaluate against a newer ContentVersion.
 
 ### 8. TRUE_FALSE policy (v1 deterministic through strict normalization)
+
+TRUE_FALSE is deterministic in v1 **when a snapshot response exists**.
+
+If the exact-version question has **no** snapshot response → `UNANSWERED` / `NO_RESPONSE`. Stop.
 
 Learning authority already stores TRUE_FALSE as a **strict boolean** response. Content currently stores `answer` as a **string**. This ADR does **not** widen the Education payload schema.
 
@@ -340,17 +394,19 @@ Examples:
 
 Do **not** silently accept additional aliases unless a future content-contract revision explicitly authorizes them.
 
-Also require: question exists; kind matches; submitted value is the Learning boolean. Kind / existence failure → `UNEVALUATED_POLICY_REJECT`.
+Also require, when a snapshot response exists: kind matches; submitted value is the Learning boolean. Kind / existence-of-illegal-submitted-value failure → `UNEVALUATED_POLICY_REJECT`. Missing response remains `UNANSWERED`, not policy reject.
 
 ### 9. SHORT_ANSWER policy (v1 not deterministically graded)
 
-SHORT_ANSWER **MUST NOT** receive authoritative `CORRECT` / `INCORRECT` deterministic grading in the first ADR-059 baseline.
+If the exact-version SHORT_ANSWER question has **no** snapshot response → `UNANSWERED` / `NO_RESPONSE`. That is **not** `OPEN_RESPONSE_UNEVALUATED`.
+
+When a SHORT_ANSWER response **was submitted**, SHORT_ANSWER **MUST NOT** receive authoritative `CORRECT` / `INCORRECT` deterministic grading in the first ADR-059 baseline.
 
 Current content contains `answer` and `explanation` but no governed rubric, alternate valid answers, numeric equivalence, semantic equivalence, or partial-credit model.
 
-**Canonical first vocabulary:** `OPEN_RESPONSE_UNEVALUATED` with `evaluation_method = OPEN_RESPONSE_BASELINE`.
+**Canonical first vocabulary for a submitted open response:** `OPEN_RESPONSE_UNEVALUATED` with `evaluation_method = OPEN_RESPONSE_BASELINE`.
 
-**Why this code, not `REQUIRES_TEACHER_REVIEW`:** this ADR creates evaluation authority, not a teacher-review work-item SoR or review queue. `REQUIRES_TEACHER_REVIEW` would imply a workflow that is not being designed here. `OPEN_RESPONSE_UNEVALUATED` states the evaluation fact: the item was received and remains unevaluated.
+**Why this code, not `REQUIRES_TEACHER_REVIEW`:** this ADR creates evaluation authority, not a teacher-review work-item SoR or review queue. `REQUIRES_TEACHER_REVIEW` would imply a workflow that is not being designed here. `OPEN_RESPONSE_UNEVALUATED` states the evaluation fact: a response was received and remains unevaluated. Absence of a response is `UNANSWERED`, not open-response review.
 
 Do **not** invent a rubric.  
 Do **not** use naive normalized string equality as educational grade authority, even when the submitted text happens to equal `question.answer`.  
@@ -358,7 +414,15 @@ AI-assisted open-response evaluation remains **FUTURE** / separately authorized 
 
 ### 10. Submission-scoped objective evidence
 
-The exact ContentVersion question already carries `objective_ids`. ADR-059 may freeze **submission-scoped** objective evidence only.
+The exact ContentVersion question already carries `objective_ids`. ADR-059 may freeze **submission-scoped** objective evidence only (this evaluation of this one submission). That scope is **not** “answered items only.”
+
+Current v1 objective evidence **must** consider **every exact ContentVersion question linked to the objective** — not merely questions that happen to have submitted responses.
+
+An objective is in the evaluation rollup when **at least one question in the exact ContentVersion** references that `objective_id`.
+
+Do **not** require that the learner supplied a response before the objective enters the rollup.
+
+An objective declared in `learning_objectives` but referenced by **no** question may be omitted from this assessment-evidence rollup. Do not fabricate evidence for an untested objective.
 
 It is **explicitly not**:
 
@@ -372,29 +436,42 @@ It is **explicitly not**:
 
 | Code | Meaning |
 |------|---------|
-| `DEMONSTRATED_ON_SUBMITTED_ITEMS` | Every submitted item linked to this objective was authoritatively evaluable and `CORRECT` |
-| `MIXED_ON_SUBMITTED_ITEMS` | All relevant submitted items were authoritatively evaluable; at least one `CORRECT` and at least one `INCORRECT` |
-| `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS` | All relevant submitted items were authoritatively evaluable and all were `INCORRECT` |
-| `INSUFFICIENT_EVIDENCE` | At least one relevant submitted item could not be evaluated authoritatively |
+| `DEMONSTRATED_ON_SUBMITTED_ITEMS` | Every **exact-version** question linked to this objective was authoritatively evaluable and `CORRECT` |
+| `MIXED_ON_SUBMITTED_ITEMS` | All **exact-version** questions linked to this objective were authoritatively evaluable; at least one `CORRECT` and at least one `INCORRECT` |
+| `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS` | All **exact-version** questions linked to this objective were authoritatively evaluable and all were `INCORRECT` |
+| `INSUFFICIENT_EVIDENCE` | At least one exact-version question linked to this objective was not authoritatively evaluable |
 
-Roll up only objectives that appear on at least one submitted item for that evaluation. Do not invent class-wide objective mastery.
+Do not invent class-wide objective mastery. The `_ON_SUBMITTED_ITEMS` suffix names this **one submission’s** evaluation, not “ignore unanswered exact-version questions.”
 
 #### 10.2 Completeness rule (binding)
 
-Do **not** claim `DEMONSTRATED_ON_SUBMITTED_ITEMS` merely because all **deterministically evaluated** items were correct if another relevant submitted item for that same objective is unevaluated.
+If **ANY** exact-version question linked to an objective has:
 
-For v1, if **any** relevant submitted objective-linked item cannot be evaluated authoritatively (`OPEN_RESPONSE_UNEVALUATED` or `UNEVALUATED_POLICY_REJECT`), the rollup **must** be `INSUFFICIENT_EVIDENCE`.
+```text
+UNANSWERED
+OPEN_RESPONSE_UNEVALUATED
+UNEVALUATED_POLICY_REJECT
+```
+
+then the objective result **MUST** be `INSUFFICIENT_EVIDENCE`.
+
+Only when **EVERY** exact-version question linked to that objective is authoritatively evaluable may the objective become `DEMONSTRATED_ON_SUBMITTED_ITEMS`, `MIXED_ON_SUBMITTED_ITEMS`, or `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS`.
 
 Authoritatively evaluable means item `outcome` is `CORRECT` or `INCORRECT`.
 
+Do **not** claim `DEMONSTRATED_ON_SUBMITTED_ITEMS` merely because all answered deterministic items were correct if another exact-version question for that same objective is unanswered or otherwise unevaluated.
+
 Examples:
 
-| Submitted items for one objective | Rollup |
-|-----------------------------------|--------|
-| MC `CORRECT` + SA unevaluated | `INSUFFICIENT_EVIDENCE` — **not** demonstrated |
-| MC `CORRECT` + TF `CORRECT` and no unevaluated relevant items | `DEMONSTRATED_ON_SUBMITTED_ITEMS` |
-| one `CORRECT` + one `INCORRECT`, all evaluable | `MIXED_ON_SUBMITTED_ITEMS` |
-| all evaluable and all `INCORRECT` | `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS` |
+| Exact-version questions for one objective | Rollup |
+|-------------------------------------------|--------|
+| MC `CORRECT` + TF `UNANSWERED` | `INSUFFICIENT_EVIDENCE` |
+| MC `CORRECT` + SA `OPEN_RESPONSE_UNEVALUATED` | `INSUFFICIENT_EVIDENCE` |
+| MC `CORRECT` + TF `CORRECT` | `DEMONSTRATED_ON_SUBMITTED_ITEMS` |
+| MC `CORRECT` + TF `INCORRECT` | `MIXED_ON_SUBMITTED_ITEMS` |
+| MC `INCORRECT` + TF `INCORRECT` | `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS` |
+| all exact-version questions `UNANSWERED` | affected tested objectives = `INSUFFICIENT_EVIDENCE` |
+| one `INCORRECT` + one `UNANSWERED` | `INSUFFICIENT_EVIDENCE` — **not** `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS` |
 
 ### 11. Raw / derived / suggested / decision separation
 
@@ -412,6 +489,7 @@ Teacher Assessment Intelligence **must** classify displayed data.
 
 - MC correctness
 - TF correctness
+- unanswered exact-version question (`UNANSWERED`)
 - frequently missed deterministic question
 - submission-scoped objective evidence
 - submitted learner count
@@ -440,8 +518,9 @@ Minimum useful v1:
 | submitted learner count | count of `LearnerSubmission` for the assignment |
 | evaluated learner count | count of those submissions with a current-policy `LearnerAssessmentEvaluation` |
 | per-learner evaluation state | `NOT_EVALUATED` / `EVALUATED_UNDER_CURRENT_POLICY` / `NOT_EVALUATED_UNDER_CURRENT_POLICY` plus current-policy outcomes when present |
-| question-level `CORRECT` / `INCORRECT` / unevaluated distribution | current-policy item outcomes only |
-| frequently missed deterministic questions | items with `INCORRECT` among deterministically evaluated responses; exclude unevaluated items from the miss numerator |
+| question-level distribution | distinguish `CORRECT` / `INCORRECT` / `UNANSWERED` / `OPEN_RESPONSE_UNEVALUATED` / `UNEVALUATED_POLICY_REJECT` |
+| frequently missed deterministic questions | items with `INCORRECT` among deterministically evaluated responses; **do not** add `UNANSWERED` to the incorrect/missed numerator |
+| unanswered count (per question) | count of **submitted learners** whose current-policy evaluation item for that question is `UNANSWERED`; **not** a not-submitted-learner count; no roster denominator |
 | objective-evidence rollup | §10, current-policy evaluations only |
 
 Do **not** claim a class score, mastery rate, or “the class understood X.”
@@ -455,6 +534,8 @@ The current trusted learner-membership port is a **check-time façade** (ADR-AIE
 **First implementation: omit “not submitted” count.**
 
 Never derive class roster size or missing-learner count from guesses, stale frontend state, or assignment UI data.
+
+Per-question **unanswered** count among **submitted** learners is allowed. It is **not** the same thing as “not submitted learners” and requires **no** roster denominator.
 
 ### 13. Teacher authorization
 
@@ -774,8 +855,8 @@ Security audit per [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-account
 | A59-10 | TF content answer is `"yes"` | `UNEVALUATED_POLICY_REJECT` |
 | A59-11 | TF content answer is `"TRUE "` (whitespace / case) | Legal after trim + lower; map to `true`; compare to submitted bool |
 | A59-12 | SA exact text happens to equal `question.answer` | Still `OPEN_RESPONSE_UNEVALUATED`; not `CORRECT` |
-| A59-13 | Objective has MC `CORRECT` + SA unevaluated | `INSUFFICIENT_EVIDENCE` — not demonstrated |
-| A59-14 | Objective has correct + incorrect deterministic questions, all evaluable | `MIXED_ON_SUBMITTED_ITEMS` |
+| A59-13 | Objective has MC `CORRECT` + SA `OPEN_RESPONSE_UNEVALUATED` | `INSUFFICIENT_EVIDENCE` — not demonstrated |
+| A59-14 | Objective has correct + incorrect deterministic questions, all exact-version questions evaluable | `MIXED_ON_SUBMITTED_ITEMS` |
 | A59-15 | ClassroomAssessment already exists before learner evaluations | Unchanged; evaluations do not auto-RECORD or mutate it |
 | A59-16 | ClassroomAssessment is CORRECTED after learner evaluation | ClassroomAssessment revision changes; evaluations unchanged |
 | A59-17 | Improve requested without ClassroomAssessment | Existing ADR-AIEOS-056 fail-closed / eligibility rules; no new LearnerEvaluation→Work origin |
@@ -783,12 +864,15 @@ Security audit per [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-account
 | A59-19 | Evaluation persistence fails after Learning submission already committed | Submission remains; evaluation absent; retry ensure; no Learning rewrite; no distributed 2PC |
 | A59-20 | Assessment event / outbox delivery duplicated | Idempotent at consumer; first implementation has no required broker consumer |
 | A59-21 | No authoritative roster available for not-submitted count | **Omit** the count; do not guess |
-| A59-22 | Frontend supplies fake correctness | Ignored; server derives from submission + exact ContentVersion + policy |
+| A59-22 | Frontend supplies fake correctness | Ignored; server derives from exact ContentVersion questions + submission snapshot + policy |
 | A59-23 | Learner tries to read answer key / evaluation answer key | FAIL CLOSED; learner evaluation self-read out of initial scope |
 | A59-24 | Teacher tries to read evidence after losing class authority | FAIL CLOSED |
 | A59-25 | Current ClassRef authority service unavailable | FAIL CLOSED |
+| A59-26 | Exact ContentVersion has two objective-linked questions; learner submits one correct MC and leaves the other unanswered | Second item = `UNANSWERED` / `NO_RESPONSE`; objective = `INSUFFICIENT_EVIDENCE`; **must not** be `DEMONSTRATED_ON_SUBMITTED_ITEMS` |
+| A59-27 | Learner submits an empty response snapshot | Submission remains valid Learning evidence; Assessment evaluation does **not** fail merely for emptiness; all exact-version questions = `UNANSWERED`; all tested objective rollups = `INSUFFICIENT_EVIDENCE`; no question classified `INCORRECT` merely because unanswered |
+| A59-28 | One deterministic question is `INCORRECT` and another is `UNANSWERED` | Objective = `INSUFFICIENT_EVIDENCE`, **not** `NOT_YET_DEMONSTRATED_ON_SUBMITTED_ITEMS`, because completeness is missing |
 
-Every listed failure is **fail closed** except replay of an already-committed identical business identity, which is **replay-safe**, and omit-not-submitted, which is **omit rather than fail-open with a fabricated denominator**.
+Every listed **authorization / lineage / policy-contract** failure is **fail closed** except replay of an already-committed identical business identity, which is **replay-safe**, and omit-not-submitted, which is **omit rather than fail-open with a fabricated denominator**. Incomplete and empty submissions are **evaluable**; missing responses are `UNANSWERED`, not fail-closed.
 
 ---
 
@@ -820,7 +904,8 @@ AIEOS360-S01-I04R1 remains **CLOSED**. I05 is not started by this ADR.
 ### Negative / constraints
 
 - SHORT_ANSWER remains unevaluated until a later governed rubric or AI-review policy exists.
-- Not-submitted counts are omitted until roster enumeration authority exists.
+- Unanswered exact-version questions and empty submissions produce `UNANSWERED` items and `INSUFFICIENT_EVIDENCE` objective rollups — not incorrect / not-yet-demonstrated fabrication.
+- Not-submitted learner counts are omitted until roster enumeration authority exists.
 - Production Assessment events cannot publish under current ADR-AIEOS-046R1 publisher ACL.
 - Teachers who lose current class authority lose learner-evidence access even if they created the assignment.
 
@@ -841,6 +926,7 @@ AIEOS360-S01-I04R1 remains **CLOSED**. I05 is not started by this ADR.
 - Learner evaluation self-read / Student answer keys
 - Principal / Parent Assessment Intelligence
 - Education payload schema widening for TRUE_FALSE answers
+- Inventing synthetic Learning AttemptResponseItems for unanswered questions
 - Production deployment
 
 ---
@@ -859,5 +945,10 @@ AIEOS360-S01-I04R1 remains **CLOSED**. I05 is not started by this ADR.
 | ADR-AIEOS-046R1 not modified | **PASS** — Assessment PUB not frozen |
 | Implementation not authorized | **PASS** |
 | Status is Proposed / Freeze Candidate | **PASS** — not Frozen / not Founder-approved |
+| Incomplete / empty Learning submissions remain legal | **PASS** — Learning unchanged; Assessment evaluates them |
+| Exact-version question universe | **PASS** — not snapshot-only iteration |
+| Missing response = `UNANSWERED`, not `INCORRECT` | **PASS** |
+| Objective incompleteness includes unanswered | **PASS** — `INSUFFICIENT_EVIDENCE` |
+| Not-submitted learner count omitted without roster | **PASS** |
 
 No exception invented where a conflict would exist.
