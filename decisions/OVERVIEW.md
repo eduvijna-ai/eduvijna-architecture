@@ -35,7 +35,7 @@ EduVijna Enterprise Architecture Office (EAO). Decision authors may include doma
 
 ### AIEOS platform
 
-Architecture status: **Frozen / Approved**, except [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) which is **Proposed / Freeze Candidate**. Not production authorized.
+Architecture status: **Frozen / Approved**. Not production authorized.
 
 Historical ADR-AIEOS-023 Identity/Tenant/Security remains Frozen / Approved; original body unavailable. ADR-AIEOS-023R1 is the transparent canonical restatement.
 
@@ -81,7 +81,7 @@ Historical ADR-AIEOS-023 Identity/Tenant/Security remains Frozen / Approved; ori
 | [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) | AIEOS Improve & Remediation Authority (Frozen / Approved — Founder / Product Architecture approved **2026-09-04**; Chief Architect architecture review **ACCEPTED — 2026-09-04**; TOS-DEV09; OPTION B TeachingWork + `remediate_class` + immutable remediation origin with `source_class_result_level_snapshot`; class-level only; **TOS-DEV09 implementation COMPLETE** / DEV09-I01–I04 formally closed; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`) |
 | [ADR-AIEOS-057](ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) | AIEOS Teacher OS Development-Complete Experience Authority (Frozen / Approved — TOS-DEV10; Founder / Product Architecture **2026-09-06**; **TOS-DEV10 implementation COMPLETE**; Teacher OS **DEVELOPMENT READY**; I01–I04 / I04R1 formally closed; subsequent **TOS-CX01 COMPLETE — CLIENT SHOWCASE READY** recorded against this existing authority, **no new ADR**; Development Ready / Client Showcase Ready ≠ Production Ready) |
 | [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) | AIEOS Student Assignment Consumption & Learner Attempt Authority (**Frozen / Approved** — AIEOS360-S01; Founder / Product Architecture **2026-09-08**; Chief Architect **ACCEPTED / PASS**; v1.0.2; **AIEOS360-S01-I01 through I04R1 = CLOSED**; historical ADR body unchanged) |
-| [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) | AIEOS Learner Assessment Intelligence & Teacher Improve Handoff Authority (**Proposed / Freeze Candidate** — AIEOS360-S01P2; OPTION D Assessment-owned durable `LearnerAssessmentEvaluation` + derived Teacher Assessment Intelligence; ADR-AIEOS-056 Improve path unchanged; **not** Frozen / **not** Founder-approved; **I05 implementation blocked pending ADR-059 freeze**) |
+| [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) | AIEOS Learner Assessment Intelligence & Teacher Improve Handoff Authority (**Frozen / Approved** — AIEOS360-S01P2; Founder / Product Architecture **2026-09-09**; Chief Architect **ACCEPTED / PASS**; v1.0.2; OPTION D Assessment-owned durable `LearnerAssessmentEvaluation` + derived Teacher Assessment Intelligence; ADR-AIEOS-056 Improve path unchanged; Learner Assessment Intelligence implementation **NOT STARTED / NOT AUTHORIZED**; **AIEOS360-S01-I05-B1** = **NEXT CANDIDATE — NOT YET AUTHORIZED**) |
 
 ## Exclusions
 

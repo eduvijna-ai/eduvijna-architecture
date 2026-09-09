@@ -163,7 +163,7 @@ Teacher → Publish / Assign → Student → Attempt / Practice / Submit → Lea
 | **TOS-DEV09** — Class-level Improve & Remediation | **IMPLEMENTED / COMPLETE** through Product E2E | [ADR-AIEOS-056](../decisions/ADR-AIEOS-056-aieos-improve-remediation-authority.md) remains Frozen / Approved; DEV09-I01–I04 formally closed; Backend `62733e3ad0d48887f3cd1e1a4486839170a5d651`; Frontend `732c0b5f88b7342d27e6ee7f103cb1d182ed310b`; Alembic `tosd090002`; real-stack Improve Product E2E COMPLETE |
 | **TOS-DEV10** — Teacher OS Development Complete | **IMPLEMENTED / COMPLETE** — **TEACHER OS DEVELOPMENT READY** | [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) remains **Frozen / Approved**; I01–I04 / I04R1 formally closed; Backend `0bb2a9cb09bda41370b89c2e4dcc3239074bcc92`; Frontend `070276145623c889d5db6346150cf420735b04f1`; OpenAPI SHA-256 `4BF6C88B662D99F1E0E21E6F0AF2D267B39644300D85D99A859A7720F1568411`; Alembic `tosd100001`; Backend CI `34081972651` SUCCESS; Frontend CI `34082275817` SUCCESS including Product E2E. **Development Ready ≠ Production Ready.** |
 | **TOS-CX01** — Teacher OS Client Showcase Ready | **IMPLEMENTED / COMPLETE** — **TEACHER OS CLIENT SHOWCASE READY** | I01–I03 **MERGED / POST-MERGE VERIFIED / FOUNDER VERIFIED / CLOSED**; I04 Founder Real-AI Experience Accepted **2026-09-07** **PASS**. Architecture record synchronization = **TOS-CX01-C01**. No new ADR. Backend `611f683140ee779cb9453f6310bf30f9f1df572d`; Frontend `6daf18db239069847697e74669ce0bbed30f7951`; OpenAPI SHA-256 `D5CC3A53C789406C69D0207CB0A8778C2730FBE9544C567503EB256BDA92CEFB`; Alembic `tosd100001`. **Client Showcase Ready ≠ Production Ready.** |
-| **AIEOS360-S01** — Student Assignment Consumption & Learner Attempt | **I01 through I04R1 = CLOSED** | [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) remains **Frozen / Approved**; historical ADR body unchanged. Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c`; Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af`; OpenAPI SHA-256 `4691D6BADA2157D436435BB5CCDD6797EA670D1A87543D42CA39A478F940F330`; Alembic `a360s010002`. Learner-level Assessment Intelligence remains **not** started. |
+| **AIEOS360-S01** — Student Assignment Consumption & Learner Attempt | **I01 through I04R1 = CLOSED** | [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) remains **Frozen / Approved**; historical ADR body unchanged. Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c`; Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af`; OpenAPI SHA-256 `4691D6BADA2157D436435BB5CCDD6797EA670D1A87543D42CA39A478F940F330`; Alembic `a360s010002`. [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) **Frozen / Approved**; Learner Assessment Intelligence implementation remains **NOT STARTED / NOT AUTHORIZED**. |
 
 **Boundaries preserved ([ADR-AIEOS-053](../decisions/ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)):** Published ≠ Assigned; Assigned ≠ Externally Delivered; Assigned ≠ Attempted; Assigned ≠ Submitted; Assigned ≠ Graded. External LMS / Student OS learner delivery remains **deferred**.
 
@@ -207,14 +207,14 @@ Client Showcase Ready does **not** imply production deployment, production crede
 
 [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) remains **Frozen / Approved**. **AIEOS360-S01-I04R1 = CLOSED**. LearnerAttempt / LearnerSubmission exist on governed Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c` / Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af` / Alembic `a360s010002` / OpenAPI SHA-256 `4691D6BADA2157D436435BB5CCDD6797EA670D1A87543D42CA39A478F940F330`. TeachingAssignment (ADR-AIEOS-053) is not reopened. ClassroomAssessment remains class-level.
 
-[ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) is **Proposed / Freeze Candidate** (AIEOS360-S01P2; OPTION D). It is **not** Frozen / **not** Founder-approved / **not** an implementation authorization. Next implementation remains **blocked pending ADR-059 freeze**.
+[ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) is **Frozen / Approved** (AIEOS360-S01P2R2; OPTION D; v1.0.2; Founder / Product Architecture **2026-09-09**; Chief Architect **ACCEPTED / PASS**). Architecture freeze ≠ implementation authorization. Learner Assessment Intelligence implementation remains **NOT STARTED / NOT AUTHORIZED**. **AIEOS360-S01-I05-B1** = **NEXT CANDIDATE — NOT YET AUTHORIZED**.
 
 Current programme status:
 
 | Capability | Status |
 |------------|--------|
 | Student assignment consumption / LearnerAttempt / LearnerSubmission | **AIEOS360-S01-I04R1 = CLOSED** |
-| Learner-level Assessment Intelligence | **NOT STARTED** — ADR-AIEOS-059 **Proposed / Freeze Candidate** |
+| Learner-level Assessment Intelligence | **NOT STARTED / NOT AUTHORIZED** — ADR-AIEOS-059 **Frozen / Approved**; **AIEOS360-S01-I05-B1** = **NEXT CANDIDATE — NOT YET AUTHORIZED** |
 | Principal / School Intelligence | **NOT STARTED** |
 | Parent Intelligence | **NOT STARTED** |
 | Admin/ERP AIEOS360 path | **NOT STARTED** |
@@ -263,7 +263,7 @@ EBP-001 product review package docs may lag the latest slice numbering; prefer s
 
 ### AIEOS 360 CLIENT SHOWCASE — next active programme
 
-**AIEOS360-S01-I04R1 = CLOSED.** LearnerAttempt / LearnerSubmission are present on governed Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c` / Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af`. [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) remains **Frozen / Approved** (historical body unchanged). [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) is **Proposed / Freeze Candidate**. Learner-level Assessment Intelligence is **not** started. Next implementation remains **blocked pending ADR-059 freeze**.
+**AIEOS360-S01-I04R1 = CLOSED.** LearnerAttempt / LearnerSubmission are present on governed Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c` / Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af`. [ADR-AIEOS-058](../decisions/ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) remains **Frozen / Approved** (historical body unchanged). [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) is **Frozen / Approved** (v1.0.2; Founder / Product Architecture **2026-09-09**; Chief Architect **ACCEPTED / PASS**). Learner Assessment Intelligence implementation remains **NOT STARTED / NOT AUTHORIZED**. **AIEOS360-S01-I05-B1** = **NEXT CANDIDATE — NOT YET AUTHORIZED**.
 
 ### EBP-001.9 — HISTORICAL discovery / preflight (superseded by current implementation)
 
@@ -360,7 +360,7 @@ Historical findings (read-only discovery at that time):
 | AIEOS Model Gateway Groq adapter + Provider Aggregator | **Implemented** (TOS-CX01-I03); `provider_id` = `groq`; development/showcase model `openai/gpt-oss-120b`; OpenAI remains supported; Fake remains CI/development-test; Provider Aggregator read-only; no provider mutation UI; no frontend provider credentials; production credentials **not** claimed |
 | Full Prepare orchestration | Deferred (EBP-001 out of scope depth) |
 | Student assignment consumption / Learner Attempt / Learner Submission | **AIEOS360-S01-I04R1 = CLOSED** — ADR-AIEOS-058 **Frozen / Approved** (historical body unchanged); Backend `921d35eb08890a4e1d86cf95daf9d38cdfc4a13c`; Frontend `65b59a0bd30d254fce92c322c0a7f437a90b08af`; Alembic `a360s010002` |
-| Learner-level Assessment Intelligence | **NOT STARTED** — [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) **Proposed / Freeze Candidate**; next implementation **blocked pending ADR-059 freeze** |
+| Learner-level Assessment Intelligence | **NOT STARTED / NOT AUTHORIZED** — [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) **Frozen / Approved**; **AIEOS360-S01-I05-B1** = **NEXT CANDIDATE — NOT YET AUTHORIZED** |
 | Principal / School Intelligence | **NOT IMPLEMENTED** |
 | Parent Intelligence | **NOT IMPLEMENTED** |
 | Admin/ERP AIEOS360 path | **NOT IMPLEMENTED** |
