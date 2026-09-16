@@ -2,8 +2,8 @@
 id: ADR-AIEOS-060
 title: AIEOS Principal / School Intelligence Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
-status: proposed
-version: 1.0.0
+status: approved
+version: 1.0.1
 created: 2026-09-16
 last_updated: 2026-09-16
 reviewers:
@@ -13,23 +13,23 @@ reviewers:
 
 # ADR-AIEOS-060 — AIEOS Principal / School Intelligence Authority
 
-**Status:** Proposed / Freeze Candidate  
-**NOT FROZEN**  
-**NOT FOUNDER-APPROVED**  
+**Status:** Frozen / Approved  
+**Chief Architect architecture review:** ACCEPTED / PASS  
+**Founder / Product Architecture freeze:** APPROVED — 2026-09-16  
 **IMPLEMENTATION NOT AUTHORIZED**
 
 **Date:** 2026-09-16  
 **Related:** [ADR-AIEOS-023R1](ADR-AIEOS-023R1-aieos-identity-tenant-security-canonical-restatement.md) · [ADR-AIEOS-024](ADR-AIEOS-024-aieos-data-resource-sor-implementation-baseline.md) · [ADR-AIEOS-025](ADR-AIEOS-025-aieos-api-contract-integration-implementation-baseline.md) · [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-accountability.md) · [ADR-AIEOS-030](ADR-AIEOS-030-production-jwt-bearer.md) · [ADR-AIEOS-031](ADR-AIEOS-031-production-authorization-kernel.md) · [ADR-AIEOS-046](ADR-AIEOS-046-aieos-production-event-plane-identity-least-privilege-contract.md) · [ADR-AIEOS-046R1](ADR-AIEOS-046R1-aieos-production-event-plane-multi-domain-publisher-scope-revision.md) · [ADR-044](ADR-044-ai-platform-behind-stable-services.md) · [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) · [ADR-AIEOS-054](ADR-AIEOS-054-aieos-teaching-execution-observation-authority.md) · [ADR-AIEOS-055](ADR-AIEOS-055-aieos-assessment-learning-evidence-authority.md) · [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) · [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) · [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md)
 
-**Catalogue note:** Proposed / Freeze Candidate is **ARCHITECTURE DEPOSIT ONLY**. This ADR proposes the **AIEOS Principal / School Intelligence Authority** for **AIEOS360-S02P1**. Founder / Product Architecture freeze is **not** granted. Chief Architect exact-head review is **pending**. This proposal does **not** authorize Backend implementation, Frontend implementation, Product change, migration, OpenAPI change, NATS change, Temporal change, Infrastructure change, deployment, or production mutation. **ADR-AIEOS-060 Proposed ≠ AIEOS360-S02 implementation authorization.**
+**Catalogue note:** Frozen / Approved is **ARCHITECTURE AUTHORITY ONLY**. This ADR freezes the **AIEOS Principal / School Intelligence Authority** for **AIEOS360-S02P1**. Founder / Product Architecture approval was granted **2026-09-16**. Architecture freeze ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ migration authorization ≠ OpenAPI authorization ≠ NATS provisioning ≠ Temporal authorization ≠ deployment authorization ≠ production mutation authorization. This architecture freeze does **not** itself authorize implementation. **ADR-AIEOS-060 Frozen / Approved ≠ AIEOS360-S02 implementation authorization.** AIEOS360-S02 implementation remains **NOT AUTHORIZED** until a separate Chief Architect implementation authorization after this architecture freeze PR is merged and post-merge verified.
 
 **ID family note:** `ADR-AIEOS-060` is part of the AIEOS platform ADR family (`ADR-AIEOS-*`). It is distinct from Teacher OS product ADR-042–048 and from platform infrastructure ADR-AIEOS-048 / 048R1 / 048R2.
 
-**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S02**. Architecture proposal package: **AIEOS360-S02P1**. Principal / School Intelligence Architecture Discovery = **ACCEPTED — PASS WITH BINDING ARCHITECTURE CORRECTION**.
+**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S02**. Architecture proposal package: **AIEOS360-S02P1**. Freeze provenance: **AIEOS360-S02P1F**. Principal / School Intelligence Architecture Discovery = **ACCEPTED — PASS WITH BINDING ARCHITECTURE CORRECTION**.
 
-This proposal does **not** reopen or rewrite historical ADR bodies: ADR-AIEOS-023R1, ADR-AIEOS-024, ADR-AIEOS-025, ADR-AIEOS-028, ADR-AIEOS-030, ADR-AIEOS-031, ADR-AIEOS-046R1, ADR-AIEOS-053, ADR-AIEOS-054, ADR-AIEOS-055, ADR-AIEOS-056, ADR-AIEOS-058, **ADR-AIEOS-059**.
+Does **not** reopen or rewrite historical ADR bodies: ADR-AIEOS-023R1, ADR-AIEOS-024, ADR-AIEOS-025, ADR-AIEOS-028, ADR-AIEOS-030, ADR-AIEOS-031, ADR-AIEOS-046, ADR-AIEOS-046R1, ADR-AIEOS-053, ADR-AIEOS-054, ADR-AIEOS-055, ADR-AIEOS-056, ADR-AIEOS-058, **ADR-AIEOS-059**.
 
-This proposal does **not** authorize implementation.
+AIEOS360-S02P1 architecture deposit was deposited as Proposed (v1.0.0) before freeze. Founder / Product Architecture approval was granted on **2026-09-16**. Exact approval: **Freeze ADR-AIEOS-060 — AIEOS PRINCIPAL / SCHOOL INTELLIGENCE AUTHORITY — APPROVED.** Chief Architect architecture review: **ACCEPTED / PASS**. Freeze provenance: **AIEOS360-S02P1F**. This freeze does **not** authorize implementation. After freeze, AIEOS360-S02 implementation remains **NOT AUTHORIZED** until a separate Chief Architect implementation authorization after this architecture freeze PR is merged and post-merge verified.
 
 ---
 
@@ -156,7 +156,7 @@ A future materialized read model **MAY** be separately authorized only if:
 
 ### 4. School Scope Current Authority
 
-Freeze as proposed architecture a **DISTINCT** **School Scope Current Authority**.
+Freeze a **DISTINCT** **School Scope Current Authority**.
 
 Do **NOT** overload:
 
@@ -182,7 +182,7 @@ Required semantics:
 10. Historical role occupancy ≠ perpetual access.
 11. Aggregation may only read facts whose ClassRefs intersect current authorized scope.
 
-**Proposed exact capability:** `school.intelligence.read`
+**Exact frozen capability:** `school.intelligence.read`
 
 Unknown / ungranted capability = **DENY**.
 
@@ -428,13 +428,13 @@ Pagination and deterministic ordering (authorized `class_ref`, then stable id) a
 
 ### 13. API architecture (contract intent only)
 
-Proposed initial persona surface:
+Initial persona surface:
 
 ```text
 GET /api/v1/principal-os/school-intelligence
 ```
 
-This is architecture contract intent only. **No OpenAPI edit is authorized by this proposal.**
+This is architecture contract intent only. **No OpenAPI edit is authorized by this freeze.**
 
 It **MUST**:
 
@@ -454,7 +454,7 @@ No Idempotency-Key on GET.
 
 Principal OS is a distinct persona experience.
 
-Proposed first journey:
+First journey:
 
 ```text
 /principal-os
@@ -471,7 +471,7 @@ No outcome heatmap in v1.
 
 Principal frontend remains behind the normal AIEOS API boundary ([ADR-044](ADR-044-ai-platform-behind-stable-services.md)).
 
-This proposal does **not** authorize Frontend implementation.
+This freeze does **not** authorize Frontend implementation.
 
 ### 15. AI / narrative baseline
 
@@ -560,7 +560,7 @@ Principal / School Intelligence
 Parent Intelligence will require learner-authorized projections, not Principal aggregates.  
 Admin / ERP remains institutional master for school / class / roster. Principal reads School Context; it does not write ERP.
 
-### 19. Ownership recommendation (binding for this proposal)
+### 19. Ownership (binding)
 
 | Concern | Choice |
 |---------|--------|
@@ -610,13 +610,13 @@ Every listed **authorization / unavailable / privacy** failure is **fail closed*
 
 ## Implementation sequence — planning only
 
-This architecture proposal does **not** itself authorize implementation. **ADR-AIEOS-060 Proposed ≠ AIEOS360-S02 implementation authorization.** After any future freeze, implementation remains **NOT AUTHORIZED** until a separate Chief Architect implementation authorization. Do **not** assign permanent implementation slice IDs in this proposal. Do **not** bundle architecture freeze and Principal OS coding into one PR.
+This architecture freeze does **not** itself authorize implementation. **ADR-AIEOS-060 Frozen / Approved ≠ AIEOS360-S02 implementation authorization.** After freeze, implementation remains **NOT AUTHORIZED** until a separate Chief Architect implementation authorization after this architecture freeze PR is merged and post-merge verified. Do **not** assign permanent implementation slice IDs in this ADR. Do **not** bundle architecture freeze and Principal OS coding into one PR.
 
 Descriptive sequence (not authorized):
 
 | Step | Purpose | Status |
 |------|---------|--------|
-| Architecture freeze of this ADR | Founder / Product Architecture freeze after exact-head review | **NOT FROZEN** |
+| Architecture freeze of this ADR | Founder / Product Architecture freeze | **FROZEN / APPROVED — 2026-09-16** |
 | School Scope Current Authority substrate | Distinct fail-closed port; NON_PRODUCTION adapter is not ERP master | **NOT AUTHORIZED** |
 | Backend derived-on-read query + GET | Cross-domain projection; no new business SoR; no learner identities | **NOT AUTHORIZED** |
 | Principal OS frontend read journey | Distinct `/principal-os` shell; class evidence-flow cards | **NOT AUTHORIZED** |
@@ -661,7 +661,7 @@ Descriptive sequence (not authorized):
 
 ---
 
-## Consistency validation (proposal-time)
+## Consistency validation (freeze-time)
 
 | Check | Result |
 |-------|--------|
@@ -679,6 +679,6 @@ Descriptive sequence (not authorized):
 | ADR-AIEOS-046R1 not broadened | **PASS** |
 | ADR-AIEOS-059 body not rewritten | **PASS** |
 | Implementation not authorized | **PASS** |
-| Status is Proposed / Freeze Candidate | **PASS** — **NOT FROZEN**; **NOT FOUNDER-APPROVED** |
+| Status is Frozen / Approved | **PASS** — Founder / Product Architecture freeze **APPROVED — 2026-09-16**; Chief Architect architecture review **ACCEPTED / PASS** |
 
 No exception invented where a conflict would exist.
