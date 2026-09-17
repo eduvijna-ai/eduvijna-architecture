@@ -83,4 +83,4 @@ Historical ADR-AIEOS-023 Identity/Tenant/Security remains Frozen / Approved; ori
 | ADR-AIEOS-058 | AIEOS Student Assignment Consumption & Learner Attempt Authority | 2026-09-08 | Frozen / Approved | [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) |
 | ADR-AIEOS-059 | AIEOS Learner Assessment Intelligence & Teacher Improve Handoff Authority | 2026-09-09 | Frozen / Approved | [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) |
 | ADR-AIEOS-060 | AIEOS Principal / School Intelligence Authority | 2026-09-16 | Frozen / Approved | [ADR-AIEOS-060](ADR-AIEOS-060-aieos-principal-school-intelligence-authority.md) |
-| ADR-AIEOS-061 | AIEOS Parent Intelligence & Learner Access Authority | 2026-09-17 | Proposed | [ADR-AIEOS-061](ADR-AIEOS-061-aieos-parent-intelligence-learner-access-authority.md) |
+| ADR-AIEOS-061 | AIEOS Parent Intelligence & Learner Access Authority | 2026-09-17 | Frozen / Approved | [ADR-AIEOS-061](ADR-AIEOS-061-aieos-parent-intelligence-learner-access-authority.md) |

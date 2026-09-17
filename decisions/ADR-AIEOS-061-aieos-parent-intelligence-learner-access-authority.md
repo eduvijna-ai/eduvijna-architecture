@@ -2,8 +2,8 @@
 id: ADR-AIEOS-061
 title: AIEOS Parent Intelligence & Learner Access Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
-status: proposed
-version: 1.0.0
+status: approved
+version: 1.0.1
 created: 2026-09-17
 last_updated: 2026-09-17
 reviewers:
@@ -13,23 +13,23 @@ reviewers:
 
 # ADR-AIEOS-061 — AIEOS Parent Intelligence & Learner Access Authority
 
-**Status:** Proposed  
-**Chief Architect architecture review:** PENDING EXACT-HEAD REVIEW  
-**Founder / Product Architecture freeze:** NOT GRANTED  
+**Status:** Frozen / Approved  
+**Chief Architect architecture review:** ACCEPTED / PASS  
+**Founder / Product Architecture freeze:** APPROVED — 2026-09-17  
 **IMPLEMENTATION NOT AUTHORIZED**
 
 **Date:** 2026-09-17  
 **Related:** [ADR-AIEOS-023R1](ADR-AIEOS-023R1-aieos-identity-tenant-security-canonical-restatement.md) · [ADR-AIEOS-024](ADR-AIEOS-024-aieos-data-resource-sor-implementation-baseline.md) · [ADR-AIEOS-025](ADR-AIEOS-025-aieos-api-contract-integration-implementation-baseline.md) · [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-accountability.md) · [ADR-AIEOS-030](ADR-AIEOS-030-production-jwt-bearer.md) · [ADR-AIEOS-031](ADR-AIEOS-031-production-authorization-kernel.md) · [ADR-AIEOS-046](ADR-AIEOS-046-aieos-production-event-plane-identity-least-privilege-contract.md) · [ADR-AIEOS-046R1](ADR-AIEOS-046R1-aieos-production-event-plane-multi-domain-publisher-scope-revision.md) · [ADR-044](ADR-044-ai-platform-behind-stable-services.md) · [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) · [ADR-AIEOS-054](ADR-AIEOS-054-aieos-teaching-execution-observation-authority.md) · [ADR-AIEOS-055](ADR-AIEOS-055-aieos-assessment-learning-evidence-authority.md) · [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) · [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) · [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) · [ADR-AIEOS-060](ADR-AIEOS-060-aieos-principal-school-intelligence-authority.md)
 
-**Catalogue note:** Proposed is **ARCHITECTURE PROPOSAL DEPOSIT ONLY**. This ADR deposits the **AIEOS Parent Intelligence & Learner Access Authority** for **AIEOS360-S03P3** Chief Architect review. It is **not Frozen**. It is **not Approved**. It is **not Implemented**. It is **not implementation-authorized**. Architecture proposal deposited ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ Infrastructure authorization ≠ migration authorization ≠ OpenAPI authorization ≠ authorization-kernel code authorization ≠ School Context code authorization ≠ Parent API code authorization ≠ Parent UI authorization ≠ synthetic adapter implementation ≠ NATS authorization ≠ Temporal authorization ≠ Parent Agent authorization ≠ ERP/SIS integration authorization ≠ deployment authorization. **THIS ADR FREEZE/DEPOSIT DOES NOT AUTHORIZE IMPLEMENTATION.** Even after a later Freeze / Approved status, Backend implementation still requires separate Chief Architect authorization.
+**Catalogue note:** Frozen / Approved is **ARCHITECTURE AUTHORITY ONLY**. This ADR freezes the **AIEOS Parent Intelligence & Learner Access Authority** for **AIEOS360-S03P3**. Founder / Product Architecture approval was granted **2026-09-17**. **ARCHITECTURE FREEZE ≠ IMPLEMENTATION AUTHORIZATION.** Architecture freeze ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ Infrastructure authorization ≠ migration authorization ≠ OpenAPI authorization ≠ authorization-kernel code authorization ≠ School Context code authorization ≠ Parent API code authorization ≠ Parent UI authorization ≠ synthetic adapter implementation ≠ NATS authorization ≠ Temporal authorization ≠ Parent Agent authorization ≠ ERP/SIS integration authorization ≠ deployment authorization. This architecture freeze does **not** itself authorize implementation. **ADR-AIEOS-061 Frozen / Approved ≠ AIEOS360-S03 implementation authorization.** AIEOS360-S03 implementation remains **NOT AUTHORIZED** until freeze-commit exact-head review, PR #40 merge authorization, PR #40 post-merge verification, and a separate Chief Architect implementation authorization. Do **not** start I01.
 
 **ID family note:** `ADR-AIEOS-061` is part of the AIEOS platform ADR family (`ADR-AIEOS-*`). It is distinct from Teacher OS product ADR-042–048 and from platform infrastructure ADR-AIEOS-048 / 048R1 / 048R2.
 
-**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S03**. Architecture proposal package: **AIEOS360-S03P3**. Lineage: **AIEOS360-S03P1** discovery = **ACCEPTED / PASS**; **AIEOS360-S03P2** architecture proposal = **DIRECTION ACCEPTED / CORRECTION REQUIRED**; **AIEOS360-S03P2R1** correction = **ACCEPTED / PASS**.
+**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S03**. Architecture proposal package: **AIEOS360-S03P3**. Freeze provenance: **AIEOS360-S03P3F**. Lineage: **AIEOS360-S03P1** discovery = **ACCEPTED / PASS**; **AIEOS360-S03P2** architecture proposal = **DIRECTION ACCEPTED / CORRECTION REQUIRED**; **AIEOS360-S03P2R1** correction = **ACCEPTED / PASS**.
 
 Does **not** reopen or rewrite historical ADR bodies: ADR-AIEOS-023R1, ADR-AIEOS-024, ADR-AIEOS-025, ADR-AIEOS-028, ADR-AIEOS-030, ADR-AIEOS-031, ADR-AIEOS-046, ADR-AIEOS-046R1, ADR-AIEOS-053, ADR-AIEOS-054, ADR-AIEOS-055, ADR-AIEOS-056, ADR-AIEOS-058, **ADR-AIEOS-059**, **ADR-AIEOS-060**.
 
-This document deposits architecture for Chief Architect review. Implementation remains unauthorized. Do **not** start I01.
+AIEOS360-S03P3 architecture deposit was deposited as Proposed (v1.0.0) before freeze. The Proposed v1.0.0 source was exact-head reviewed at `6c1f2965dfce15cb40ce266fa79caf7311b17754`. Chief Architect exact-head disposition: **ACCEPTED / PASS**. Founder / Product Architecture approval was granted **2026-09-17**. Exact approval: **Freeze ADR-AIEOS-061 — AIEOS Parent Intelligence & Learner Access Authority — Approved.** Freeze provenance: **AIEOS360-S03P3F**. Architecture is now **Frozen / Approved**. This freeze does **not** authorize implementation. After freeze, AIEOS360-S03 implementation remains **NOT AUTHORIZED** until freeze-commit exact-head review, PR #40 merge authorization, PR #40 post-merge verification, and a separate Chief Architect implementation authorization. Do **not** start I01.
 
 ---
 
@@ -734,16 +734,20 @@ Every listed **authorization / unavailable / privacy / contract-invalid** failur
 
 ## Implementation sequence — planning only
 
-**THIS ADR FREEZE/DEPOSIT DOES NOT AUTHORIZE IMPLEMENTATION.**
+This architecture freeze does **not** itself authorize implementation. **ARCHITECTURE FREEZE ≠ IMPLEMENTATION AUTHORIZATION.** **ADR-AIEOS-061 Frozen / Approved ≠ AIEOS360-S03 implementation authorization.** After freeze, implementation remains **NOT AUTHORIZED** until:
 
-Even after later Freeze / Approved status: Backend implementation requires separate Chief Architect authorization.
+1. freeze commit exact-head review
+2. PR #40 merge authorization
+3. PR #40 post-merge verification
+4. separate Chief Architect implementation authorization
 
-Do **not** execute any slice now.
+Do **not** start I01 now.
 
-Expected later slicing only:
+Expected later slicing remains planning only:
 
 | Slice | Purpose | Status |
 |-------|---------|--------|
+| Architecture freeze of this ADR | Founder / Product Architecture freeze | **FROZEN / APPROVED — 2026-09-17** |
 | **I01** | Parent Learner Access Current Authority + authorization substrate | **NOT AUTHORIZED** |
 | **I02** | Derived Parent Intelligence API | **NOT AUTHORIZED** |
 | **I03** | Parent OS read-only frontend | **NOT AUTHORIZED** |
@@ -795,7 +799,7 @@ Expected later slicing only:
 
 ---
 
-## Consistency validation (deposit-time)
+## Consistency validation (freeze-time)
 
 | Check | Result |
 |-------|--------|
@@ -816,4 +820,5 @@ Expected later slicing only:
 | No NATS / Temporal / Parent Agent in baseline | **PASS** |
 | NON_PRODUCTION adapter is a rule only, not implemented here | **PASS** |
 | Implementation not authorized; I01–I04 not started | **PASS** |
-| ADR status Proposed; not Frozen; not Approved | **PASS** |
+| ADR status Frozen / Approved; architecture freeze ≠ implementation authorization | **PASS** |
+| Accepted v1.0.0 architecture semantics unchanged | **PASS** |
