@@ -2,8 +2,8 @@
 id: ADR-AIEOS-062
 title: AIEOS Admin / ERP School Context Current-Authority Boundary
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
-status: proposed
-version: 1.0.0
+status: approved
+version: 1.0.1
 created: 2026-09-17
 last_updated: 2026-09-17
 reviewers:
@@ -13,20 +13,26 @@ reviewers:
 
 # ADR-AIEOS-062 — AIEOS Admin / ERP School Context Current-Authority Boundary
 
-**Status:** Proposed  
-**Founder / Product Architecture freeze:** NOT GRANTED  
+**Status:** Frozen / Approved
+
+**Chief Architect architecture review:** AIEOS360-S04P2R1 — ACCEPTED / PASS
+
+**Founder / Product Architecture freeze:** GRANTED — 2026-09-17
+
 **IMPLEMENTATION NOT AUTHORIZED**
 
 **Date:** 2026-09-17  
 **Related:** [ADR-AIEOS-023R1](ADR-AIEOS-023R1-aieos-identity-tenant-security-canonical-restatement.md) · [ADR-AIEOS-030](ADR-AIEOS-030-production-jwt-bearer.md) · [ADR-AIEOS-031](ADR-AIEOS-031-production-authorization-kernel.md) · [ADR-AIEOS-046R1](ADR-AIEOS-046R1-aieos-production-event-plane-multi-domain-publisher-scope-revision.md) · [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) · [ADR-AIEOS-054](ADR-AIEOS-054-aieos-teaching-execution-observation-authority.md) · [ADR-AIEOS-055](ADR-AIEOS-055-aieos-assessment-learning-evidence-authority.md) · [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) · [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) · [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) · [ADR-AIEOS-060](ADR-AIEOS-060-aieos-principal-school-intelligence-authority.md) · [ADR-AIEOS-061](ADR-AIEOS-061-aieos-parent-intelligence-learner-access-authority.md)
 
-**Catalogue note:** Proposed is **ARCHITECTURE DESIGN DEPOSIT ONLY**. This ADR proposes the **AIEOS Admin / ERP School Context Current-Authority Boundary** for **AIEOS360-S04P2**. It is **not** Frozen / Approved. Proposed ≠ Frozen ≠ Approved ≠ implementation authorization ≠ Backend authorization ≠ Frontend authorization ≠ Product authorization ≠ Infrastructure authorization ≠ migration authorization ≠ OpenAPI authorization ≠ School Context code authorization ≠ Admin OS authorization ≠ production ERP/SIS integration authorization ≠ NATS authorization ≠ Temporal authorization ≠ deployment authorization. **ADR-AIEOS-062 Proposed ≠ AIEOS360-S04 implementation authorization.** Do **not** start S04-I01.
+**Catalogue note:** Frozen / Approved is **ARCHITECTURE AUTHORITY ONLY**. This ADR freezes the **AIEOS Admin / ERP School Context Current-Authority Boundary** for **AIEOS360-S04P2**. Founder / Product Architecture approval was granted **2026-09-17**. **ARCHITECTURE FREEZE ≠ IMPLEMENTATION AUTHORIZATION.** Architecture freeze ≠ Backend implementation authorization ≠ Frontend implementation authorization ≠ Product authorization ≠ Infrastructure authorization ≠ migration authorization ≠ OpenAPI authorization ≠ School Context provider implementation authorization ≠ Admin OS authorization ≠ Admin UI authorization ≠ production ERP/SIS adapter authorization ≠ NATS authorization ≠ Temporal authorization ≠ production event publication authorization ≠ deployment authorization. This architecture freeze does **not** itself authorize implementation. **ADR-AIEOS-062 Frozen / Approved ≠ AIEOS360-S04 implementation authorization.** ADR-AIEOS-062 Frozen / Approved MUST NOT itself authorize S04-I01, S04-I02, S04-I03, Backend changes, Frontend changes, Product changes, Infrastructure changes, migrations, OpenAPI changes, School Context provider implementation, Admin OS, Admin UI, production ERP/SIS adapter, NATS, Temporal, production event publication, or deployment. AIEOS360-S04 implementation remains **NOT AUTHORIZED**. **S04-I01 = NOT STARTED / NOT AUTHORIZED.** Do **not** start S04-I01.
 
 **ID family note:** `ADR-AIEOS-062` is part of the AIEOS platform ADR family (`ADR-AIEOS-*`). It is distinct from Teacher OS product ADR-042–048 and from platform infrastructure ADR-AIEOS-048 / 048R1 / 048R2.
 
-**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S04**. Architecture proposal package: **AIEOS360-S04P2**. Lineage: **AIEOS360-S04P1** discovery = **ACCEPTED / PASS**.
+**Architecture programme:** **AIEOS 360 CLIENT SHOWCASE** / package **AIEOS360-S04**. Architecture proposal package: **AIEOS360-S04P2**. Freeze provenance: **AIEOS360-S04P3F**. Lineage: **AIEOS360-S04P1** discovery = **ACCEPTED / PASS**; **AIEOS360-S04P2** architecture proposal; **AIEOS360-S04P2R1** Proposed/corrected design = **ACCEPTED / PASS**.
 
 Does **not** reopen or rewrite historical ADR bodies: ADR-AIEOS-023R1, ADR-AIEOS-030, ADR-AIEOS-031, ADR-AIEOS-053, ADR-AIEOS-054, ADR-AIEOS-055, ADR-AIEOS-056, ADR-AIEOS-058, ADR-AIEOS-059, ADR-AIEOS-060, ADR-AIEOS-061.
+
+AIEOS360-S04P2 architecture deposit was deposited as Proposed (v1.0.0) before freeze. AIEOS360-S04P2R1 corrected proposed-state governance wording while Proposed. The Proposed/corrected design was exact-head reviewed at `350ee5e9c1b9250678db65c834e4be3e501c3d3e`. Chief Architect exact-head review of Proposed/corrected design: **AIEOS360-S04P2R1 — ACCEPTED / PASS**. Founder / Product Architecture approval was granted **2026-09-17**. Exact approval: **Freeze ADR-AIEOS-062 — AIEOS Admin / ERP School Context Current-Authority Boundary — Approved.** Freeze provenance: **AIEOS360-S04P3F**. Architecture is now **Frozen / Approved**. This freeze does **not** authorize implementation. After freeze, AIEOS360-S04 implementation remains **NOT AUTHORIZED** until freeze-commit exact-head review, PR #42 merge authorization, PR #42 post-merge verification, and a separate Chief Architect implementation authorization. **S04-I01 = NOT STARTED / NOT AUTHORIZED.** Do **not** start S04-I01.
 
 ---
 
@@ -416,12 +422,12 @@ Any future Admin UI requires a separately governed product decision.
 
 | Option | Summary | Verdict |
 |--------|---------|---------|
-| **A** | External Master + AIEOS Current-Authority Adapter | **PROPOSED DIRECTION** |
+| **A** | External Master + AIEOS Current-Authority Adapter | **APPROVED ARCHITECTURE DIRECTION** |
 | **B** | AIEOS durable Admin School Context master | **REJECTED** — conflicts with existing frozen ownership and creates competing School / Class / Roster / Enrollment SoRs |
 | **C** | Governed synchronized replica | **DEFERRED** — introduces freshness, provenance, reconciliation, revocation-lag, and second-master risks unnecessary for the thin AIEOS360 showcase |
-| **D** | Coherent NON_PRODUCTION provider | **Implementation specialization of Option A**, not a different ownership model |
+| **D** | Coherent NON_PRODUCTION provider | **NON_PRODUCTION implementation specialization of Option A**, not a different ownership model |
 
-Option A follows the ownership model already frozen by prior ADRs. ADR-AIEOS-062 currently **proposes** the S04 boundary; it is **not Frozen / Approved** and does **not** authorize implementation.
+Option A follows the ownership model already frozen by prior ADRs. After this freeze, Option A is the **approved architecture direction**. Option B remains **REJECTED**. Option C remains **DEFERRED**. Option D remains the **NON_PRODUCTION implementation specialization of Option A**. ADR-AIEOS-062 is **Frozen / Approved** and does **not** authorize implementation.
 
 ### 15. Proposed later S04 acceptance scenario
 
@@ -453,18 +459,19 @@ This scenario is **design guidance**. It is **not** implementation authorization
 
 ### 16. Expected implementation slicing — NOT AUTHORIZED
 
-Candidate later slices, **NOT AUTHORIZED** by this deposit:
+Candidate later slices, **NOT AUTHORIZED** by this freeze:
 
-| Slice | Intent |
-|-------|--------|
-| **S04-I01** | Coherent NON_PRODUCTION School Context current-fact provider behind the four existing ports |
-| **S04-I02** | Development composition convergence so Teacher / Student / Principal / Parent use the same provider fact universe |
-| **S04-I03** | Real-stack AIEOS360 authority-change E2E proving positive access + membership / scope / access revocations across existing product surfaces |
+| Slice | Intent | Status |
+|-------|--------|--------|
+| Architecture freeze of this ADR | Founder / Product Architecture freeze | **FROZEN / APPROVED — 2026-09-17** |
+| **S04-I01** | Coherent NON_PRODUCTION School Context current-fact provider behind the four existing ports | **NOT STARTED / NOT AUTHORIZED** |
+| **S04-I02** | Development composition convergence so Teacher / Student / Principal / Parent use the same provider fact universe | **NOT AUTHORIZED** |
+| **S04-I03** | Real-stack AIEOS360 authority-change E2E proving positive access + membership / scope / access revocations across existing product surfaces | **NOT AUTHORIZED** |
 
 Do **not** automatically create an Admin frontend slice.  
 Do **not** create production ERP integration in S04.
 
-These remain expected candidates only until this ADR is Frozen / Approved **and** explicit implementation authorization is issued.
+These remain expected candidates only. This ADR is Frozen / Approved. Explicit implementation authorization is still required. Do **not** start S04-I01.
 
 ### 17. Explicitly deferred
 
@@ -548,7 +555,7 @@ If a later package requires changing semantic ownership in any of those ADRs, th
 
 ---
 
-## Consistency validation (deposit-time)
+## Consistency validation (freeze-time)
 
 | Check | Result |
 |-------|--------|
@@ -570,22 +577,23 @@ If a later package requires changing semantic ownership in any of those ADRs, th
 | NATS / Temporal not required | **PASS** |
 | Prior frozen ADRs not reopened | **PASS** |
 | S04 implementation not authorized | **PASS** |
-| ADR status Proposed; not Frozen / Approved | **PASS** |
+| ADR status Frozen / Approved; architecture freeze ≠ implementation authorization | **PASS** |
+| Accepted Proposed/corrected (S04P2 / S04P2R1) architecture semantics unchanged | **PASS** |
 
 ---
 
 ## Implementation authorization
 
-This architecture deposit does **not** itself authorize implementation.
+This architecture freeze does **not** itself authorize implementation.
 
-**ADR-AIEOS-062 Proposed ≠ AIEOS360-S04 implementation authorization.**
+**ARCHITECTURE FREEZE ≠ IMPLEMENTATION AUTHORIZATION.**
+**ADR-AIEOS-062 Frozen / Approved ≠ AIEOS360-S04 implementation authorization.**
 
-Implementation remains **NOT AUTHORIZED** until:
+After freeze, implementation remains **NOT AUTHORIZED** until:
 
-1. Chief Architect exact-head review of this Proposed deposit
-2. Founder / Product Architecture freeze of ADR-AIEOS-062
-3. freeze-commit exact-head review
-4. Architecture PR merge authorization and post-merge verification
-5. a **separate** Chief Architect implementation authorization
+1. freeze commit exact-head review
+2. PR #42 merge authorization
+3. PR #42 post-merge verification
+4. a **separate** Chief Architect implementation authorization
 
 Do **not** start S04-I01.
