@@ -421,7 +421,7 @@ Any future Admin UI requires a separately governed product decision.
 | **C** | Governed synchronized replica | **DEFERRED** — introduces freshness, provenance, reconciliation, revocation-lag, and second-master risks unnecessary for the thin AIEOS360 showcase |
 | **D** | Coherent NON_PRODUCTION provider | **Implementation specialization of Option A**, not a different ownership model |
 
-Option A is the inherited frozen ownership model. This ADR freezes the S04 **boundary**, not a new school SoR.
+Option A follows the ownership model already frozen by prior ADRs. ADR-AIEOS-062 currently **proposes** the S04 boundary; it is **not Frozen / Approved** and does **not** authorize implementation.
 
 ### 15. Proposed later S04 acceptance scenario
 
