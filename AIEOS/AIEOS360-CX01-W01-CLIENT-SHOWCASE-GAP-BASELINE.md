@@ -16,7 +16,7 @@ Conflict preference:
 3. Current source code / contracts  
 4. AIEOS orientation documents
 
-**Non-claims (binding):** Development Slice Complete ≠ Client Showcase Ready ≠ Production Ready. This workday does **not** claim Production Ready, production deployment, production ERP/SIS integration, Admin OS, full Educational Intelligence System, or broad Agents/MCP completion.
+**Non-claims (binding):** Development Slice Complete ≠ Client Showcase Ready ≠ Production Ready. This workday does **not** claim Production Ready, production deployment, production ERP/SIS integration, Admin OS, full Educational Intelligence System, or broad Agent Framework / MCP / AI Engineering Platform completion (**2027-04-23**). Bounded v1 preparation orchestration (DEV04) and Contextual AI Assistant v1 remain **in** the November showcase baseline.
 
 ---
 
@@ -30,11 +30,11 @@ Recorded at workday execution against remote `origin/main`:
 | Backend `main` (`eduvijna-aieos-backend`) | `637583f42b7c475ef83f6f99bca7e65e665a253d` | **MATCH** | `gh api` + shallow clone |
 | Frontend `main` (`eduvijna-aieos-frontend`) | `80125be6cf172afb5137e845752c5b4505e5a97f` | **MATCH** | `gh api` + shallow clone |
 | Infrastructure `main` (`eduvijna-aieos-infrastructure`) | `a8654e5bc680eac1fa93cf8308d7cad904f4d7b9` | **MATCH** | `gh api` |
-| Product `main` (`eduvijna-product`) | `b4b3048fb7a6a1c50ae8619dc490743714f2e3e2` | **PIN UNCHANGED (S04-C01)** | Private repository — token cannot read; pin synchronized with ADR-AIEOS-062 / AIEOS360-S04-C01; **no accessible governed repo moved** |
+| Product `main` (`eduvijna-product`) | `b4b3048fb7a6a1c50ae8619dc490743714f2e3e2` | **MATCH** | `gh api` commit on public `eduvijna-ai/eduvijna-product` |
 | OpenAPI SHA-256 (`contracts/openapi/aieos-v1.json`) | `4042FB2725DA70A02A70EE09563B7698AE2E5DA82927614CAF1B5F7E6AA7C1D0` | **MATCH** | `sha256sum` on Backend `637583f42…` |
 | Alembic head | `a360s010004` | **MATCH** | `migrations/versions/a360s010004_*.py` on Backend `637583f42…` |
 
-**Gate result:** **PASS** — all verifiable authorities match; Product pin retained from formal S04 closeout without contradictory movement among accessible repositories.
+**Gate result:** **PASS** — all governed authorities match independently (including Product `main`).
 
 ---
 
@@ -50,9 +50,10 @@ Reconstructed from [AIEOS-CURRENT-STATE.md](AIEOS-CURRENT-STATE.md), [AIEOS-ROAD
 | **Strategy** | Shared vertical scenario across roles — **not** sequential completion of whole Student OS → Principal OS → Parent OS products |
 | **Vertical spine** | Teacher → Publish / Assign → Student → Attempt / Practice / Submit → Learning Evidence → Assessment Intelligence → Teacher Improve → Principal / School Intelligence → Parent Intelligence → Admin / ERP Context (current authority) |
 | **Teacher baseline** | **TEACHER OS — CLIENT SHOWCASE READY** (TOS-CX01-C01): teacher-readable artifacts, Prepare/Review UX, Groq Real AI via Model Gateway (development/showcase), Founder Real-AI acceptance **2026-09-07** |
-| **AIEOS360 development slices** | S01–S04 **DEVELOPMENT SLICE COMPLETE / CLOSED** at governed pins above; coherent `DevelopmentCoherentSchoolContextProvider` (ADR-AIEOS-062 Option D) |
+| **AIEOS360 development slices** | S01–S04 **DEVELOPMENT SLICE COMPLETE / CLOSED** at governed pins above; **Option A — External Master + AIEOS Current-Authority Adapter** is the approved ADR-AIEOS-062 direction; `DevelopmentCoherentSchoolContextProvider` is a NON_PRODUCTION **implementation specialization of Option A** (not a separate approved architecture option) |
+| **Bounded agentic showcase baseline** | DEV04 bounded multi-artifact preparation orchestration + Contextual AI Assistant v1 (READ/REASON/SUGGEST) — **preserved**; separate Planner Agent and broad Agent Framework / MCP platform **not** in scope |
 | **Proof standard** | Real-stack journeys with shared PostgreSQL 18 and **zero** `/api` Playwright mocks for integrated proofs (S01-I05-E2E, S04-I03-E2E) |
-| **Explicit exclusions** | Production Ready; production deployment; production credentials; production ERP/SIS adapter; Admin OS; `PrincipalKind.ADMIN`; evaluation/mastery disclosure to Parent; Principal learner drill-down; Agents/MCP platform; full Educational Intelligence + Knowledge programme (**2027-03-26**) |
+| **Explicit exclusions** | Production Ready; production deployment; production credentials; production ERP/SIS adapter; Admin OS; `PrincipalKind.ADMIN`; evaluation/mastery disclosure to Parent; Principal learner drill-down; **broad** Agent Framework / MCP / AI Engineering Platform (**2027-04-23**); full Educational Intelligence + Knowledge programme (**2027-03-26**) |
 
 ### 1.2 Semantic boundaries (showcase)
 
@@ -107,8 +108,9 @@ Evidence pins: Backend `637583f42b7c475ef83f6f99bca7e65e665a253d`; Frontend `801
 | **Contextual AI Assistant (Teacher)** | **A** | TOS-DEV10-I04 / TOS-CX01 Real-AI verification; READ/REASON/SUGGEST |
 | **Educational Intelligence — deterministic baseline** | **A** | Preparation Educational Quality v1 + OpenAPI types; bounded DEV04/DEV10 scope |
 | **Educational Intelligence — knowledge / EIS programme** | **E** | Locked **2027-03-26**; `eduvijna-education-intelligence-engine` not part of Nov showcase |
-| **Bounded agentic behaviours** | **E** | ADR-044 Agents deferred; no Planner Agent; Assistant v1 only |
-| **Agents / MCP / AI Engineering Platform** | **E** | MCP-READY posture only; locked **2027-04-23** |
+| **Bounded agentic behaviours (v1 showcase baseline)** | **A** | TOS-DEV04 bounded preparation-kit orchestration ([ADR-AIEOS-052](../decisions/ADR-AIEOS-052-aieos-preparation-kit-multi-artifact-generation-architecture.md)); Contextual AI Assistant v1 ([ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md)); TOS-CX01 Real-AI verification; **no** Planner Agent; **no** new agent SoR/runtime/API |
+| **Planner Agent** | **E** | Explicitly out of DEV10 / showcase baseline |
+| **Agents / MCP / AI Engineering Platform (broad)** | **E** | ADR-044 deferred platform; MCP-READY posture only; locked **2027-04-23** |
 | **Content / Generic Content SoR** | **A** | TOS-DEV03/DEV04 durable ContentVersion + Review Queue |
 | **Asset / BlobStore production plane** | **E** | Architecture frozen; production composition **NOT AUTHORIZED** |
 | **Workflow / Event production planes** | **E** | PED-I11/I12 source merged; production NATS/Temporal activation **NOT AUTHORIZED** |
@@ -146,9 +148,16 @@ One tenant contains a **HUMAN teacher**, **HUMAN learner(s)**, **HUMAN principal
 | 8 | Parent | Home → authorized child detail (lifecycle vocabulary only) | ADR-AIEOS-061; `EVALUATION_EXISTENCE = NO` |
 | 9 | (Implicit) | All roles reflect same ClassRef / learner facts | ADR-AIEOS-062 coherent provider |
 
-### 3.3 Automated reference proof
+### 3.3 Automated reference proof (by authority — do not over-merge)
 
-**AIEOS360-S04-I03-E2E** (`integrated-cross-role.product.spec.ts`) is the governing automated proof of steps 2–8 with deterministic worksheet seeding, shared PostgreSQL, and canonical provider defaults — **without** harness-local School Context maps.
+| Walkthrough coverage | Governing proof | Steps |
+|----------------------|-----------------|-------|
+| **Teacher Publish / Assign → Student submit → learner evaluation → Principal / Parent reads** with coherent School Context | **AIEOS360-S04-I03-E2E** (`integrated-cross-role.product.spec.ts`) | Canonical scenario steps **2**, **4**, **5**, **7**, **8**, and implicit **9**; deterministic worksheet seeding; shared PostgreSQL; canonical `DevelopmentCoherentSchoolContextProvider` defaults; **zero** harness-local School Context maps |
+| **Teacher Assessment Intelligence → deliberate Improve handoff** | **AIEOS360-S01-I05-E2E** | Step **6** — not asserted by S04-I03 |
+| **Teacher Prepare (step 1)** | **TOS-CX01** + Teacher Product E2E history | Step **1** — not the S04-I03 integrated proof |
+| **Optional Teach + class-level Assess** | **ADR-AIEOS-054 / ADR-AIEOS-055** + TOS-DEV07/DEV08 proofs | Step **3** — optional in the narrative; **not** part of S04-I03 |
+
+S04-I03 proves the **integrated cross-role path** from assignment through learner evaluation to Principal / School Intelligence and Parent Intelligence reads under coherent current authority. It does **not** subsume S01-I05 Improve handoff or optional class-level Teach/Assess evidence.
 
 ---
 
