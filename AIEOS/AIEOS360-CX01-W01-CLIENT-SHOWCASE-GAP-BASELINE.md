@@ -1,3 +1,16 @@
+---
+id: AIEOS360-CX01-W01
+title: AIEOS360 Client Showcase Acceptance & Gap-Closure Baseline
+owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
+status: in-review
+version: 1.0.0
+created: 2026-10-06
+last_updated: 2026-10-06
+reviewers:
+  - Chief AI Enterprise Architect
+  - Founder / Product Architecture
+---
+
 # AIEOS360-CX01-W01 — Client Showcase Acceptance & Gap-Closure Baseline
 
 **Identity:** `AIEOS360-CX01-W01`  
