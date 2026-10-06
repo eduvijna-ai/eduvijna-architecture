@@ -123,7 +123,7 @@ Evidence pins: Backend `637583f42b7c475ef83f6f99bca7e65e665a253d`; Frontend `801
 
 **Scenario ID:** `AIEOS360-CX-SCENARIO-01`  
 **Authority:** ADR-AIEOS-062 §5–§7 coherent showcase fact model + AIEOS360-S04-I03-E2E realization  
-**School-context source:** `DevelopmentCoherentSchoolContextProvider` canonical defaults (not “the ERP”; NON_PRODUCTION only)
+**School-context source:** `DevelopmentCoherentSchoolContextProvider` — **Option D** coherent NON_PRODUCTION provider (implementation specialization of approved **Option A**); canonical defaults (not “the ERP”)
 
 ### 3.1 Narrative (one coherent school story)
 
