@@ -57,7 +57,7 @@ Labels used below:
 
 | Item | Status | Notes |
 |------|--------|-------|
-| **AIEOS 360 CLIENT SHOWCASE** | **Active product programme — shared vertical coherently connected through S04** | Target **2026-11-20** (development readiness only — **not** a production date). Shared development vertical now coherently integrated through Admin / ERP Context current authority: Teacher → Student → Learning Evidence → Assessment Intelligence → Teacher Improve → Principal / School Intelligence → Parent Intelligence → Admin / ERP Context. Thin but REAL integrated path; no fake clickable prototype. This does **not** claim the entire AIEOS product complete or Production Ready. |
+| **AIEOS 360 CLIENT SHOWCASE** | **Active product programme — gap baseline established (CX01-W01); implementation NOT authorized** | Target **2026-11-20** (development readiness only — **not** a production date). S01–S04 development slices **CLOSED**; [AIEOS360-CX01-W01 baseline](AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md) records acceptance contract, gaps, scenario `AIEOS360-CX-SCENARIO-01`, and ordered **CX01-I01…I08** candidates. **Development Slice Complete ≠ Client Showcase Ready.** |
 | **AIEOS360-S01-I04R1** | **CLOSED** | Student assignment consumption / LearnerAttempt / LearnerSubmission closed against ADR-AIEOS-058 Frozen / Approved |
 | [ADR-AIEOS-059](../decisions/ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) — Learner Assessment Intelligence & Teacher Improve Handoff Authority | **Frozen / Approved** · **I05 COMPLETE / CLOSED** | AIEOS360-S01P2R2; OPTION D; v1.0.2; Founder / Product Architecture **2026-09-09**; Chief Architect **ACCEPTED / PASS**; historical ADR body unchanged; **AIEOS360-S01-I05 = COMPLETE / CLOSED** (B1 → B2 → B3 → F1 → E2E); Backend `3d25bb2d7ae3a6a95affdf075a75f20db48a6959`; Frontend `2fe17e349bfcf772377bebd0718e1094936adaae`; Alembic `a360s010004`; OpenAPI SHA-256 `7B51CE21725651B8D556B9DD6D264473DF0A2E7CAF30D722E1CC776C651FAFBB` |
 | [ADR-AIEOS-060](../decisions/ADR-AIEOS-060-aieos-principal-school-intelligence-authority.md) — Principal / School Intelligence Authority | **Frozen / Approved** · **S02 DEVELOPMENT SLICE COMPLETE / CLOSED** | AIEOS360-S02P1F; v1.0.1; Founder / Product Architecture approval: **2026-09-16**; Chief Architect architecture review: **ACCEPTED / PASS**; historical ADR body unchanged; **I01–I04 CLOSED**; Architecture merge `423fd6683b86c8b36798f870a739864fed387f4b`; Backend `e2bfce86afece6772eaf7c2f1eb18e2dd2240f1b`; Frontend `1b4263d0668f66d84cc261c79a2e81883375219e`; OpenAPI SHA-256 `BE60CC2A4612F77AB333088D264B9501B9AB842995AEC1539DA89EA0E8462B47`; Alembic `a360s010004`; program closeout **AIEOS360-S02-C01** |
@@ -73,7 +73,7 @@ Labels used below:
 
 ## Approved Next
 
-No new implementation slice is recorded here as **Approved** solely because discovery suggested it.
+**AIEOS360-CX01** implementation packages are **identified / ordered** in [AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md](AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md) (**AIEOS360-CX01-I01…I08**). They are **NOT AUTHORIZED** by the W01 baseline deposit. No package below is **Approved** for implementation solely because discovery suggested it.
 
 | Item | Status | Notes |
 |------|--------|-------|

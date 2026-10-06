@@ -427,6 +427,19 @@ Conflict preference:
 
 ---
 
+## 32. AIEOS360-CX01-W01 — Client Showcase Acceptance & Gap-Closure Baseline
+
+| Field | Content |
+|-------|---------|
+| **Objective** | Establish an evidence-backed acceptance / gap-closure baseline for the **AIEOS 360 CLIENT SHOWCASE** programme (target **2026-11-20**, development readiness only) immediately after AIEOS360-S04 formal closeout. |
+| **Architectural reason** | S01–S04 closed the **data-plane** shared vertical; TOS-CX01 closed the **Teacher** client showcase bar. The programme still lacks a recorded showcase acceptance contract, gap taxonomy, canonical cross-role scenario, unified rehearsal environment decision, and ordered CX01 implementation packages — without reopening ADR-AIEOS-058…062. |
+| **What was implemented** | Architecture records only: [AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md](AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md) — showcase acceptance contract; capability matrix; scenario `AIEOS360-CX-SCENARIO-01` (aligned with S04-I03-E2E + ADR-AIEOS-062 §6); unified showcase launcher classified **REQUIRED**; UX gap map; ordered **AIEOS360-CX01-I01…I08**; governed source gate at Architecture `22dac0483bb39caf1c58bc7551732168722b113c` with Backend / Frontend / Infrastructure / OpenAPI / Alembic verification. **No new ADR.** |
+| **What was deliberately NOT implemented** | Any Backend / Frontend / Product / Infrastructure source change; migrations; OpenAPI change; cloud mutation; production authorization; first CX01 implementation slice. |
+| **Governing decisions** | Existing Frozen / Approved ADR-AIEOS-052…062 and TOS-CX01-C01; ADR bodies unchanged. |
+| **Current status** | **W01 BASELINE READY — PR OPEN — NOT MERGED.** **AIEOS360-CX01-I01 = NOT STARTED / NOT AUTHORIZED.** Development Slice Complete (S01–S04) ≠ AIEOS 360 Client Showcase Ready. |
+
+---
+
 ## Gaps / missing chronology
 
 Where older pre-Teacher-OS platform history (earlier Platform AI packages, ERP modules, etc.) is relevant but not part of this AIEOS journey spine: **Not established by current repository evidence** as a fully sequenced AIEOS chronology in this folder — treat as adjacent capability history under product/API repos.
