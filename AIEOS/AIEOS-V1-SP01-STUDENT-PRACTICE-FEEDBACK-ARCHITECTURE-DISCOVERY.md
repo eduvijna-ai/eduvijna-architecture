@@ -629,7 +629,7 @@ PR [#57](https://github.com/eduvijna-ai/eduvijna-architecture/pull/57) on `curso
 | Field | Value |
 |-------|-------|
 | Parent commit | `4d346235f2ca7f38792fe59f318b41bd1e9421cc` |
-| SP01R1 head | *(recorded at push)* |
+| SP01R1 head | `a3ff5982e287d00c4caa2c7db7369bcf020b9b48` |
 | Changed files | **Only** `AIEOS/AIEOS-V1-SP01-STUDENT-PRACTICE-FEEDBACK-ARCHITECTURE-DISCOVERY.md` |
 | Architecture CI | **NO CI CONFIGURED** |
 
