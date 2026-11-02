@@ -3,7 +3,7 @@ id: AIEOS360-CX01-C01
 title: AIEOS360 Client Showcase Programme Closeout
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: proposed-pending-founder-acceptance
-version: 0.9.0-draft
+version: 0.9.1-draft
 created: 2026-11-02
 last_updated: 2026-11-02
 programme: AIEOS360-CX01 — Client Showcase
@@ -30,7 +30,7 @@ Upon **explicit Founder authorization** following I08 evidence review, this clos
 | Engineering vertical | S01–S04 development slices **CLOSED**; CX01-I01–I07 **ENGINEERING COMPLETE** at Frontend `569ef8be46617ab1412ddb3f5a0214c40bdb946b` |
 | Acceptance contract | W01 §1.3 criteria disposition as recorded in [I08 dossier](AIEOS360-CX01-I08-FOUNDER-ACCEPTANCE-EVIDENCE.md) §I08-02 with Founder sign-off |
 | Showcase target date | **2026-11-20** — development-readiness orientation only |
-| Product record | [Product acceptance record](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/product-architecture/aieos360/AIEOS360-CX01-I08-CLIENT-SHOWCASE-ACCEPTANCE.md) (draft PR) |
+| Product record | [Product acceptance record](https://github.com/eduvijna-ai/eduvijna-product/blob/90511df0358dcee1236adcde73659bfb2be95e37/product-architecture/aieos360/AIEOS360-CX01-I08-CLIENT-SHOWCASE-ACCEPTANCE.md) (draft PR) |
 
 Until Founder acceptance: treat as **draft closeout package only**.
 

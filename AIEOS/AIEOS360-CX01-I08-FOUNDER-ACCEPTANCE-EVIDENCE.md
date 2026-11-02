@@ -3,7 +3,7 @@ id: AIEOS360-CX01-I08
 title: AIEOS360 Client Showcase — Founder Acceptance Evidence Dossier
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: acceptance-pending
-version: 1.0.0
+version: 1.0.1
 created: 2026-11-02
 last_updated: 2026-11-02
 programme: AIEOS360-CX01 — Client Showcase (target 2026-11-20 development readiness)
@@ -13,6 +13,8 @@ linked_issues:
   - https://github.com/eduvijna-ai/eduvijna-architecture/issues/50
   - https://github.com/eduvijna-ai/eduvijna-product/issues/2
 linked_product_record: product-architecture/aieos360/AIEOS360-CX01-I08-CLIENT-SHOWCASE-ACCEPTANCE.md
+linked_product_pr: https://github.com/eduvijna-ai/eduvijna-product/pull/3
+linked_architecture_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/51
 acceptance_contract: AIEOS360-CX01-W01 §1.3
 ---
 
@@ -20,7 +22,7 @@ acceptance_contract: AIEOS360-CX01-W01 §1.3
 
 **Identity:** `AIEOS360-CX01-I08`  
 **Mode:** Architecture acceptance records only — **does not authorize application code, merges, or production.**  
-**Terminal dossier status:** **ACCEPTANCE EVIDENCE READY — FOUNDER SIGN-OFF PENDING**  
+**Draft dossier status:** **ARCHITECTURE & PRODUCT DRAFT PRS OPEN — CHIEF EXACT-HEAD REVIEW PENDING — FOUNDER SIGN-OFF PENDING**  
 **Explicit non-claims:** **AIEOS 360 CLIENT SHOWCASE READY** is **not** declared here. **PRODUCTION READY = NO.**
 
 ---
@@ -58,7 +60,7 @@ Governing contract: [AIEOS360-CX01-W01 §1.3](AIEOS360-CX01-W01-CLIENT-SHOWCASE-
 | 1 | Deterministic rehearsal — reset/reseed canonical scenario on shared local/non-production data | **ENGINEERING_PROVEN** | I07 integrated proof on shared PostgreSQL 18 with **FakeStructuredModelGateway** deterministic kit; mandatory Backend Fake PreparationKit proof **PASS**; reset/start/status/stop scripts documented in Frontend [presenter preflight](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/blob/569ef8be46617ab1412ddb3f5a0214c40bdb946b/docs/AIEOS360-CX01-I07-PRESENTER-PREFLIGHT.md). **FOUNDER_DEMONSTRATED:** not recorded. |
 | 2 | Role entry points — Teacher, Student, Principal, Parent on **same** coherent school story | **ENGINEERING_PROVEN** | I07 same-run 10/10 phases; coherent `DevelopmentCoherentSchoolContextProvider` (ADR-AIEOS-062); four OS shells + showcase launcher from I01–I06 at Frontend pin. **FOUNDER_DEMONSTRATED:** not recorded. |
 | 3 | Human walkthrough **without** engineering-only DEV session wiring **during** the visible story | **PENDING_FOUNDER** | Preflight requires **pre-connected memory-only** role tabs before audience ([I07 preflight](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/blob/569ef8be46617ab1412ddb3f5a0214c40bdb946b/docs/AIEOS360-CX01-I07-PRESENTER-PREFLIGHT.md)). CI does not substitute for Founder in-room walkthrough. No Founder attestation captured. |
-| 4 | Showcase presentation — Student / Principal / Parent at client-demo bar | **ENGINEERING_PROVEN** (functional + I02–I05 uplift merged) · **PENDING_FOUNDER** (presentation acceptance) | I07 UX phases I02–I05 merged in PR #47; automated guards PASS. TOS-CX01 bar applies fully to Teacher only (historic Founder acceptance **2026-09-07**). Cross-role polish is **implemented in engineering sense**; **client-demo confidence** awaits Founder observation. |
+| 4 | Showcase presentation — Student / Principal / Parent at client-demo bar | **ENGINEERING_PROVEN** (functional + I02–I05 uplift merged) · **PENDING_FOUNDER** (presentation acceptance) | I02–I05 showcase UX packages were merged before I07; PR #47 merged the I07 integrated rehearsal proof. Automated guards PASS. TOS-CX01 bar applies fully to Teacher only (historic Founder acceptance **2026-09-07**). Cross-role polish is **implemented in engineering sense**; **client-demo confidence** awaits Founder observation. |
 | 5 | Mode clarity — deterministic vs real-AI explicit and safe | **ENGINEERING_PROVEN** | I06 mode governance merged; Provider Aggregator read-only; default rehearsal path **DETERMINISTIC (Fake)** per I07 proof. **REAL_AI** whole-vertical live provider generation **PENDING** (see gaps). TOS-CX01 Teacher-only Groq Real-AI (**2026-09-07**) is **historic separate** proof — not whole-AIEOS360 cross-role live generation. |
 | 6 | Evidence — integrated real-stack proof retained; **no** production readiness claim | **ENGINEERING_PROVEN** | Post-merge CI [41410487754](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/actions/runs/41410487754) **SUCCESS** 9/9; I07 **10/10 PASS**; CodeQL [41410487287](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/actions/runs/41410487287) **SUCCESS** 3/3. This dossier and closeout repeat **Production Ready = NO**. |
 
@@ -92,15 +94,16 @@ Frozen scenario — **no new domain semantics** in I08.
 | Phase | Scope | Provenance |
 |-------|-------|------------|
 | Mandatory Fake PreparationKit | Backend proof job in Frontend CI | Same run 41410487754 |
-| I07-01 … I07-10 | Integrated cross-role product spec phases | Same run; 10/10 PASS |
+| Ten serial I07 Playwright cases | Integrated cross-role real-stack Product E2E | Same run; 10/10 PASS |
 | Privacy / adversarial | Student B, wrong-tenant, Parent evaluation absence | Asserted in I07 harness (same run) |
-| I01R9 reset×2 + lifecycle | Environment reset discipline | I07 coverage per Frontend docs |
-| I06 mode truth | DETERMINISTIC default in integrated proof | Same run |
+| I07 default mode | DETERMINISTIC Fake generation in the integrated proof | Same I07 run; does NOT establish every I06 operator mode branch |
 
 **Historic separate proven (do not merge into same-run claim):**
 
 | Evidence | Pin / note |
 |----------|------------|
+| I01R9 reset×2 + owned lifecycle | Separate I01R9 proof job in post-merge CI 41410487754; NOT one of the ten I07 scenario cases |
+| I06 operator mode / Provider Aggregator truth | Separate I06 mode governance/proof; I07 confirms only the deterministic default |
 | S04-I03 integrated cross-role E2E | Frontend `80125be6…` era — superseded for showcase by I07 at `569ef8be…` |
 | S01-I05 Improve handoff E2E | Separate proof map per W01 §3.3 |
 | TOS-CX01 Founder Real-AI Teacher path | **2026-09-07** — Teacher-only |
@@ -209,7 +212,7 @@ No invented screenshots, quotes, attendance, or client testimony.
 | Teacher entry | Merged | **PENDING** |
 | Student / Principal / Parent entry | Merged | **PENDING** |
 | Cross-role scenario map / handoffs | Merged (I03) | **PENDING** |
-| Responsive client-device bar | Implemented per I07 scope | **PENDING** |
+| Responsive client-device bar | I02–I05 engineering presentation uplift; automated checks do not substitute for Founder client-device review | **PENDING** |
 
 Material UX blockers discovered in Founder walkthrough → propose **new governed work package**; not undocumented I08 code change.
 
@@ -254,7 +257,7 @@ No new ADR opened in I08.
 | Verdict | Status |
 |---------|--------|
 | **I07 ENGINEERING COMPLETE** | **YES** — Issue #46 closed; PR #47 merged; CI 41410487754 |
-| **I08 ACCEPTANCE EVIDENCE READY** | **YES** — this dossier + Product record + draft PRs |
+| **I08 ACCEPTANCE EVIDENCE READY** | **DRAFTS PREPARED / REVIEW PENDING** — Architecture PR #51 + Product PR #3 OPEN/DRAFT; independent exact-head review and Founder observation still outstanding |
 | **AIEOS 360 CLIENT SHOWCASE READY** | **NO** — requires explicit Founder acceptance per W01 §1.3 |
 | **AIEOS v1 DEV READY** | Separate programme — target **2026-12-18**; not auto-started |
 | **PRODUCTION READY** | **NO** |
@@ -282,9 +285,9 @@ Conditional programme closeout drafted separately; **does not** alter W01 histor
 | Repo | Branch (Cursor) | Base | Purpose |
 |------|-----------------|------|---------|
 | Architecture | `cursor/aieos360-cx01-i08-founder-acceptance-architecture-closeout-f7d1` | `491295c3…` | This dossier, C01 closeout, current-state/roadmap/journey/changelog |
-| Product | `cursor/aieos360-cx01-i08-product-acceptance-record-f7d1` | `b4b3048f…` | Product acceptance record + index link |
+| Product | `aieos360-cx01-i08-product-acceptance-chief-recovery` | `b4b3048f…` | [Product PR #3](https://github.com/eduvijna-ai/eduvijna-product/pull/3), recovery HEAD `90511df0358dcee1236adcde73659bfb2be95e37` (independently authored from W01; NOT Cursor local commit) |
 
-Cross-links in PR descriptions; **no cross-repo merge** before independent review.
+Both [Architecture PR #51](https://github.com/eduvijna-ai/eduvijna-architecture/pull/51) and [Product PR #3](https://github.com/eduvijna-ai/eduvijna-product/pull/3) are **OPEN / DRAFT / NOT MERGED**. Product delivery is a Chief Architect documentation recovery because Cursor's local Product commit `68619d0c2158b89b6d701404ce85cd002aa58dec` could not be pushed (403) and is NOT claimed to have been reviewed. **No cross-repo merge** before independent review and Founder decision.
 
 ---
 
@@ -292,7 +295,7 @@ Cross-links in PR descriptions; **no cross-repo merge** before independent revie
 
 | Check | Result |
 |-------|--------|
-| Markdown internal links | To be verified in CI/review |
+| Markdown internal links | Initial source review; complete link validation before acceptance. Neither documentation PR currently reports CI checks. |
 | W01 six criteria addressed | **YES** — §I08-02 |
 | No secrets / synthetic PII | **YES** — policy in §I08-04 |
 | No Frozen ADR body edits | **YES** |
