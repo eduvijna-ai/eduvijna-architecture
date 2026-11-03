@@ -27,17 +27,21 @@
 
 **Method:** Static architecture validation against frozen ADRs and pinned repository facts. **No code executed.** Adversarial cases name direct HTTP intent for future E2E.
 
+**Important:** **PASS_CANDIDATE** means the PROPOSED ADR **would** handle the case if frozen and implemented as specified — **not** a executed runtime PASS. **OPEN** scenarios require Founder freeze decisions before implementation.
+
 ---
 
 ## Summary
 
+**Derivation rule:** Counts below are the **exact tally** of the **Classification** column in [§ Scenario matrix](#scenario-matrix) rows **SP02-S01 through SP02-S45** (manual recount on SP02R1 deposit).
+
 | Classification | Count |
 |----------------|------:|
-| PASS_CANDIDATE | 26 |
+| PASS_CANDIDATE | 40 |
 | CONFLICT | 0 |
-| OPEN | 2 |
+| OPEN | 3 |
 | DEFER | 2 |
-| **Total scenarios** | **30** |
+| **Total scenarios** | **45** |
 
 ---
 
@@ -66,7 +70,7 @@
 | SP02-S19 | Hint paraphrases answer (semantic duplicate) | **OPEN** | SP01R1 semantic leakage table | Human review required; automated lint **may miss** — **OPEN** acceptance thresholds (O63-03) |
 | SP02-S20 | MCQ hint eliminates three distractors by name | **PASS_CANDIDATE** | ADR-063 §5 forbidden content | Review/QA should reject; server still only returns hint text — no grade |
 | SP02-S21 | Student replays captured hint GET response after submit | **PASS_CANDIDATE** | ADR-063 §4 retroactive secrecy | Client may retain stale body; **server** denies new reads; architecture does not promise erasure |
-| SP02-S22 | Concurrent hint GET and submit POST | **PASS_CANDIDATE** | ADR-063 §8 TOCTOU | At most one succeeds; post-submit hint GET **deny** |
+| SP02-S22 | Concurrent hint GET and submit POST (same attempt) | **PASS_CANDIDATE** | ADR-063 §8.1; ADR-058 §16 | If submit **commits first**, hint GET **must deny** before 200; if hint 200 **already emitted** while `IN_PROGRESS`, **no recall**; **next** GET **deny** after submit — **not** “at most one HTTP winner” without DB re-read |
 | SP02-S23 | School Context membership provider timeout/error | **PASS_CANDIDATE** | ADR-062 fail-closed | Hint GET **deny** without membership affirmation |
 | SP02-S24 | ContentVersion read failure mid-request | **PASS_CANDIDATE** | ADR-063 §6 | **Deny** — no partial hint leak from error payload |
 | SP02-S25 | Parent authenticated GET on student attempt hint route | **PASS_CANDIDATE** | ADR-061 Parent allowlist | **Deny** — no Parent hint extension |
@@ -77,9 +81,19 @@
 | SP02-S30 | P2 AI-suggested hint without teacher approval workflow | **DEFER** | Founder scope P2 deferred | Must not ship in V1-EXPAND P1; **DEFER** |
 | SP02-S31 | Quiz content type hint request | **DEFER** | ADR-063 December worksheet-only | **DEFER** until separate approval |
 | SP02-S32 | R2 design: hint embedded in assignment GET with server strip | **PASS_CANDIDATE** (as **negative design**) | SP01R1 R1-F1 | Documented as **rejected** primary pattern; if implemented, regression risk → fail future review |
-| SP02-S33 | Duplicate idempotent hint GET same question | **PASS_CANDIDATE** | ADR-063 §8 | Same allowlisted body; no mutation |
+| SP02-S33 | Two sequential hint GETs; authority unchanged between requests | **PASS_CANDIDATE** | ADR-063 §8.1 | Each GET **re-checks** gates; same allowlisted body **only** while still `IN_PROGRESS` + current membership + ACTIVE assignment |
 | SP02-S34 | LearnerAssessmentEvaluation exists; student requests hint | **PASS_CANDIDATE** | ADR-059 evaluation ≠ feedback | Hint path independent; evaluation DTOs **unmodified** |
 | SP02-S35 | Attempt uses `LearnerResource` projection — verify `answer`/`explanation` still excluded | **PASS_CANDIDATE** | Backend learner projection; ADR-058 §22 | Assignment/attempt resource **must not** add answer/explanation/hints |
+| SP02-S36 | Teacher without **frozen** content-stewardship / hint-authoring gate (O63-02) attempts hint-version command | **OPEN** | ADR-063 §7 O63-02 | **Expected deny** once gate frozen; exact capability string **not** pre-approved in this deposit — **FREEZE-BLOCKING** |
+| SP02-S37 | Teacher cross-tenant hint authoring command on foreign Content | **PASS_CANDIDATE** | ADR-027 tenancy; §7 concealment | **Deny**; non-enumerating failure |
+| SP02-S38 | Teacher lost class / not **current** for worksheet teaching context attempts hint authoring | **OPEN** | ADR-062 current authority; O63-02 | **Expected deny**; exact current-class binding for authoring **FREEZE-BLOCKING** with O63-02 |
+| SP02-S39 | Assignment pins `education.worksheet@2` before Learning `@2` learner projection ships (pin fact) | **PASS_CANDIDATE** | Backend `learner_projection.py` `_SUPPORTED` | Today → **ContentNotLearnerConsumable**; T1b **required** before Student consumption |
+| SP02-S40 | Student submits `@2` worksheet before Assessment `@2` exact evaluator ships (pin fact) | **PASS_CANDIDATE** | Backend `exact_content.py` | Today → **EvaluationContentUnsupported**; T1c **required** for evaluate → Improve |
+| SP02-S41 | Existing assignments remain on `worksheet@1` after `@2` registered | **PASS_CANDIDATE** | GCI-G03; ADR-063 §3.1 | `@1` reader retained; behavior unchanged |
+| SP02-S42 | `@2` assignment GET / attempt resource for Student | **PASS_CANDIDATE** | ADR-063 §3.1 proposed mapper | Prompt/options/type only; **no** hints on normal learner DTO |
+| SP02-S43 | Post-submit Assessment evaluates `@2` with private `answer`/`explanation` | **PASS_CANDIDATE** | ADR-059; ADR-063 §3.1 | Evaluator uses authoring fields; Student hint GET still minimal allowlist |
+| SP02-S44 | Hint GET returns 200, then submit succeeds; client issues **new** hint GET | **PASS_CANDIDATE** | ADR-063 §8.1 | Second GET **deny**; cached first body **not** fresh authorization |
+| SP02-S45 | Membership revoked after first hint GET; second hint GET | **PASS_CANDIDATE** | ADR-058 §4 TOCTOU | Second GET **deny** once revocation observed; first may have completed if still current at its re-read |
 
 ---
 
@@ -101,7 +115,15 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 | Denied content schema (quiz hint) | S31 | DEFER / 404 or feature off |
 | P2 AI unapproved | S30 | not available |
 | Parent / Principal | S25–S27 | 403 |
-| Response replay after submit | S21 | new GET denied |
+| Response replay after submit | S21, S44 | new GET denied; cache not authority |
+| Hint/submit race + re-read | S22, S44 | ADR-063 §8.1 |
+| Sequential GET re-authorization | S33, S45 | second GET re-checks |
+| Teacher authoring without gate | S36 | OPEN — deny when O63-02 frozen |
+| Teacher cross-tenant authoring | S37 | deny |
+| Teacher lost class authoring | S38 | OPEN — deny when O63-02 frozen |
+| worksheet@2 Learning consumable | S39, S42 | T1b gate |
+| worksheet@2 Assessment evaluate | S40, S43 | T1c gate |
+| v1 backward compatibility | S41 | unchanged |
 
 ---
 
@@ -127,8 +149,10 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 
 | ID | Scenario | Decision needed at freeze |
 |----|----------|---------------------------|
-| O63-03 | S19 paraphrase QA | Minimum automated + human acceptance |
-| O63-02 | Teacher authoring adversarial (not expanded above) | Capability naming and denial semantics |
+| O63-03 | S19 paraphrase QA | **FREEZE-BLOCKING** — minimum human + automated process (ADR-063 §5) |
+| O63-02 | S36, S38 teacher authoring adversarial | **FREEZE-BLOCKING** — exact capability / current-class checks (ADR-063 §7) |
+
+**ADR freeze readiness:** **NOT READY** while O63-02 or O63-03 remain OPEN.
 
 ---
 
