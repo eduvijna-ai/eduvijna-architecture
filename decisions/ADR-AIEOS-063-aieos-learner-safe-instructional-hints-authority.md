@@ -14,7 +14,8 @@ reviewers:
 # ADR-AIEOS-063 — AIEOS Learner-Safe Instructional Hints Authority
 
 **Status:** **PROPOSED / CHIEF REVIEW PENDING / FOUNDER FREEZE REQUIRED**  
-**Freeze readiness:** **NOT FREEZE-READY** — **FREEZE-BLOCKING OPEN:** **O63-02** (teacher authoring authorization gate) and **O63-03** (semantic QA minimum process) must be resolved at Founder freeze; see §12.  
+**Freeze readiness:** **FREEZE-CANDIDATE POLICIES SELECTED — FOUNDER RATIFICATION REQUIRED** (O63-02 §7, O63-03 §5, concurrency §8.2). **NOT FROZEN / NOT IMPLEMENTED.** This workday **does not grant** kernel capabilities or merge PR #59.  
+**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → **SP02-FR01** ([Issue #60](https://github.com/eduvijna-ai/eduvijna-architecture/issues/60)).  
 **Implementation:** **NOT AUTHORIZED**  
 **Date:** 2026-11-03  
 **Revision:** SP02R1 corrective deposit (Chief exact-head review 2026-11-03)  
@@ -57,6 +58,23 @@ SP01R1 discovery established binding gaps:
 3. **R1-F3:** Teacher per-question hint **authoring UI/API is not implemented** at pinned Frontend. Hints must enter only through a **new immutable ContentVersion** with explicit **review → approve → publish**, not Review Queue free-text, TeachingWork notes, or Assessment/Answer Key channels.
 
 Pinned Backend `WorksheetV1` (`education.worksheet@1`, `src/aieos/domains/education/worksheet_v1.py`) uses **`extra=forbid`** on all models. Each question already carries **`answer`** and **`explanation`** fields that are **teacher/authoring truth** and are **not** part of the learner-safe projection today. Learner hints are a **distinct instructional surface** that must not collapse into those fields.
+
+---
+
+## Source evidence (FR01-02 — pinned Backend `637583f42…`, read-only)
+
+| Fact | Evidence (Backend pin) | Architecture use |
+|------|------------------------|------------------|
+| Content aggregate owner | `owner_principal_id` on Content (`domains/content/domain/content.py`) | O63-02 owner gate |
+| Code-governed capabilities | `content.version.create`, `content.review.submit`, `content.review.decide`, `content.publish` in `domains/content/application/ports.py`; kernel adapters in `platform/security/authorization/content_adapters.py` | Existing vocabulary; **existence ≠ teacher hint grant** |
+| Generic append service | `HttpAppendContentVersionService` (`domains/content/application/http_append.py`) enforces tenant/head/schema/idempotency | **Does not** prove current-class or hint-specific gates |
+| Current ClassRef (Teaching) | `SchoolContextClassAuthority.require_assignable_class_ref` (`domains/teaching/application/school_context.py`) | Bind **explicit** `class_ref` on hint append command |
+| Non-authoritative label | `TeachingWork.class_label` contextual text (`domains/teaching/domain/work.py`) | **Must not** substitute for ClassRef |
+| Submit lock order | `SubmitAttemptService`: `get_assignment_for_update` **then** `attempts.get_for_update` (`domains/learning/application/submit_attempt.py` L146–150) | Hint read §8.2 aligns |
+| Attempt read today | `GetAttemptService.get` — no declared row lock | Hint read requires **new** locked path |
+| Worksheet `@1` only consumers | `education/schema.py`, `learner_projection.py`, `assessment/.../exact_content.py` | §3.1 T1a–T1c |
+
+**Derived design** in §5–§8 is **not implemented** at pin. **Future implementation** requires separate engineering authorization and kernel tenant grants where applicable.
 
 ---
 
@@ -212,31 +230,57 @@ Teacher authors hint-bearing worksheet version (P1)
 
 **Membership loss after SUBMITTED:** own submitted answers may remain readable; **hints denied**.
 
-### 5. Semantic QA and leakage controls (proposal)
+### 5. Semantic QA and leakage controls — O63-03 **FREEZE-CANDIDATE** (FOUNDER RATIFICATION REQUIRED)
 
-Hints are **instructional scaffolding**, not stealth answer keys.
+**Status:** Selected minimum policy for Founder freeze vote. **NOT FROZEN. NOT IMPLEMENTED.**
 
-**FREEZE-BLOCKING OPEN — O63-03:** Founder must freeze a **testable minimum quality process** before implementation. Until then this ADR is **not freeze-ready**.
+Hints are **instructional scaffolding**, not stealth answer keys. Applies to **each optional** per-question `learner_hint` on `education.worksheet@2`.
 
-**Mandatory human process (proposal — must be frozen verbatim or replaced at freeze):**
+#### 5.1 Per-question hint payload minimum (schema)
 
-1. **Author attestation:** named HUMAN teacher author confirms hint is optional scaffolding, not assessment feedback.
-2. **Reviewer attestation:** independent HUMAN reviewer approves exact version only after structured review of **every** non-empty hint (not Review Queue free-text — GCI-G06).
-3. **Fail-closed publish gate:** publish command **rejects** when mandatory checklist incomplete or automated **blocking** flags unresolved.
+| Rule | Requirement |
+|------|-------------|
+| Presence | Field **absent** ⇒ no hint (identical to today). **Empty string forbidden** — treat as authoring validation error. |
+| Type | Single plain-text `hint_text` string only (no markdown/HTML, no embedded objects). |
+| Length | **1–500** Unicode scalars after trim (implementation MAY normalize whitespace once). |
+| Prohibited tokens | No HTTP(S) URLs, no `mailto:`, no score/grade/mastery/evaluation vocabulary, no answer-key artifact references. |
+| Isolation | Must not duplicate `teacher_notes`, `explanation`, or `answer` fields. |
 
-**Testable minimum checklist items (proposal):**
+#### 5.2 Mechanical checks (per non-empty hint, against same question’s prompt/options/answer/explanation)
 
-| Check | Automated flag (non-blocking alone) | Human judgment required |
-|-------|-------------------------------------|-------------------------|
-| Exact string match hint ↔ `answer` | **Block publish** | Confirm paraphrase / synonym variants |
-| Hint contains full `explanation` copy | **Block publish** | Partial overlap / concept leak |
-| MCQ distractor elimination by name | Flag | Reviewer reject |
-| PII / profanity patterns | Flag or block | Context review |
-| Reading level / age mismatch vs class | Flag only | Reviewer reject |
+| Check | Result |
+|-------|--------|
+| `hint_text` equals `answer` (case-insensitive trim) | **HARD BLOCK** — cannot submit for review |
+| `hint_text` equals full `explanation` | **HARD BLOCK** |
+| `hint_text` contains any MCQ `option` string verbatim (multiple_choice) | **HARD BLOCK** |
+| `hint_text` contains URL / email pattern | **HARD BLOCK** |
+| Token overlap with `answer` or `explanation` above configured similarity flag threshold | **FLAG** — requires human attestation (§5.3) |
+| Profanity / obvious PII pattern | **FLAG** or **BLOCK** (implementation choice; default **FLAG** + human) |
+| Reading-level heuristic vs declared worksheet difficulty | **FLAG** only |
 
-**Do not claim** deterministic lint proves semantic safety. Automated rules **block only obvious mechanical violations**; paraphrase, pedagogy, and age-appropriateness remain **human** at freeze and runtime governance.
+**Do not claim** deterministic lint proves semantic safety. **Paraphrase, pedagogy, distractor implication, and age fit** require **HUMAN** review.
 
-**Explicitly forbidden hint content:** direct answer text, “option B is wrong,” copied `explanation`, teacher_notes bleed, evaluation outcomes, links to answer key artifacts.
+#### 5.3 Version-scoped attestation record (selected model)
+
+**Selected:** immutable typed append **`WorksheetLearnerHintVersionAttestationV1`** bound to **exact** `content_version_id` (Content-domain governed record or structured ReviewDecision attachment — implementation detail). **Architecture requirements:**
+
+| Field / rule | Requirement |
+|--------------|-------------|
+| `content_version_id` | Exact version under review |
+| `author_principal_id` | HUMAN who created hint-bearing version |
+| `reviewer_principal_id` | HUMAN who attests safety |
+| **Author ≠ reviewer** | **Required** when **any** `learner_hint` is non-empty |
+| `per_question_outcomes[]` | For each non-empty hint: `question_id`, mechanical `hard_block_clear`, `human_review_pass` |
+| `attested_at` | Server timestamp |
+| Immutability | New ContentVersion ⇒ **new** attestation cycle |
+
+**Fail-closed gates:**
+
+- `content.review.decide` **APPROVE** **rejected** if attestation missing, stale vs payload digest, or any `human_review_pass=false`.
+- `content.publish` **rejected** if version not **APPROVED** or attestation incomplete.
+- Any change to hint text ⇒ **new ContentVersion** + new attestation (GCI-G05).
+
+**Prohibited carriers:** Review Queue free-text comments, TeachingWork notes, Answer Key, Assessment artifacts (GCI-G06).
 
 ### 6. Authorization / visibility matrix (proposal)
 
@@ -257,77 +301,109 @@ Hints are **instructional scaffolding**, not stealth answer keys.
 | Backend School Context error | Fail closed on membership-dependent routes | **Deny** — no hint body |
 | Content read error | Learner resource degradation per existing rules | **Deny** — no partial hint leak |
 
-### 7. P1 teacher authoring (NOT IMPLEMENTED — proposal)
+#### 6.1 Teacher hint authoring fail-closed matrix (O63-02 freeze-candidate)
 
-**Pinned gap (R1-F3):** Frontend `ReviewDetailPage`, `WorkPage`, `contentApi` — **no** per-question hint editor at `569ef8be46617ab1412ddb3f5a0214c40bdb946b`.
+| Actor / condition | Append hint-bearing version |
+|-------------------|----------------------------|
+| ACTIVE HUMAN owner + `content.version.create` grant + valid `authoring_class_ref` | **Allow** (mechanical QA permitting) |
+| Missing `content.version.create` grant | **Deny** |
+| Non-owner (no steward delegation frozen) | **Deny** |
+| Cross-tenant / wrong tenant | **Deny** (conceal) |
+| Stale / revoked / non-assignable `authoring_class_ref` | **Deny** |
+| Suspended / inactive Principal | **Deny** |
+| Author = reviewer on hint version APPROVE | **Deny** |
+| APPROVE/Publish without §5.3 attestation | **Deny** |
 
-**FREEZE-BLOCKING OPEN — O63-02:** Exact **capability / role gate is not pre-approved** in this deposit. Founder must freeze authorization checks before implementation. This ADR **does not grant** a new capability name or kernel permission.
+### 7. P1 teacher authoring — O63-02 **FREEZE-CANDIDATE** (FOUNDER RATIFICATION REQUIRED)
 
-**Candidate authorization checks (proposal — require Founder freeze selection):**
+**Status:** **ONE selected policy** (below). **NOT FROZEN. NOT IMPLEMENTED.** This workday **does not** register kernel grants, mutate AuthorizationKernel catalogs, or authorize Backend routes.
 
-| Check | Intent |
-|-------|--------|
-| ACTIVE HUMAN `effective_actor` is teacher author | Same Principal model as other Teacher OS mutations ([ADR-AIEOS-023R1](ADR-AIEOS-023R1-aieos-identity-tenant-security-canonical-restatement.md)) |
-| Tenant match on Content aggregate | Client tenant id not authority ([ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md)) |
-| **Current** teacher–class authority for the worksheet’s teaching context | School Context façade — not ERP master ([ADR-AIEOS-062](ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md)) |
-| Content stewardship / edit intent on target Content aggregate | Exact capability string **OPEN** — must align with existing Teacher OS content commands without inventing silent grants |
-| Failed authoring concealment | Cross-tenant, wrong tenant, non-member, lost class, missing stewardship → **deny** with same non-enumerating posture as other Teacher content commands |
+**Pinned gap:** Frontend hint editor **NOT IMPLEMENTED** (`569ef8be…`).
 
-**Minimal conceptual path (proposal):**
+#### 7.1 Selected policy — reuse `content.version.create` + mandatory domain gates (not a new capability)
 
-1. Teacher passing **frozen** O63-02 checks opens worksheet Content in **authoring** mode.
-2. Command creates **new ContentVersion** with hint fields on selected questions.
-3. **Submit for review** → Review Queue **structured** hint panel (not comment thread).
-4. **APPROVE** exact version → **publish** → eligible for **future** assignment pins.
+**Rejected for minimum governance:** a new purpose-scoped kernel capability (e.g. `content.worksheet_hint.author`) as the **primary** gate — adds catalog surface without reducing risk if domain checks are skipped.
 
-**Prohibited:** ReviewDecision comments, TeachingWork notes, Assessment Improve payloads, P2 provider AI.
+**Selected freeze-candidate:** Continue to require existing kernel capability **`content.version.create`** (`CONTENT_VERSION_CREATE` in `ports.py`) **plus** a **new domain command/port** (conceptual: `AppendWorksheetLearnerHintsContentVersion`) that enforces **all** checks below **before** append. Kernel grant of `content.version.create` remains a **separate future tenant-admin action** — **not performed in SP02-FR01**.
 
-**Audit (proposal):** version created / submitted / approved / published with actor; hints only via new version commands.
+**No silent grant:** Teachers without tenant grant for `content.version.create` **fail closed** at kernel check. Non-owner principals **fail closed** even with capability unless a **future** steward-delegation ADR exists (none frozen here — **owner-only**).
 
-### 8. Concurrency, idempotency, TOCTOU (proposal)
+#### 7.2 Authoritative check order (fail-closed, conceal on deny)
 
-Hint GET is **read-only** but **not authorization-free**. It does **not** inherit ADR-058 §16 submit mutation locks automatically; the candidate must define an explicit **attempt-scoped read contract** aligned with [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) §4 and §16 limitations.
+1. **ACTIVE HUMAN** principal (`CurrentPrincipalClassificationAuthority`).
+2. **Execution tenant** = Content aggregate tenant (RLS + trusted context; client tenant not authority).
+3. **`AuthorizationKernel.decide_capability`** → `content.version.create` (**exact grant required**).
+4. Load Content; **`owner_principal_id == effective_actor_id`** (non-owner deny).
+5. Command carries explicit **`authoring_class_ref`** (opaque string) — **not** `TeachingWork.class_label`.
+6. **`SchoolContextClassAuthority.require_assignable_class_ref(tenant, teacher_principal_id, authoring_class_ref)`** — current teacher–class authority ([ADR-AIEOS-062](ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md)).
+7. Payload = **new immutable** `education.worksheet@2` version with optional hints; schema/ mechanical QA §5.2 **hard blocks** before review submit.
+8. **Idempotent append** + audit (actor, class_ref, content_id, version_id).
 
-#### 8.1 Minimal read authorization / linearization contract (proposal)
+**ClassRef binding:** `authoring_class_ref` is **provenance metadata** on the version command/recording only; ERP/SIS remains master; Content is **not** a roster SoR.
 
-**Scope:** Single `LearnerAttempt` row in Learning SoR (same aggregate as submit).
+#### 7.3 Review / publish separation (existing capabilities)
 
-**Mechanism (proposal — implementable without 2PC):**
+| Step | Capability (existing code vocabulary) | Actor rule |
+|------|--------------------------------------|------------|
+| Submit for review | `content.review.submit` | Author (owner) |
+| Safety attestation + decide | `content.review.decide` | **Reviewer ≠ author** when any hint present (§5.3) |
+| Publish | `content.publish` | Publisher (may equal author **only** when **zero** hints; otherwise **recommend** separate publisher with decide capability) |
 
-1. Load attempt by id under tenant RLS.
-2. Acquire **attempt-scoped DB concurrency** shared with submit transition — e.g. read attempt row **`FOR UPDATE`** (submit already requires exclusive transition) or **`FOR SHARE`** plus **re-read `lifecycle_state` immediately before serializing the HTTP 200 body**.
-3. Re-run **all** gated checks on that fresh row: owner, membership, assignment ACTIVE/not cancelled, `lifecycle_state == IN_PROGRESS`, version pin match.
-4. Only if still `IN_PROGRESS`, load hint text from ContentVersion and emit allowlisted DTO.
+Hints **never** stored in Review free-text, TeachingWork notes, or Answer Key.
 
-**Guarantees (proposal — do not over-promise):**
+#### 7.4 Minimal Teacher path (unchanged flow, gated)
 
-| Statement | Held? |
-|-----------|-------|
-| Every **new** hint GET **after** attempt is `SUBMITTED` **must fail closed** (no hint body) | **Yes — required** |
-| Every **new** hint GET **after** membership/assignment denial observed **must fail closed** | **Yes — required** |
-| Parallel hint GET + submit: if submit **commits first**, hint GET in progress **must not** emit 200 (re-read sees `SUBMITTED` → deny) | **Yes — required** (depends on §8.1 locking / final re-read) |
-| Hint GET that **already returned 200** while `IN_PROGRESS`, then submit commits | **May stand** — no retroactive HTTP recall; **subsequent** GETs **deny** (same retroactive-secrecy posture as §4) |
-| Absolute global ordering of two HTTP responses without DB coordination | **Not promised** |
-| ERP membership revocation instantaneous with AIEOS | **Not promised** ([ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) §4, §16) |
+Author with §7.2 checks → new version → review submit → structured hint panel + attestation → independent reviewer APPROVE → publish → **future** assignment pin.
 
-**Rejected prior wording:** “At most one succeeds; loser deny” without locking — **withdrawn** (SP02R1-F2).
+**Audit:** append / review / publish / attestation events with principal + class_ref + version id.
 
-**Duplicate GET / replay:** Each request is a **fresh authorization**. Identical body permitted **only** while all gates still pass. **Cached or replayed** prior 200 responses are **not** fresh authorization. Client replay after submit/revocation **must** fail on server re-check.
+### 8. Concurrency, idempotency, TOCTOU — **FREEZE-CANDIDATE** (§8.2)
 
-**Membership TOCTOU:** Same as ADR-058 — command that passed membership check before external revocation may complete; **subsequent** hint GETs fail closed once revocation is observed.
+Hint GET is read-only but requires **explicit Learning-domain authorization linearization** consistent with submit ([ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) §16; Backend `submit_attempt.py`).
 
-| Race | Proposal |
+#### 8.1 Non-goals (explicit)
+
+- No ERP↔AIEOS 2PC; membership evaluated **outside** DB transaction per command.
+- No guarantee of **HTTP response arrival ordering** between clients.
+- No retroactive recall of a **completed** 200 hint response body.
+- No “exactly one of hint GET or submit wins HTTP race” without reference to lock timing.
+
+#### 8.2 Selected hint-read contract (implementable)
+
+**Service (conceptual):** `GetLearnerHintsService` in Learning, **single DB transaction** per request:
+
+| Step | Action |
+|------|--------|
+| 1 | External **School Context learner membership** check (same port family as submit) — if deny/unavailable → **fail closed**, no hint body |
+| 2 | **`get_assignment_for_update(teaching_assignment_id)`** — same lock order as submit (**assignment first**) |
+| 3 | Validate assignment consumable (ACTIVE, not cancelled/closed) |
+| 4 | **`attempts.get_for_update(attempt_id)`** — **row exclusive lock**, same mode as submit |
+| 5 | Owner tenant, `lifecycle_state == IN_PROGRESS`, attempt matches assignment, exact `content_version_id` pin |
+| 6 | Load hint allowlist from ContentVersion payload (Content read **inside** transaction **after** attempt lock) |
+| 7 | **Authorization linearization point:** **re-read** `lifecycle_state` on **still-locked** attempt row; if not `IN_PROGRESS` → **deny** (no body) |
+| 8 | Emit allowlisted DTO; commit (release locks) |
+
+**Interaction with submit:** Submit uses **identical** assignment-then-attempt **`FOR UPDATE`** order. Concurrent hint GET and submit **serialize** on attempt row; whichever transaction commits second observes terminal state and **must deny** hint emission at step 7.
+
+**In-flight completed 200:** If step 8 committed while `IN_PROGRESS`, response **may** reach client **after** submit started but **only** if submit had not yet acquired attempt lock; if submit commits first, hint path **denies** at step 7. **Do not** promise global ordering of packets on the wire.
+
+**Every new GET** repeats steps 1–7. **Cached/replayed** responses are not authorization.
+
+**Membership TOCTOU:** Same as ADR-058 — prior authorized command may complete; **subsequent** hint GETs fail once revocation observed at step 1.
+
+| Race | Expected |
 |------|----------|
-| Submit commits, then new hint GET | **Deny** |
-| Hint GET re-read sees `SUBMITTED` before response | **Deny** |
-| Hint GET returned 200, then submit | **No server erasure**; next GET **deny** |
-| Membership revoked between two hint GETs | First may succeed if still current; second **deny** |
-| Assignment CLOSED/CANCELLED | **Deny** |
-| Stale browser cache of hint response | `Cache-Control: private, no-store`; cache **not** authority |
+| Submit commits, then new hint GET | **Deny** at step 7 |
+| Assignment cancel/close during locked read | **Deny** at step 3/7 |
+| Two GETs; submit between them | First **may** 200; second **deny** |
+| Revocation between GETs | Second **deny** at step 1 |
+| Client replay after submit | **Deny** on server re-check |
 
-**Browser caching:** `Cache-Control: private, no-store` on hint responses (proposal); hints **must not** rely on localStorage/service worker persistence for authorization.
+**Caching:** `Cache-Control: private, no-store` on hint responses.
 
 ### 9. Conceptual OpenAPI / DTO (proposal — NOT AUTHORIZED)
+
+**Dec18 endpoint shape (O63-07 selected):** **`GET /api/v1/learning/attempts/{attempt_id}/learner-hints`** returning all allowlisted hints for the attempt (optional future per-question sub-path — **deferred**).
 
 **Ingress:** Student JWT; `effective_actor` = learner; Learning domain.
 
@@ -375,12 +451,12 @@ Hint GET is **read-only** but **not authorization-free**. It does **not** inheri
 
 | Phase | Packet | Gate |
 |-------|--------|------|
-| **T0** | Teacher hint authoring UI + **O63-02 frozen** capability checks + audit | Authorized human can create hint-bearing **draft version** |
-| **T1a** | Register `worksheet@2` + Content review/publish | Approved published `@2` with hints |
-| **T1b** | Learning `@2` learner-safe projection + response validation | Student can open/submit `@2` worksheet **without** hints on assignment GET |
-| **T1c** | Assessment `@2` exact-content evaluation adapter | Post-submit evaluate → Teacher Improve path works for `@2` |
-| **T2** | **O63-03 frozen** semantic QA + fail-closed publish | No mechanical answer/explanation leaks ship |
-| **B** | Learning hint GET + §8.1 concurrency + OpenAPI + race/membership negative tests | SUBMITTED/NOT_STARTED/revocation/replay denied |
+| **T0** | Teacher hint UI + **O63-02** domain command on `content.version.create` | Owner + class_ref + kernel grant enforced |
+| **T1a** | Register `worksheet@2` + attestation storage + review/publish gates | §5.3 attestation required |
+| **T1b** | Learning `@2` learner-safe projection + response validation | Student open/submit `@2` |
+| **T1c** | Assessment `@2` exact-content evaluation adapter | Evaluate → Improve |
+| **T2** | **O63-03** mechanical blocks + attestation UX | Fail-closed approve/publish |
+| **B** | `GetLearnerHintsService` §8.2 + list GET + race negatives | Lock order matches submit |
 | **F** | Student AttemptPage affordance | UI only when server returns hints |
 | **E2E** | SP02A adversarial + schema convergence suite | Architectural tests implemented — runtime PASS separate |
 
@@ -395,14 +471,34 @@ Hint GET is **read-only** but **not authorization-free**. It does **not** inheri
 | ID | Topic | Status |
 |----|-------|--------|
 | O63-01 | Optional field on worksheet@2 vs parallel schema registry naming | **PROPOSED** — worksheet@2 preferred |
-| O63-02 | Exact Teacher capability / role gate for hint authoring | **FREEZE-BLOCKING OPEN** — candidate checks in §7; **no silent grant** |
-| O63-03 | Minimum semantic QA acceptance thresholds | **FREEZE-BLOCKING OPEN** — candidate process in §5 |
-| O63-04 | Hint revision policy (edit after publish ⇒ new version only — assumed; confirm at freeze) | **PROPOSED** |
+| O63-02 | Teacher hint authoring authorization | **FREEZE-CANDIDATE SELECTED** — §7.1–§7.2; **FOUNDER RATIFICATION REQUIRED**; **no grant in this workday** |
+| O63-03 | Semantic QA + attestation minimum | **FREEZE-CANDIDATE SELECTED** — §5; **FOUNDER RATIFICATION REQUIRED** |
+| O63-07 | Hint GET shape | **SELECTED** — list GET for Dec18 (§9) |
+| O63-04 | Hint revision after publish | **PROPOSED** — new version only |
 | O63-05 | P2 AI-suggested hints | **DEFERRED** |
 | O63-06 | Quiz/Homework hints | **DEFERRED** |
-| O63-07 | Per-question vs all-hints list GET shape | **OPEN** (either allowed if same gates) |
 
-**Founder freeze must explicitly close O63-02 and O63-03** (or replace with alternate frozen text). Until then: **do not treat ADR-AIEOS-063 as freeze-ready.**
+**Founder ratification** must explicitly adopt §5, §7, and §8.2 (or substitute equivalent frozen text). **Until Founder freeze commit, ADR-AIEOS-063 remains PROPOSED only.**
+
+---
+
+## Founder freeze decision sheet (FR01-14)
+
+**If Founder approves ADR-AIEOS-063 freeze**, they would be ratifying at minimum:
+
+| # | Policy | Implication |
+|---|--------|-------------|
+| 1 | **O63-02:** `content.version.create` + owner + explicit `authoring_class_ref` + `require_assignable_class_ref` | No new capability name; kernel **tenant grants** still required separately before production |
+| 2 | **Non-owner authors** | **Denied** unless future steward delegation ADR |
+| 3 | **Author ≠ reviewer** when any hint present | Independent `content.review.decide` |
+| 4 | **O63-03:** §5 mechanical blocks + `WorksheetLearnerHintVersionAttestationV1` | Fail-closed approve/publish |
+| 5 | **Hint read §8.2** | Assignment→attempt **`FOR UPDATE`**; linearization at locked re-read |
+| 6 | **worksheet@2 + T1b/T1c** | Full Student→Assessment path mandatory |
+| 7 | **R1 list hint GET** | No hints on assignment DTO |
+
+**Still unauthorized after ADR freeze:** Backend/Frontend implementation, OpenAPI change, kernel grants, UI, provider AI (P2), PR #59 merge, deployment, UAT.
+
+**Residual implementation details (not architecture authority):** attestation storage table vs ReviewDecision attachment; exact similarity flag thresholds; publisher=author when zero hints.
 
 ---
 
