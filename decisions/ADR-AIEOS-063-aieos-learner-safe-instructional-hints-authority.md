@@ -15,7 +15,7 @@ reviewers:
 
 **Status:** **PROPOSED / CHIEF REVIEW PENDING / FOUNDER FREEZE REQUIRED**  
 **Freeze readiness:** **FREEZE-CANDIDATE POLICIES SELECTED — FOUNDER RATIFICATION REQUIRED** (O63-02 §7, O63-03 §5, concurrency §8.2). **NOT FROZEN / NOT IMPLEMENTED.** This workday **does not grant** kernel capabilities or merge PR #59.  
-**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → **SP02-FR01** ([Issue #60](https://github.com/eduvijna-ai/eduvijna-architecture/issues/60)).  
+**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → SP02-FR01 (`1501668…`) → **SP02-FR01R1** (Chief contract hold).  
 **Implementation:** **NOT AUTHORIZED**  
 **Date:** 2026-11-03  
 **Revision:** SP02R1 corrective deposit (Chief exact-head review 2026-11-03)  
@@ -71,8 +71,8 @@ Pinned Backend `WorksheetV1` (`education.worksheet@1`, `src/aieos/domains/educat
 | Current ClassRef (Teaching) | `SchoolContextClassAuthority.require_assignable_class_ref` (`domains/teaching/application/school_context.py`) | Bind **explicit** `class_ref` on hint append command |
 | Non-authoritative label | `TeachingWork.class_label` contextual text (`domains/teaching/domain/work.py`) | **Must not** substitute for ClassRef |
 | Submit lock order | `SubmitAttemptService`: `get_assignment_for_update` **then** `attempts.get_for_update` (`domains/learning/application/submit_attempt.py` L146–150) | Hint read §8.2 aligns |
-| Attempt read today | `GetAttemptService.get` — no declared row lock | Hint read requires **new** locked path |
-| Worksheet `@1` only consumers | `education/schema.py`, `learner_projection.py`, `assessment/.../exact_content.py` | §3.1 T1a–T1c |
+| Generic append HTTP | `POST /api/v1/contents/{content_id}/versions` → `HttpAppendContentVersionService` (`routes.py`, `http_append.py`) | **Does not** enforce hint authoring gates — §7.5 closes bypass |
+| Attempt read today | `GetAttemptService.get` — no declared row lock | Hint read requires **new** locked path (§8.2) |
 
 **Derived design** in §5–§8 is **not implemented** at pin. **Future implementation** requires separate engineering authorization and kernel tenant grants where applicable.
 
@@ -137,12 +137,12 @@ Hints are returned **only** when **all** authoritative checks pass at request ti
 
 | In scope (proposal) | Out of scope (proposal) |
 |---------------------|-------------------------|
-| **Worksheet** (`education.worksheet@1` / `WorksheetV1`) only | Quiz / Homework hint schemas unless separately approved |
-| **P1** teacher-authored per-question hints, voluntary | **P2** AI-suggested hints requiring teacher approval — **DEFERRED** |
-| Hints on **new** immutable ContentVersion after review/approve/publish | In-place mutation of committed versions |
-| Server-gated read during **own** `IN_PROGRESS` attempt | Correctness, score, grade, mastery, misconception, personalization |
-| Optional collapsible Student UI affordance when server returns hints | Parent hint reads; Principal learner drill-down |
-| Audit of hint **read disclosure** (conceptual) | Changing Assessment or Parent DTOs |
+| **Worksheet baseline:** existing `@1` assignments unchanged (no hints) | Quiz / Homework hint schemas unless separately approved |
+| **Hint-bearing versions:** new `education.worksheet@2` only | In-place mutation of committed versions |
+| **P1** teacher-authored hints (guarded append + review) | **P2** AI-suggested hints — **DEFERRED** |
+| Server-gated read during own `IN_PROGRESS` attempt | Scores, grades, mastery, retries, personalization |
+| Optional Student UI when server returns hints | Parent / Principal hint disclosure |
+| Audit of hint read disclosure (conceptual) | Changing Assessment or Parent DTOs |
 
 ### 2. Authority / SoR table (proposal)
 
@@ -151,7 +151,7 @@ Hints are returned **only** when **all** authoritative checks pass at request ti
 | Hint **text storage** (canonical) | **ContentVersion** typed payload — Generic Content ([ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md)) |
 | Hint **eligibility for assignment** | **Published** ContentVersion pin on **TeachingAssignment** ([ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md)) |
 | Hint **disclosure to student** | **Learning** domain gated read — bound to **LearnerAttempt** ([ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md)) |
-| Teacher **authoring** of hint-bearing versions | **Teacher OS + Content commands** — **NOT IMPLEMENTED** at pin; requires new capability (§7) |
+| Teacher **authoring** of hint-bearing versions | **Guarded Content command** + existing `content.version.create` grant (§7) — **NOT IMPLEMENTED** |
 | Human **review / approve** | **ReviewDecision** on exact version ([ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md) §Review; GCI-G05, GCI-G06) |
 | **Publication** | Explicit publish command; Approved ≠ Published |
 | Answer key / explanation / evaluation | **Not** learner hints; remain excluded from learner projection |
@@ -260,27 +260,40 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 **Do not claim** deterministic lint proves semantic safety. **Paraphrase, pedagogy, distractor implication, and age fit** require **HUMAN** review.
 
-#### 5.3 Version-scoped attestation record (selected model)
+#### 5.3 Version-scoped attestation authority (**selected — FR01R1-F2**)
 
-**Selected:** immutable typed append **`WorksheetLearnerHintVersionAttestationV1`** bound to **exact** `content_version_id` (Content-domain governed record or structured ReviewDecision attachment — implementation detail). **Architecture requirements:**
+**Selected model (normative):** Content-owned **append-only immutable record** in Generic Content authority — conceptual table `content.worksheet_learner_hint_version_attestations` (or equivalent Content aggregate child). **Not** a ReviewDecision free-text attachment; **not** a Review Queue comment.
 
-| Field / rule | Requirement |
-|--------------|-------------|
-| `content_version_id` | Exact version under review |
-| `author_principal_id` | HUMAN who created hint-bearing version |
-| `reviewer_principal_id` | HUMAN who attests safety |
-| **Author ≠ reviewer** | **Required** when **any** `learner_hint` is non-empty |
-| `per_question_outcomes[]` | For each non-empty hint: `question_id`, mechanical `hard_block_clear`, `human_review_pass` |
+**Rejected:** storing attestation only inside ReviewDecision unstructured fields — cannot enforce digest binding independently of APPROVE transaction.
+
+**Record type:** `WorksheetLearnerHintVersionAttestationV1`
+
+| Field | Requirement |
+|-------|-------------|
+| `content_id` | Parent Content aggregate |
+| `content_version_id` | Exact immutable version under review (**unique** attestation per version) |
+| `payload_digest` | **SHA-256** of canonical serialized hint-bearing worksheet `@2` payload (stable ordering) at attestation time |
+| `qa_policy_version` | Frozen string id of mechanical/human checklist (e.g. `O63-03-v1`) |
+| `author_principal_id` | HUMAN who appended the hint-bearing version |
+| `reviewer_principal_id` | HUMAN safety reviewer (**≠ author** when any hint non-empty) |
+| `per_question_outcomes[]` | `{ question_id, hard_block_clear, human_review_pass }` for **each** non-empty hint |
 | `attested_at` | Server timestamp |
-| Immutability | New ContentVersion ⇒ **new** attestation cycle |
 
-**Fail-closed gates:**
+**Immutability:** New ContentVersion ⇒ **new** attestation row required (GCI-G05). No in-place attestation edits.
 
-- `content.review.decide` **APPROVE** **rejected** if attestation missing, stale vs payload digest, or any `human_review_pass=false`.
-- `content.publish` **rejected** if version not **APPROVED** or attestation incomplete.
-- Any change to hint text ⇒ **new ContentVersion** + new attestation (GCI-G05).
+**`content.review.decide` APPROVE (hint-bearing versions):** In the **same database transaction** as exact-version APPROVE:
 
-**Prohibited carriers:** Review Queue free-text comments, TeachingWork notes, Answer Key, Assessment artifacts (GCI-G06).
+1. Load attestation for `content_version_id`.
+2. Recompute `payload_digest` from current immutable version payload; **must equal** stored digest.
+3. Verify `reviewer_principal_id` ≠ `author_principal_id` when any hint present.
+4. Verify all `human_review_pass=true` and mechanical clears.
+5. Only then persist APPROVE.
+
+**`content.publish` (hint-bearing versions):** Re-check: version **APPROVED**; attestation exists; **payload_digest still matches** current version payload; acting principal holds **`content.publish`** (see §7.3 — **not** `content.review.decide`). Idempotent publish replay returns same outcome.
+
+**Legacy / unexpected append paths:** Even if a hint-bearing version existed without guarded append (must not happen post-§7.5), APPROVE and publish **still fail closed** without valid attestation + digest match.
+
+**Prohibited carriers:** Review Queue free-text, TeachingWork notes, Answer Key (GCI-G06).
 
 ### 6. Authorization / visibility matrix (proposal)
 
@@ -341,15 +354,54 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 **ClassRef binding:** `authoring_class_ref` is **provenance metadata** on the version command/recording only; ERP/SIS remains master; Content is **not** a roster SoR.
 
-#### 7.3 Review / publish separation (existing capabilities)
+#### 7.3 Review / publish separation (**binding — FR01R1-F4**)
 
-| Step | Capability (existing code vocabulary) | Actor rule |
-|------|--------------------------------------|------------|
-| Submit for review | `content.review.submit` | Author (owner) |
-| Safety attestation + decide | `content.review.decide` | **Reviewer ≠ author** when any hint present (§5.3) |
-| Publish | `content.publish` | Publisher (may equal author **only** when **zero** hints; otherwise **recommend** separate publisher with decide capability) |
+Capabilities are **distinct** — `content.review.decide` **≠** `content.publish` (Backend `publish.py` authorizes **publisher’s** `content.publish` only).
+
+| Step | Capability | Actor rule (freeze-candidate) |
+|------|------------|-------------------------------|
+| Append hint-free `@2` or `@1` version | `content.version.create` + owner (+ generic append rules) | Owner author |
+| Append **hint-bearing** `@2` | `content.version.create` + §7.2 guarded command only | Owner author + valid `authoring_class_ref` |
+| Submit for review | `content.review.submit` | Owner author |
+| Record attestation + APPROVE | `content.review.decide` | Reviewer **≠ author** when any hint present; §5.3 digest binding in same txn |
+| Publish | `content.publish` | **Current** publisher principal only |
+
+**Who may publish hint-bearing versions (frozen candidate text):**
+
+- Publisher **must** hold **`content.publish`** at publish time (matches existing `publish.py`).
+- Publisher **must not** equal **author** or **reviewer** when any `learner_hint` is non-empty.
+- **Author’s** `content.version.create` grant **need not** still be present at publish — publish authorization is **publisher-centric**, not creator-revalidation (aligns with pinned Backend).
+- Publisher **need not** hold `content.review.decide`.
+- Version **must** be APPROVED with valid §5.3 attestation and matching `payload_digest`.
+
+**Hint-free `@1` / `@2` versions:** Publisher **may** equal author (existing Teacher OS pattern).
+
+**Revocation / suspension matrix (hint-bearing):**
+
+| Event | APPROVE | Publish |
+|-------|---------|---------|
+| Reviewer loses `content.review.decide` before APPROVE | **Deny** | N/A |
+| Attestation missing / digest mismatch | **Deny** | **Deny** |
+| Publisher loses `content.publish` | N/A | **Deny** |
+| Author loses `content.version.create` after append | N/A if already APPROVED | **Allow** if separate qualified publisher |
+| Author suspended at publish | N/A | **Deny** only if author is acting publisher |
+| Publisher suspended at publish | N/A | **Deny** |
+| Reviewer suspended at APPROVE | **Deny** | N/A |
 
 Hints **never** stored in Review free-text, TeachingWork notes, or Answer Key.
+
+#### 7.5 Generic append bypass closure (**FR01R1-F1**)
+
+**Selected invariant:** The existing generic route `POST /api/v1/contents/{content_id}/versions` / `HttpAppendContentVersionService.append` **MUST reject** (validation error, fail closed) any payload where:
+
+- `schema_id == education.worksheet@2` **and**
+- **any** question contains a **non-empty** `learner_hint`.
+
+**Only** the guarded domain command `AppendWorksheetLearnerHintsContentVersion` (§7.2) may create hint-bearing `@2` versions. Hint-free `@2` and all `@1` appends may continue via generic append subject to existing Content rules.
+
+**Defense in depth:** `content.review.decide` APPROVE and `content.publish` **independently** require §5.3 attestation + `payload_digest` match for hint-bearing versions **regardless of append entry path**.
+
+**Future negative tests:** direct HTTP generic append with hints → **400/403**; guarded command → success path; APPROVE without attestation → deny even if version exists.
 
 #### 7.4 Minimal Teacher path (unchanged flow, gated)
 
@@ -368,36 +420,49 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 - No retroactive recall of a **completed** 200 hint response body.
 - No “exactly one of hint GET or submit wins HTTP race” without reference to lock timing.
 
-#### 8.2 Selected hint-read contract (implementable)
+#### 8.2 Selected hint-read contract (**FR01R1-F3** — mirrors `submit_attempt.py`)
 
-**Service (conceptual):** `GetLearnerHintsService` in Learning, **single DB transaction** per request:
+**Ingress:** `GET …/attempts/{attempt_id}/learner-hints` — **only** `attempt_id` from client. **No** caller-supplied `teaching_assignment_id` or `class_ref` as authority.
+
+**Phase A — trusted preview (no row locks):**
 
 | Step | Action |
 |------|--------|
-| 1 | External **School Context learner membership** check (same port family as submit) — if deny/unavailable → **fail closed**, no hint body |
-| 2 | **`get_assignment_for_update(teaching_assignment_id)`** — same lock order as submit (**assignment first**) |
-| 3 | Validate assignment consumable (ACTIVE, not cancelled/closed) |
-| 4 | **`attempts.get_for_update(attempt_id)`** — **row exclusive lock**, same mode as submit |
-| 5 | Owner tenant, `lifecycle_state == IN_PROGRESS`, attempt matches assignment, exact `content_version_id` pin |
-| 6 | Load hint allowlist from ContentVersion payload (Content read **inside** transaction **after** attempt lock) |
-| 7 | **Authorization linearization point:** **re-read** `lifecycle_state` on **still-locked** attempt row; if not `IN_PROGRESS` → **deny** (no body) |
-| 8 | Emit allowlisted DTO; commit (release locks) |
+| A1 | Tenant-scoped **preview** load of attempt by `attempt_id` (same family as submit preview) |
+| A2 | ACTIVE HUMAN + **owner** check (`learner_principal_id`) |
+| A3 | Capture **stored** `teaching_assignment_id`, `class_ref`, `content_version_id` from attempt row — **not** client cache |
+| A4 | External **School Context learner membership** using preview `class_ref` — deny/unavailable → fail closed |
 
-**Interaction with submit:** Submit uses **identical** assignment-then-attempt **`FOR UPDATE`** order. Concurrent hint GET and submit **serialize** on attempt row; whichever transaction commits second observes terminal state and **must deny** hint emission at step 7.
+**Phase B — single DB transaction (lock order = submit):**
 
-**In-flight completed 200:** If step 8 committed while `IN_PROGRESS`, response **may** reach client **after** submit started but **only** if submit had not yet acquired attempt lock; if submit commits first, hint path **denies** at step 7. **Do not** promise global ordering of packets on the wire.
+| Step | Action |
+|------|--------|
+| B1 | Re-read attempt; verify preview identity still matches (no drift) |
+| B2 | **`get_assignment_for_update(preview.teaching_assignment_id)`** |
+| B3 | Assignment consumable (ACTIVE; not cancelled/closed) |
+| B4 | **`attempts.get_for_update(attempt_id)`** |
+| B5 | Revalidate owner; attempt matches locked assignment; `content_version_id` equals preview; `class_ref` equals preview |
+| B6 | `lifecycle_state == IN_PROGRESS` |
+| B7 | Load hint allowlist from ContentVersion (after locks held) |
+| B8 | **Authorization linearization point:** re-read `lifecycle_state` on locked attempt; if not `IN_PROGRESS` → **deny** |
+| B9 | Emit allowlisted DTO; **commit** (release locks) before completing HTTP |
 
-**Every new GET** repeats steps 1–7. **Cached/replayed** responses are not authorization.
+**New request vs in-flight:** Each HTTP GET runs Phase A+B. A response whose transaction **committed** at B9 while authorized **may** complete after a concurrent submit started; **subsequent** GETs run Phase A+B again and **deny** once attempt is `SUBMITTED` or membership fails. **No** ERP atomicity; **no** guaranteed packet arrival order.
 
-**Membership TOCTOU:** Same as ADR-058 — prior authorized command may complete; **subsequent** hint GETs fail once revocation observed at step 1.
+**Interaction with submit:** Identical assignment→attempt **`FOR UPDATE`** order; concurrent operations serialize on attempt row.
 
 | Race | Expected |
 |------|----------|
-| Submit commits, then new hint GET | **Deny** at step 7 |
-| Assignment cancel/close during locked read | **Deny** at step 3/7 |
+| Submit commits, then new hint GET | **Deny** at B8 |
+| Preview/class_ref drift before lock | **Deny** at B5 |
+| Assignment cancel/close during locked read | **Deny** at B3/B8 |
 | Two GETs; submit between them | First **may** 200; second **deny** |
-| Revocation between GETs | Second **deny** at step 1 |
-| Client replay after submit | **Deny** on server re-check |
+| Revocation between GETs | Second **deny** at A4 |
+| Client replay after submit | **Deny** on fresh Phase A+B |
+
+**Every new GET** repeats Phase A+B. **Cached/replayed** responses are not authorization.
+
+**Membership TOCTOU:** Same as ADR-058 — prior authorized in-flight response may complete; subsequent GETs fail once revocation observed at A4.
 
 **Caching:** `Cache-Control: private, no-store` on hint responses.
 
@@ -488,11 +553,11 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 
 | # | Policy | Implication |
 |---|--------|-------------|
-| 1 | **O63-02:** `content.version.create` + owner + explicit `authoring_class_ref` + `require_assignable_class_ref` | No new capability name; kernel **tenant grants** still required separately before production |
+| 1 | **O63-02:** `content.version.create` + owner + `authoring_class_ref` + guarded append only for hints | §7.5 generic append **rejects** hint payloads |
 | 2 | **Non-owner authors** | **Denied** unless future steward delegation ADR |
-| 3 | **Author ≠ reviewer** when any hint present | Independent `content.review.decide` |
-| 4 | **O63-03:** §5 mechanical blocks + `WorksheetLearnerHintVersionAttestationV1` | Fail-closed approve/publish |
-| 5 | **Hint read §8.2** | Assignment→attempt **`FOR UPDATE`**; linearization at locked re-read |
+| 3 | **Author ≠ reviewer ≠ publisher** when hints present | §7.3 binding rules |
+| 4 | **O63-03:** Content-owned attestation + `payload_digest` + `qa_policy_version` | §5.3; APPROVE txn + publish recheck |
+| 5 | **Hint read §8.2** | Preview A1–A4 then lock B1–B9 (submit-aligned) |
 | 6 | **worksheet@2 + T1b/T1c** | Full Student→Assessment path mandatory |
 | 7 | **R1 list hint GET** | No hints on assignment DTO |
 

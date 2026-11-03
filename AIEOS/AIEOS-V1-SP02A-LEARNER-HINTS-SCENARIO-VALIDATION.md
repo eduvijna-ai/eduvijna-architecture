@@ -1,7 +1,7 @@
 # AIEOS-V1-SP02A — Learner Hints Scenario Validation
 
 **Status:** **PROPOSED / SCENARIO VALIDATION — CHIEF REVIEW PENDING**  
-**Workday:** AIEOS-V1-SP02-FR01 ([Issue #60](https://github.com/eduvijna-ai/eduvijna-architecture/issues/60)) — freeze-candidate policy resolution on SP02R1 head `e82cd5b…`.  
+**Workday:** AIEOS-V1-SP02-FR01R1 — contract corrections on FR01 head `1501668…`.  
 **Candidate ADR:** [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md) (**PROPOSED / NOT FROZEN**)  
 **Feature name:** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1`  
 **Disclosure pattern under test:** **R1** — `GET /api/v1/learning/attempts/{attempt_id}/learner-hints` (architecture proposal only; **not implemented**)
@@ -33,15 +33,15 @@
 
 ## Summary
 
-**Derivation rule:** Counts are the exact tally of the **Classification** column in rows **SP02-S01 through SP02-S57** below.
+**Derivation rule:** Counts are the exact tally of the **Classification** column in rows **SP02-S01 through SP02-S64** below.
 
 | Classification | Count |
 |----------------|------:|
-| PASS_CANDIDATE | 55 |
+| PASS_CANDIDATE | 62 |
 | CONFLICT | 0 |
 | OPEN | 0 |
 | DEFER | 2 |
-| **Total scenarios** | **57** |
+| **Total scenarios** | **64** |
 
 ---
 
@@ -92,20 +92,27 @@
 | SP02-S41 | Existing assignments remain on `worksheet@1` after `@2` registered | **PASS_CANDIDATE** | GCI-G03; ADR-063 §3.1 | `@1` reader retained; behavior unchanged |
 | SP02-S42 | `@2` assignment GET / attempt resource for Student | **PASS_CANDIDATE** | ADR-063 §3.1 proposed mapper | Prompt/options/type only; **no** hints on normal learner DTO |
 | SP02-S43 | Post-submit Assessment evaluates `@2` with private `answer`/`explanation` | **PASS_CANDIDATE** | ADR-059; ADR-063 §3.1 | Evaluator uses authoring fields; Student hint GET still minimal allowlist |
-| SP02-S44 | Hint GET returns 200, then submit succeeds; client issues **new** hint GET | **PASS_CANDIDATE** | ADR-063 §8.2 | Second GET **deny** at step 7; first 200 **not** retroactively recalled |
-| SP02-S45 | Membership revoked after first hint GET; second hint GET | **PASS_CANDIDATE** | ADR-058 §4 TOCTOU | Second GET **deny** at step 1 |
+| SP02-S44 | Hint GET returns 200, then submit succeeds; client issues **new** hint GET | **PASS_CANDIDATE** | ADR-063 §8.2 | Second GET **deny** at B8; first 200 **not** retroactively recalled |
+| SP02-S45 | Membership revoked after first hint GET; second hint GET | **PASS_CANDIDATE** | ADR-058 §4 TOCTOU | Second GET **deny** at A4 |
 | SP02-S46 | Teacher has `content.version.create` but is **not** `owner_principal_id` | **PASS_CANDIDATE** | ADR-063 §7.2 step 4 | **Deny** (no steward delegation frozen) |
 | SP02-S47 | Teacher owner + grant + valid `authoring_class_ref`; mechanical QA clear | **PASS_CANDIDATE** | ADR-063 §7 | Append **allowed**; review/submit follows |
 | SP02-S48 | Author attempts `content.review.decide` APPROVE on own hint-bearing version | **PASS_CANDIDATE** | ADR-063 §7.3; §5.3 | **Deny** — author ≠ reviewer when hints present |
 | SP02-S49 | Reviewer APPROVE without `WorksheetLearnerHintVersionAttestationV1` | **PASS_CANDIDATE** | ADR-063 §5.3 | **Deny** fail-closed |
-| SP02-S50 | `content.publish` while attestation stale vs payload digest | **PASS_CANDIDATE** | ADR-063 §5.3 | **Deny** |
-| SP02-S51 | Submit transaction holds attempt lock; concurrent hint GET waits then sees `SUBMITTED` | **PASS_CANDIDATE** | ADR-063 §8.2 | Hint **deny** at step 7 |
+| SP02-S50 | `content.publish` while attestation `payload_digest` ≠ current version payload | **PASS_CANDIDATE** | ADR-063 §5.3 | **Deny** |
+| SP02-S51 | Submit transaction holds attempt lock; concurrent hint GET waits then sees `SUBMITTED` | **PASS_CANDIDATE** | ADR-063 §8.2 | Hint **deny** at B8 |
 | SP02-S52 | Hint transaction completes 200 while still `IN_PROGRESS`; submit later; new hint GET | **PASS_CANDIDATE** | ADR-063 §8.2 | New GET **deny**; prior 200 may remain on client |
-| SP02-S53 | Assignment **CANCELLED** during hint GET locked transaction | **PASS_CANDIDATE** | ADR-063 §8.2 step 3/7 | **Deny** |
-| SP02-S54 | `content.version.create` revoked after append, before publish | **PASS_CANDIDATE** | §7 kernel revalidation | Publish **deny** |
-| SP02-S55 | Suspended/inactive HUMAN author at append | **PASS_CANDIDATE** | §7.2 step 1 | **Deny** |
+| SP02-S53 | Assignment **CANCELLED** during hint GET locked transaction | **PASS_CANDIDATE** | ADR-063 §8.2 B3/B8 | **Deny** |
+| SP02-S54 | Author loses `content.version.create` after append; **separate** publisher with `content.publish` publishes hint version | **PASS_CANDIDATE** | ADR-063 §7.3; Backend `publish.py` | **Allow** publish (publisher-centric; author create not re-required) |
+| SP02-S55 | Suspended/inactive HUMAN author at guarded append | **PASS_CANDIDATE** | §7.2 step 1 | Append **deny** |
 | SP02-S56 | MCQ hint contains option string (mechanical hard block) | **PASS_CANDIDATE** | ADR-063 §5.2 | Block before review |
 | SP02-S57 | Full `@2` vertical: assign → attempt → hint GET → submit → evaluate → Improve (architecture) | **PASS_CANDIDATE** | ADR-063 §3.1 T1a–T1c | Requires all adapters; pin today **incomplete** — **not runtime PASS** |
+| SP02-S58 | Direct generic `POST …/contents/{id}/versions` with hint-bearing `@2` payload | **PASS_CANDIDATE** | ADR-063 §7.5 | **Reject** — only guarded append may create hints |
+| SP02-S59 | Hint-bearing version exists without attestation (legacy path); reviewer APPROVE | **PASS_CANDIDATE** | ADR-063 §5.3 defense in depth | **Deny** APPROVE |
+| SP02-S60 | Hint-bearing APPROVED version; publisher lacks `content.publish` | **PASS_CANDIDATE** | ADR-063 §7.3 | Publish **deny** |
+| SP02-S61 | Hint GET with only `attempt_id`; assignment/class from **stored** attempt preview | **PASS_CANDIDATE** | ADR-063 §8.2 Phase A | No client-supplied assignment/class authority |
+| SP02-S62 | Author equals publisher on hint-bearing version publish attempt | **PASS_CANDIDATE** | ADR-063 §7.3 | **Deny** |
+| SP02-S63 | Reviewer loses `content.review.decide` before APPROVE retry | **PASS_CANDIDATE** | §7.3 revocation matrix | **Deny** |
+| SP02-S64 | Suspended/inactive HUMAN **publisher** at publish | **PASS_CANDIDATE** | §7.3 | Publish **deny** |
 
 ---
 
@@ -137,7 +144,12 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 | Missing attestation | S49–S50 | deny |
 | Submit/hint lock race | S22, S51–S52 | §8.2 |
 | Assignment cancel during hint lock | S53 | deny |
-| Revoked capability before publish | S54 | deny |
+| Revoked publisher grant | S60, S64 | deny |
+| Author create revoked; separate publisher | S54 | allow publish |
+| Generic append hint bypass | S58 | reject |
+| Attestation/digest on APPROVE | S49, S59, S50 | deny |
+| Trusted preview hint GET | S61 | Phase A stored fields |
+| Author=publisher hint version | S62 | deny |
 | Full @2 vertical | S57 | T1a–T1c |
 
 ---
@@ -164,9 +176,10 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 
 | Issue | ADR section | Scenario coverage |
 |-------|-------------|-------------------|
-| O63-02 authoring | §7 | S36–S38, S46–S48, S54–S55 |
-| O63-03 QA / attestation | §5 | S18–S19, S48–S50, S56 |
-| Concurrency §8.2 | §8.2 | S22, S33, S44–S45, S51–S53 |
+| O63-02 authoring | §7, §7.5 | S36–S38, S46–S48, S54, S58 |
+| O63-03 QA / attestation | §5.3 | S18–S19, S49–S50, S56, S59 |
+| Concurrency §8.2 | §8.2 | S22, S33, S44–S45, S51–S53, S61 |
+| Review/publish revocation | §7.3 | S48, S54, S60, S62–S64 |
 | worksheet@2 convergence | §3.1 | S39–S43, S57 |
 
 **Founder ratification required** before ADR freeze. **NOT FROZEN** in this deposit.
@@ -177,4 +190,4 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 
 Passing this scenario validation **does not** authorize code, OpenAPI edits, schema registration, UI, merge of ADR-063, or December delivery. **Chief review** of exact PR head → **Founder freeze** → **separate engineering workday**.
 
-**Related STOP line:** `AIEOS-V1-SP02-FR01 — FREEZE-CANDIDATE DESIGN DEPOSITED / CHIEF EXACT-HEAD REVIEW PENDING / PR #59 DRAFT NOT MERGED / ADR-AIEOS-063 NOT FROZEN / PRODUCT CODE NOT AUTHORIZED`.
+**Related STOP line:** `AIEOS-V1-SP02-FR01R1 — FREEZE-CANDIDATE CONTRACT CORRECTION DEPOSITED / CHIEF EXACT-HEAD REVIEW PENDING / PR #59 DRAFT NOT MERGED / ADR-AIEOS-063 NOT FROZEN / PRODUCT CODE NOT AUTHORIZED`.
