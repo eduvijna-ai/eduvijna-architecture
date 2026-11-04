@@ -3,11 +3,11 @@ id: AIEOS-PROGRAM-RB01
 title: Full-Scope Requirements Traceability & Programme Rebaseline (Founder No-Scope-Cut)
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: draft
-version: 1.1.0
+version: 1.2.0
 created: 2026-11-04
 last_updated: 2026-11-04
-workday: AIEOS-PROGRAM-RB01-P01R1
-authorization: Founder 2026-11-04 quality-first timeline extension — planning only (Chief RB01R1 correction)
+workday: AIEOS-PROGRAM-RB01-P01R2
+authorization: Founder 2026-11-04 quality-first timeline extension — planning only (Chief RB01R2 correction)
 parent_issue: https://github.com/eduvijna-ai/eduvijna-architecture/issues/62
 draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 ---
@@ -16,9 +16,9 @@ draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 
 **Governance:** **FOUNDER-APPROVED QUALITY-FIRST, NO-SILENT-SCOPE-CUT REBASELINE DIRECTION** ([Issue #62](https://github.com/eduvijna-ai/eduvijna-architecture/issues/62)). **DESIGN / PLANNING ONLY.** No product code, merge, production, or UAT authorized by this correction.
 
-**Prior deposit:** HEAD `ca21ca36214a8be56b5544d8522c6afff95fd1b0` (RB01-P01). **This revision:** RB01-P01R1 per Chief independent review — requirement register, CX01 evidence reconciliation, expanded source-anchored baseline, date/capacity honesty, ADR-063 dependency harmonization.
+**Deposit chain (Git — record exact SHAs in PR completion comment only, not self-referential commit IDs in this file):** P01 initial → R1 correction → **R2 correction (this revision)** on [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63).
 
-**STOP (R1 end-state):** `RB01-P01R1 CORRECTION DEPOSITED / NO SCOPE CUT / EXACT DATES UNVALIDATED ILLUSTRATIVE ONLY / CHIEF RE-REVIEW PENDING / NO PRODUCT CODE AUTHORIZED`
+**STOP (R2 end-state):** `RB01-P01R2 CORRECTION DEPOSITED / NO SCOPE CUT / EXACT DATES UNVALIDATED / CHIEF RE-REVIEW PENDING / NO PRODUCT CODE AUTHORIZED`
 
 ---
 
@@ -27,15 +27,16 @@ draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 | Field | Value |
 |-------|-------|
 | Programme | AIEOS-PROGRAM-RB01 |
-| Packet | **AIEOS-PROGRAM-RB01-P01R1** — Chief-mandated planning correction on draft [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63) |
+| Packet | **AIEOS-PROGRAM-RB01-P01R2** — narrow Chief correction on draft [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63) |
 | Founder authorization | **2026-11-04** (policy unchanged) |
 | Mode | Edit **only** this Markdown file on branch `cursor/aieos-program-rb01-traceability-7b2f` |
-| Previous HEAD | `ca21ca36214a8be56b5544d8522c6afff95fd1b0` |
-| New HEAD | `aee1e2baba732e8f10e10c9316137b931987e1f9` (sole parent `ebd0f5c67550638852c12d32a60d1671b130ae85`) |
+| PR base (`main`) | `ebd0f5c67550638852c12d32a60d1671b130ae85` (post ADR-063 merge) |
+| Prior reviewed deposit | P01 `ca21ca36214a8be56b5544d8522c6afff95fd1b0` → R1 `d3acca7973d6bd11ac993a3ac88753d72a8b4f77` (parent = P01) |
+| R2 parent (expected) | R1 HEAD `d3acca7973d6bd11ac993a3ac88753d72a8b4f77` — **exact new commit SHA reported only in PR comment after push** |
 
 ---
 
-## B — Exact-source gate (re-verified before R1 write)
+## B — Exact-source gate (re-verified before R2 write)
 
 Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `git ls-remote` + `gh pr view`.
 
@@ -53,12 +54,12 @@ Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `g
 
 | PR | State | Draft | Head OID |
 |----|-------|-------|----------|
-| Arch **#63** (this deposit) | OPEN | YES | `ca21ca36214a8be56b5544d8522c6afff95fd1b0` → updates on R1 push |
+| Arch **#63** (this deposit) | OPEN | YES | Base `ebd0f5c…`; tip moves with additive commits (see PR, not self-SHA in file) |
 | Arch **#59** ADR-063 | MERGED | — | `097caebe2a18d3cd195aa996d05e1a910200e310` → merge `ebd0f5c…` |
 | Arch **#57, #55, #53, #51** | OPEN | YES | Issue #62 historical heads |
 | Product **#3** | OPEN | YES | `90511df0358dcee1236adcde73659bfb2be95e37` |
 
-**Gate:** **PASS** — R1 write authorized.
+**Gate:** **PASS** — R2 write authorized.
 
 **Architecture Actions:** `.github/workflows/.gitkeep` only — **NO CI CONFIGURED** on this repo.
 
@@ -69,8 +70,9 @@ Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `g
 | Field | Value |
 |-------|-------|
 | Branch | `cursor/aieos-program-rb01-traceability-7b2f` |
-| Sole parent | `ebd0f5c67550638852c12d32a60d1671b130ae85` |
-| Diff | **One file only:** this document |
+| PR merge base | `ebd0f5c67550638852c12d32a60d1671b130ae85` (Architecture `main`) |
+| Deposit ancestry | P01 → R1 → R2 additive commits; **each correction’s parent is the prior deposit HEAD** |
+| Diff vs `main` | **One file only:** this document |
 
 ---
 
@@ -97,6 +99,21 @@ Separate columns where noted: **`Baseline@pin`** · **`Verification gap`** · **
 ### D.3 — Development vs production taxonomy
 
 Rows tagged **`[DEV]`** belong to development-readiness / V1 critical path. Rows tagged **`[PROD]`** are production-runtime/infra hardening per ADR-AIEOS-029…051 — **out of V1 dev-ready critical path**; frozen architecture ≠ product feature complete.
+
+### D.4 — Scope binding (separate from **Class** — governs commitments & denominators)
+
+| Bind | Meaning | In **agreed feature denominator**? | In **critical-path packet math**? |
+|------|---------|--------------------------------------|-----------------------------------|
+| **APPROVED_AGREED** | Frozen/approved Founder scope with reproducible source | **Yes** (when `[DEV]`) | **Yes** (when not `DONE_VERIFIED`) |
+| **ARCHITECTURE_AUTHORITY_ONLY** | Frozen ADR text on `main`; no product claim | No | No |
+| **FUTURE_CONDITIONAL_ADR** | Requires forward ADR + Founder approval (forbidden today) | No — tracked, not promised | No |
+| **VISION_TO_RATIFY** | Vision / draft — not authorized coding | No | No |
+| **FORBIDDEN_CURRENT_AUTHORITY** | Contradicts frozen ADR (e.g. AIEOS roster SoR vs ADR-062 external master) | **No — not a missing feature** | No |
+| **ROLLUP_NON_ADDITIVE** | Summary row only (phase/hint rollup) | No — do not double-count children | No |
+| **SOURCE_RECONCILIATION** | SRC register / missing GitHub source | No until reconciled | No |
+| **DISCOVERY_DRAFT** | Draft PR backlog (DR01/EX01/SP01) | No until reconciled | No |
+
+**Completion reporting:** **Never** cite `DONE_VERIFIED / 100` as “% of AIEOS complete.” Report **`DONE_VERIFIED` among `APPROVED_AGREED` + `[DEV]` rows only** (§L.2).
 
 ---
 
@@ -160,28 +177,28 @@ Prior P01 dates (e.g. **2027-04-17**, **2027-12-18**) were **Saturday** checkpoi
 
 **Recommended planning bands (pending SRC-04 capacity):** V1 dev-ready **Q1–Q2 2027**; full original agreed scope **H2 2027+** — **PROPOSED / FOUNDER RATIFICATION PENDING**.
 
-### H.3 — Bottom-up effort model (packets — not calendar promises)
+### H.3 — Effort units (**NOTIONAL SENSITIVITY EXAMPLE — cannot set dates**)
 
-**Method:** Count remaining **`NOT_STARTED` / `PARTIAL`** **[DEV]** matrix rows by size (S/M/L); apply **+25% QA/integration buffer** = `ceil(sum × 1.25)` packet-units. **SRC-04:** unknown FTE — scenarios only.
+**Warning:** Counts below are **illustrative S/M/L/XL buckets**, **not** mechanically derived from every §K row (many K rows lack packet IDs; hint sub-packets in K.2 are not sized here; XL rows in K.11–K.14 were omitted in prior P01R1). **Do not use for Founder/client commitments.** **SRC-04** staffing remains a **date-ratification blocker**.
 
-| Phase gate | Representative packets (IDs) | S | M | L | Raw units | +25% buffer |
-|------------|------------------------------|---:|---:|---:|---:|---:|
-| V1 closeout | HINT PK-A…E2E; CX01 residuals; EX01/DR01 reconciliation | 4 | 8 | 5 | 4×1+8×2+5×4=44 | **55** |
-| Experience Depth | K.9–K.10 UX/a11y/Indian-school | 6 | 10 | 2 | 38 | **48** |
-| ERP/School Ops **[DEV]** | K.11 Admin/ERP real | 2 | 6 | 4 | 34 | **43** |
-| EIS/Knowledge | K.12 atomic rows | 3 | 8 | 5 | 42 | **53** |
-| Agents/MCP | K.13 atomic rows | 2 | 6 | 6 | 48 | **60** |
-| Ecosystem | K.14 (**SRC-02**) | 1 | 4 | 4 | 26 | **33** |
+**Unit weights (example only):** S=1 · M=2 · L=4 · XL=8 · buffered = `ceil(raw × 1.25)`.
 
-**Throughput scenarios (illustrative):**
+| Phase (illustrative) | Example S/M/L/XL | Raw | +25% | Maps to K? |
+|----------------------|-------------------|----:|-----:|------------|
+| V1 closeout | 4 / 8 / 5 / 0 | **40** | **50** | **Partial** — qualitative only |
+| Experience Depth | 6 / 10 / 2 / 0 | **34** | **43** | Notional |
+| ERP/School Ops [DEV] | 2 / 6 / 4 / 2 | **46** | **58** | Includes XL Admin/ERP rows |
+| EIS/Knowledge | 3 / 8 / 5 / 2 | **55** | **69** | Includes XL curriculum |
+| Agents/MCP | 2 / 6 / 6 / 2 | **54** | **68** | Includes XL MCP |
+| Ecosystem | 1 / 4 / 4 / 1 | **33** | **42** | SRC-02 dependent |
 
-| Scenario | Assumption | V1 55 units → indicative range |
-|----------|------------|--------------------------------|
-| Serial Cursor | ~1 M-equivalent packet / 5–7 engineering days | **~11–15 weeks** + unknown review latency |
-| Bounded parallel (2 lanes) | 2 non-colliding lanes | **~6–8 weeks** — requires SRC-04 staffing proof |
-| Parallel product+platform | 3+ lanes | **Not modeled** — integration risk high without Chief packet isolation |
+**Throughput translation (example units → time — not calendar promises):**
 
-**Critical path [DEV]:** ADR-063 **PK-HINT-A→E2E** ∥ CX01 **residual verification/UAT** ∥ EX01/DR01 reconciliation → cross-role regression → Experience Depth tranche. **[PROD]** ADR-AIEOS-029…051 **not on** V1 dev-ready critical path.
+- Assume **1 M-equivalent = 2 units** and **~5–7 engineering days per M-equivalent** (single serial lane, excludes review/integration unknowns).
+- **V1 notional 50 units** ≈ **25 M-equivalents** ≈ **125–175 engineering days** ≈ **25–35 five-day workweeks** serial **before** QA/integration/review latency — **not** 11–15 weeks.
+- **Two parallel non-colliding lanes** might halve **eligible** M-equivalents only where dependency DAG allows — **not** a guaranteed 6–8 week calendar; dependencies, staffing (**SRC-04**), and integration gates dominate.
+
+**Critical path [DEV] (qualitative):** ADR-063 hint DAG (§J) ∥ CX01 verification/UAT residuals ∥ EX01/DR01 reconciliation → cross-role regression → later tranches. **[PROD]** off V1 dev CP.
 
 ---
 
@@ -199,29 +216,96 @@ Prior P01 dates (e.g. **2027-04-17**, **2027-12-18**) were **Saturday** checkpoi
 
 ---
 
-## J — ADR-063 dependency graph (harmonized with §K.2; Founder-frozen)
+## J — ADR-063 dependency DAG (Founder-frozen; not a serial fiction)
 
-Logical **backend-first** order (T0 UI **co-designed** but cannot pass end-to-end until Content `@2` + attestation exist):
+**Authority:** `RB01-HINT-ARCH` **DONE_VERIFIED** (architecture on `main` only).
 
-```text
-ADR-063 on main (authority DONE_VERIFIED)
-  → T1  Content education.worksheet@2 registry + protected append + bypass closure (§7.5)
-  → T2  Semantic QA + independent reviewer attestation (human_review_pass)
-  → T1b Learning @2 learner-safe projection (no hints on assignment GET)
-  → T1c Assessment @2 convergence (no leakage)
-  → T0  Teacher authoring UI/API (class-bound, uses T1+T2 gates)
-  → B   Guarded hint GET (FOR UPDATE §8.2) — requires T1b + School Context
-  → F   Student in-attempt UI
-  → E2E SP02-S01…S67 + privacy negatives
+```mermaid
+flowchart TD
+  ARCH[ADR-063 authority on main]
+  T1[T1 Content worksheet@2 registry + protected append + §7.5 bypass closure]
+  T2[T2 Semantic QA + reviewer attestation]
+  T1b[T1b Learning @2 learner-safe projection]
+  T1c[T1c Assessment @2 convergence]
+  T0[T0 Teacher hint authoring UI/API — co-design with T1/T2]
+  B[B Guarded hint GET + FOR UPDATE §8.2]
+  F[F Student in-attempt UI]
+  E2E[E2E SP02 + privacy negatives]
+
+  ARCH --> T1
+  T1 --> T2
+  T1 --> T1b
+  T1 --> T1c
+  T2 --> T0
+  T1 --> T0
+  T1b --> B
+  T2 --> B
+  B --> F
+  T1b --> E2E
+  T1c --> E2E
+  T0 --> E2E
+  B --> E2E
+  F --> E2E
 ```
 
-**First bounded code packet (proposal — NOT AUTHORIZED):** **`PK-HINT-A` = T1 + T2 (backend only)** — registrable `@2`, protected append, review attestation hooks; **explicitly excludes** claiming published hint-bearing content in production use, Student hint GET, or Teacher UI complete. Requires **separate Founder code authorization**. Co-locate T0 UX spec/design only.
+**Parallelism notes:** T1b and T1c both depend on **T1** only (not on each other). **B** requires T1b + School Context + published attested hint version (T2). **T0** follows T1+T2 backend gates but may **co-design** UX/contracts earlier without claiming shippable hint vertical. **E2E** gates on all required lanes.
+
+### PK-HINT-A — first bounded code packet (**proposal — NOT AUTHORIZED**)
+
+| Attribute | Content |
+|-----------|---------|
+| **Scope** | **Backend-only:** register `education.worksheet@2`; extend guarded Content append path with O63 owner/class gates; **fail-closed** negative HTTP tests on generic append bypass (§7.5); staged review attestation hooks for T2 (no Student routes) |
+| **Explicitly excludes** | Published hint-bearing content in client use; Teacher UI completion; hint GET **B**; Student **F**; migrations beyond minimal `@2` registration unless Chief charter says otherwise |
+| **Proof** | Unit/integration tests: schema validation; unauthorized append denied; `@1` unchanged; audit/authorization on append command |
+| **Repos** | Backend (+ OpenAPI snapshot); Product tests as chartered |
+| **STOP** | Separate **Founder code authorization** required; no merge claim from planning doc |
 
 ---
 
 ## K — Requirements matrix
 
-**Column key:** **Class** = implementation status (§D.1) · **Auth** = source authority · **Ev** = evidence @ pin · **Acc** = acceptance criterion (abbrev.)
+**Column key:** **Class** = implementation status (§D.1) · **Auth** = source authority · **Bind** = scope binding (§D.4) · full **Bind** index in **§K.0**
+
+### K.0 — Scope binding index (all matrix Req-IDs)
+
+| Req-ID | Bind |
+|--------|------|
+| RB01-TOS-DEV10 … RB01-S04 (8) | APPROVED_AGREED |
+| RB01-HINT-ARCH | ARCHITECTURE_AUTHORITY_ONLY |
+| RB01-HINT-T1 … RB01-HINT-E2E (8) | APPROVED_AGREED |
+| RB01-CX01-I01R9 … RB01-CX01-I07 (7) | APPROVED_AGREED |
+| RB01-CX01-I08 | APPROVED_AGREED (acceptance gate — docs/UAT, not greenfield code) |
+| RB01-DR01, RB01-EX01, RB01-SP01 | DISCOVERY_DRAFT |
+| RB01-ADR-022 … RB01-ADR-AI-044 (DEV rows) | APPROVED_AGREED (platform `[DEV]` baseline) |
+| RB01-ADR-029 … RB01-ADR-051 (PROD rows) | APPROVED_AGREED (**[PROD]** — out of V1 dev CP) |
+| RB01-PHASE-ED … RB01-PHASE-ECO (5) | ROLLUP_NON_ADDITIVE |
+| RB01-PHASE-FULL | ROLLUP_NON_ADDITIVE |
+| RB01-TOS-LOOP, RB01-TOS-REVIEW, RB01-TOS-AI | APPROVED_AGREED |
+| RB01-TOS-PLAN | VISION_TO_RATIFY |
+| RB01-TOS-A11Y | SOURCE_RECONCILIATION |
+| RB01-TOS-IND | SOURCE_RECONCILIATION |
+| RB01-STU-ATT | APPROVED_AGREED |
+| RB01-STU-HINT | ROLLUP_NON_ADDITIVE (see K.2) |
+| RB01-STU-A11Y | SOURCE_RECONCILIATION |
+| RB01-STU-FB, RB01-STU-MAST | VISION_TO_RATIFY |
+| RB01-PRI-AGG, RB01-PAR-AGG | APPROVED_AGREED |
+| RB01-PRI-DRILL, RB01-PAR-SCORE | FUTURE_CONDITIONAL_ADR (forbidden under frozen ADR-060/061 until forward ADR) |
+| RB01-PRI-UX, RB01-PAR-UX | APPROVED_AGREED |
+| RB01-ADM-S04 | APPROVED_AGREED |
+| RB01-ADM-OS, RB01-ERP-LIVE | APPROVED_AGREED (future `[DEV]` — not S04 synthetic) |
+| RB01-ERP-ROSTER | **FORBIDDEN_CURRENT_AUTHORITY** (not a missing agreed feature; ADR-062 external master) |
+| RB01-EIS-DET | APPROVED_AGREED |
+| RB01-EIS-CUR, RB01-EIS-ALIGN | APPROVED_AGREED (programme — source partly DRAFT) |
+| RB01-EIS-ML | SOURCE_RECONCILIATION |
+| RB01-AGT-GW | APPROVED_AGREED |
+| RB01-AGT-MCP, RB01-AGT-SAFE | APPROVED_AGREED (deferred programme) |
+| RB01-AGT-ORCH | VISION_TO_RATIFY |
+| RB01-ECO-SDK, RB01-ECO-AN | SOURCE_RECONCILIATION |
+| RB01-ECO-XPLAT | VISION_TO_RATIFY |
+| RB01-QA-E2E, RB01-QA-CI | APPROVED_AGREED |
+| RB01-QA-OBS | SOURCE_RECONCILIATION |
+
+**Index is a discovery register — not a certified exhaustive Founder requirement list.** Rows preserved under **NO_CUT**; binding controls what counts toward commitments and denominators.
 
 ### K.1 — Closed development slices (**do not duplicate code**)
 
@@ -320,7 +404,7 @@ ADR-063 on main (authority DONE_VERIFIED)
 | RB01-PHASE-EIS | EIS + Knowledge | Roadmap APPROVED | NOT_STARTED | See K.12 |
 | RB01-PHASE-AGENT | Agents/MCP | Roadmap + ADR-044 DEFER | NOT_STARTED | See K.13 |
 | RB01-PHASE-ECO | Ecosystem | Roadmap + **SRC-02** | SOURCE_REQUIRED | See K.14 |
-| RB01-PHASE-FULL | Full original dev complete | Roadmap APPROVED | NOT_STARTED | Sum of all agreed REQ rows verified with evidence |
+| RB01-PHASE-FULL | Full original dev complete (rollup) | Roadmap APPROVED | NOT_STARTED | Child REQ rows | **Non-additive summary** | — | — |
 
 ### K.8 — Teacher experience depth **[DEV]** (atomic)
 
@@ -338,7 +422,7 @@ ADR-063 on main (authority DONE_VERIFIED)
 | Req-ID | Title | Auth | Class | Ev | Missing / Acc | Sz | Phase |
 |--------|-------|------|-------|-----|---------------|-----|-------|
 | RB01-STU-ATT | Attempt/submit core | ADR-058 | DONE_VERIFIED | S01 @ pin | — | — | — |
-| RB01-STU-HINT | Learner hints end-to-end | ADR-063 | NOT_STARTED | K.2 rows | PK-HINT-A…E2E | L | V1 |
+| RB01-STU-HINT | Learner hints rollup (detail in K.2) | ADR-063 | NOT_STARTED | K.2 | **Roll-up only** — do not double-count | L | V1 |
 | RB01-STU-A11Y | Student a11y | Product DRAFT | NOT_STARTED | — | Keyboard/screen reader | M | ED |
 | RB01-STU-FB | Governed learner feedback | VISION | NOT_STARTED | — | **TO_RATIFY** — not ADR-059 | L | ED |
 | RB01-STU-MAST | Mastery/personalization | VISION | NOT_STARTED | — | **TO_RATIFY** | L | EIS |
@@ -348,10 +432,10 @@ ADR-063 on main (authority DONE_VERIFIED)
 | Req-ID | Title | Auth | Class | Ev | Missing / Acc | Sz | Phase |
 |--------|-------|------|-------|-----|---------------|-----|-------|
 | RB01-PRI-AGG | Privacy-safe aggregates | ADR-060 | DONE_VERIFIED | S02 @ pin | — | — | — |
-| RB01-PRI-DRILL | Learner drill-down | ADR-060 defer | NOT_STARTED | — | New ADR + Founder | L | **TO_RATIFY** |
+| RB01-PRI-DRILL | Principal learner drill-down | ADR-060 forbid | NOT_STARTED | — | **FUTURE_CONDITIONAL_ADR** only | L | — |
 | RB01-PRI-UX | Principal OS product depth | PA DRAFT | PARTIAL | FE shell | Role UX parity | M | ED |
 | RB01-PAR-AGG | Parent lifecycle vocabulary | ADR-061 | DONE_VERIFIED | S03 @ pin | — | — | — |
-| RB01-PAR-SCORE | Parent evaluation/scores | ADR-061 forbid | NOT_STARTED | — | **TO_RATIFY** if ever | L | **TO_RATIFY** |
+| RB01-PAR-SCORE | Parent evaluation/scores disclosure | ADR-061 forbid | NOT_STARTED | — | **FUTURE_CONDITIONAL_ADR** only | L | — |
 | RB01-PAR-UX | Parent OS product depth | PA DRAFT | PARTIAL | FE shell | Consent/access UX | M | ED |
 
 ### K.11 — Real Admin / ERP **[DEV]** (beyond S04)
@@ -360,8 +444,8 @@ ADR-063 on main (authority DONE_VERIFIED)
 |--------|-------|------|-------|-----|---------------|-----|-------|
 | RB01-ADM-S04 | Four-port non-prod context | ADR-062 | DONE_VERIFIED | S04 @ pin | — | — | — |
 | RB01-ADM-OS | Admin OS product | Roadmap DEFER | NOT_STARTED | — | No admin principal @ pin | XL | ERP |
-| RB01-ERP-LIVE | Production ERP/SIS adapter | ADR-062 defer | NOT_STARTED | — | Real current-authority | XL | ERP |
-| RB01-ERP-ROSTER | AIEOS roster/enrollment SoR | Architecture forbid | NOT_STARTED | — | External master only | L | ERP |
+| RB01-ERP-LIVE | Production ERP/SIS current-authority adapter | ADR-062 defer | NOT_STARTED | — | External master; real integration | XL | ERP |
+| RB01-ERP-ROSTER | ~~AIEOS roster/enrollment SoR~~ **scope trap — not agreed work** | ADR-062 external master | NOT_STARTED | — | **FORBIDDEN:** do not build competing SoR; track **ERP-LIVE** instead | — | — |
 
 ### K.12 — Educational Intelligence & Knowledge
 
@@ -405,7 +489,9 @@ UI-only auth · answer-key/hint leaks · fake ERP · Parent scores · Principal 
 
 ## L — Traceability summary counts
 
-**Rule:** Count every `| RB01-` data row in **§K.1–K.6 and K.8–K.15** (exclude header/separator lines). **§I SRC register counted separately.**
+### L.1 — Implementation **Class** (100 matrix rows)
+
+**Rule:** Count every `| RB01-` data row in **§K.1–K.6 and K.8–K.15**.
 
 | Implementation class | Count |
 |----------------------|------:|
@@ -418,13 +504,27 @@ UI-only auth · answer-key/hint leaks · fake ERP · Parent scores · Principal 
 
 | Register | Count |
 |----------|------:|
-| **SRC-01…SRC-05** (§I) | **5** |
+| **SRC-01…SRC-05** (§I) | **5** (separate from matrix) |
 
-**P01 correction notes:** Prior §L under-counted rows and conflated SRC register with matrix. CX01 W01 **NOT_STARTED** mislabels corrected to **PARTIAL** with I01R9–I07 evidence. **`RB01-HINT-ARCH`:** architecture **DONE_VERIFIED**; engineering **NOT_STARTED** in sibling rows.
+### L.2 — Scope **Bind** (same 100 rows — not additive with Class)
 
-**ADR-063 implementation @ pin:** **NOT STARTED** (zero hint routes @ OpenAPI pin).
+| Bind | Count |
+|------|------:|
+| APPROVED_AGREED | 74 |
+| ARCHITECTURE_AUTHORITY_ONLY | 1 |
+| FUTURE_CONDITIONAL_ADR | 2 |
+| VISION_TO_RATIFY | 5 |
+| FORBIDDEN_CURRENT_AUTHORITY | 1 |
+| ROLLUP_NON_ADDITIVE | 7 |
+| SOURCE_RECONCILIATION | 7 |
+| DISCOVERY_DRAFT | 3 |
+| **Total** | **100** |
 
-**CI:** Architecture repo **NO CI CONFIGURED**. Backend/Frontend CI **not re-run** in RB01R1 — rows may note **EVIDENCE_GAP** where closeout CI not re-verified @ pin.
+Of **APPROVED_AGREED**, **18** are `[PROD]` platform rows (K.5) — **excluded from V1 dev-ready critical path**. Of the remainder, **18** rows are **`DONE_VERIFIED`** (§L.1) — report progress only against **APPROVED_AGREED [DEV]** children, **never** `18/100`.
+
+**ADR-063 product code @ pin:** **NOT STARTED** (hint routes absent @ OpenAPI pin).
+
+**CI:** Architecture repo **NO CI CONFIGURED**. Backend/Frontend CI **not re-run** in RB01R2.
 
 ---
 
@@ -444,4 +544,4 @@ UI-only auth · answer-key/hint leaks · fake ERP · Parent scores · Principal 
 
 ---
 
-**End RB01-P01R1 — await Chief exact-head re-review; no date ratified; no code authorized.**
+**End RB01-P01R2 — await Chief exact-head re-review; no date ratified; no code authorized.**
