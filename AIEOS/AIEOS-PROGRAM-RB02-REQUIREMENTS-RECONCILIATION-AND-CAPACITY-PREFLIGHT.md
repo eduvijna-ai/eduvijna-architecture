@@ -3,10 +3,10 @@ id: AIEOS-PROGRAM-RB02
 title: Requirements Reconciliation & Development Capacity Preflight (Founder No-Scope-Cut)
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: draft
-version: 1.0.0
+version: 1.0.1
 created: 2026-11-04
 last_updated: 2026-11-04
-workday: AIEOS-PROGRAM-RB02-P01
+workday: AIEOS-PROGRAM-RB02-P01R1
 authorization: Founder 2026-11-04 — planning only (Issue #64; post RB01 PR #63 merge)
 parent_issue: https://github.com/eduvijna-ai/eduvijna-architecture/issues/64
 parent_register: AIEOS/AIEOS-PROGRAM-RB01-FULL-SCOPE-REQUIREMENTS-TRACEABILITY-AND-REBASELINE.md @ 1fbbc3567f6955b11d3fa24c3bf2258b8f1c1f30
@@ -29,16 +29,17 @@ parent_register: AIEOS/AIEOS-PROGRAM-RB01-FULL-SCOPE-REQUIREMENTS-TRACEABILITY-A
 | Programme | AIEOS-PROGRAM-RB02 |
 | Founder authorization | **2026-11-04** (“ok, go ahead” after RB01 #63 verified merge) |
 | Mode | **Read-only** investigation on five pinned `main` trees + linked Product/PA/EBP/ADR sources; **write only this file** |
-| Packet | **AIEOS-PROGRAM-RB02-P01** |
+| Packet | **AIEOS-PROGRAM-RB02-P01R1** — narrow evidence/accounting correction (Chief review F1–F3) |
+| Prior deposit (P01) | `99ca38e7a5dca6c14e21ef879a07b2e0059c5198` on [PR #65](https://github.com/eduvijna-ai/eduvijna-architecture/pull/65) |
 | Architecture parent (`main`) | `1fbbc3567f6955b11d3fa24c3bf2258b8f1c1f30` (RB01 PR #63 merge) |
-| Branch (expected) | `cursor/aieos-program-rb02-reconciliation-2488` |
+| Branch | `cursor/aieos-program-rb02-reconciliation-2488` |
 | RB01 merge reviewed head (#63) | `c141edd3c68605c69ada49c6928ec8792f245abd` |
 
 ---
 
-## B — Exact-source gate (re-verified before RB02 write)
+## B — Exact-source gate (re-verified before P01R1 write)
 
-Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr view`, Backend `tools.release.common` digest helpers on shallow clone @ Backend pin.
+Re-verification **2026-11-04 (P01R1)**: `git fetch origin main`, `git ls-remote`, `gh pr view` — all five pins and PR #65 base/head unchanged before this correction.
 
 | Authority | Expected | Verified |
 |-----------|----------|----------|
@@ -61,8 +62,9 @@ Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr
 | Arch **#53** DR01 | OPEN | YES | `70986a013ce776257f739eff6ab89727d6715df9` | Unchanged |
 | Arch **#51** CX01 pack | OPEN | YES | `87725067d3aa9f39dff05e634f71b05d8da85cd0` | Unchanged |
 | Product **#3** | OPEN | YES | `90511df0358dcee1236adcde73659bfb2be95e37` | Unchanged |
+| Arch **#65** RB02 (this deposit) | OPEN | YES | Head `99ca38e…`; base `1fbbc356…` | Owner-open draft; P01R1 moves tip only |
 
-**Gate:** **PASS** — RB02 write authorized.
+**Gate:** **PASS** — P01R1 write authorized.
 
 **Architecture Actions:** `.github/workflows/.gitkeep` only — **NO CI CONFIGURED** on Architecture repo. Backend/Frontend CI **not re-run** in RB02.
 
@@ -73,8 +75,9 @@ Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr
 | Field | Value |
 |-------|-------|
 | Branch | `cursor/aieos-program-rb02-reconciliation-2488` |
-| Sole parent commit | `1fbbc3567f6955b11d3fa24c3bf2258b8f1c1f30` (Architecture `main` @ RB01 merge) |
-| Diff vs `main` | **One file only:** this document |
+| P01 sole parent | `1fbbc3567f6955b11d3fa24c3bf2258b8f1c1f30` |
+| **P01R1 sole direct parent** | `99ca38e7a5dca6c14e21ef879a07b2e0059c5198` |
+| Diff vs `main` | **One file only:** this document (P01 + P01R1 additive edits) |
 | Other repos / draft PRs | **Untouched** |
 
 ---
@@ -83,13 +86,16 @@ Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr
 
 **Pins (read-only):** Backend `637583f42…` · Frontend `569ef8be…` · Product `b4b3048f…` · Infrastructure `a8654e5b…`
 
-**Disposition labels (per row):**
+**Independently counted reconciliation flags (§I.0 — not interchangeable):**
 
-| Label | Meaning |
-|-------|---------|
-| **SOURCE_FOUND** | Reproducible GitHub source located; atomic acceptance may still be **FOUNDER_RATIFICATION_NEEDED** if authority is Draft/Vision |
-| **STILL_SOURCE_REQUIRED** | Programme intent preserved under **NO_CUT**; no authoritative atomic acceptance or external conversation evidence recoverable |
-| **NEEDS_FOUNDER_RATIFICATION** | Direction visible in Draft/Vision/Roadmap; not promoted to **APPROVED_AGREED** without Founder/Product Architecture sign-off |
+| Flag | Meaning |
+|------|---------|
+| **ID_ADDRESSED** | One §I.1 register block exists for the RB01 `SOURCE_RECONCILIATION` ID (**12/12** required) |
+| **RELATED_SOURCE_FOUND (RSF)** | Reproducible **related** GitHub source (Draft/Vision/Roadmap/persona/standards) — **does not** certify an atomic agreed contract |
+| **NO_MATCHING_ATOMIC_SOURCE (NMAS)** | No authoritative atomic acceptance spec at pin (may still have RSF=Y for family/draft material) |
+| **FOUNDER_DECISION_PENDING (FDP)** | Cannot bind **APPROVED_AGREED** until Founder/Product Architecture and/or forward ADR — sub-reason per row |
+
+**Size column:** S/M/L/XL/**UNKNOWN** + **confidence** (`RB01-aligned` / `hypothesis` / `UNKNOWN`) — **planning hypotheses only** while SRC-04 is empty; **not** calendar forecasts.
 
 **Privacy / quality negatives (global):** No answer-key or hint leakage (ADR-063); no Principal learner drill-down or Parent evaluation scores without forward ADR (ADR-060/061); no AIEOS roster/enrollment SoR (ADR-062 external master); tenant isolation and ContentVersion immutability unchanged (ADR-027).
 
@@ -101,7 +107,7 @@ Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr
 
 **Policy (unchanged):** No silent scope cuts; extend dates before quality compromise.
 
-**Real @ pin (development, not production):** Governed Teacher loop through Improve (ADR-057 / TOS-DEV10); Student S01; Principal S02; Parent S03; Admin school-context S04 (synthetic dev provider); CX01 showcase baseline I01R7–I07 with **EVIDENCE_GAP** on fresh CI rerun; ADR-063 **text only** — hint routes absent @ OpenAPI pin.
+**Real @ pin (development, not production):** Governed Teacher loop through Improve (ADR-057 / TOS-DEV10); Student S01; Principal S02; Parent S03; Admin school-context S04 (**four current-authority ports only** @ ADR-062 — not calendar/board/medium read model); CX01 showcase baseline **I01R9–I07** with **EVIDENCE_GAP** on fresh CI rerun; ADR-063 **text only** — hint routes absent @ OpenAPI pin.
 
 **Not claimed:** 100% original agreed AIEOS; Indian-school UX depth; role OS parity; EIS graph/alignment/ML; ecosystem SDK; production observability SLOs; certified staffing throughput.
 
@@ -154,7 +160,7 @@ Re-verification **2026-11-04**: `git fetch origin main`, `git ls-remote`, `gh pr
 
 | Scenario | Assumption | Effect on planning (qualitative) |
 |----------|------------|-----------------------------------|
-| **Serial governed Cursor** | One governed implementation lane; Chief review + Founder UAT serializes | RB01 §H.3 notional **25–35 workweek** V1 band remains **illustrative only**; SRC-04 blocks ratification |
+| **Serial governed Cursor** | One governed implementation lane; **Chief architecture/PR review** serializes merge-ready packets on the dev critical path | RB01 §H.3 notional **25–35 workweek** V1 band remains **illustrative only**; SRC-04 blocks ratification. **Founder human UAT is a separate subsequent gate** (deferred until after development completion) — **not** a prerequisite to *development readiness* |
 | **Bounded two-lane team** | Two non-colliding lanes (e.g. Backend hint DAG ∥ Frontend CX01 verification) where DAG allows | May reduce **eligible** parallel M-equivalents; integration/E2E still serializes; **not** guaranteed 2× calendar speed |
 
 **RB03 proposed acceptance gate (planning stage — not authorized):**
@@ -172,32 +178,203 @@ Per RB01 §J / ADR-063: **Backend-only** `education.worksheet@2` registration, g
 
 ## I — Twelve `SOURCE_RECONCILIATION` reconciliations (RB01 §K.0)
 
-**Summary counts (disposition):**
+### I.0 — Independent accounting (recounted from §I.1 — labels may overlap)
 
-| Disposition | Count |
-|-------------|------:|
-| SOURCE_FOUND (partial — Draft/Vision/Roadmap located) | 12 |
-| STILL_SOURCE_REQUIRED (atomic acceptance or external conversation) | 5 |
-| NEEDS_FOUNDER_RATIFICATION | 12 |
+| Metric | Count | Rule |
+|--------|------:|------|
+| **ID_ADDRESSED** | **12** | Every RB01 `SOURCE_RECONCILIATION` ID has exactly one §I.1 block |
+| **RELATED_SOURCE_FOUND (RSF=Y)** | **9** | Rows with reproducible related GitHub source — **not** 12 atomic contracts |
+| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **5** | STU-A11Y, EIS-CUR, EIS-ALIGN, ECO-SDK, ECO-AN |
+| **FOUNDER_DECISION_PENDING (FDP=Y)** | **12** | All rows remain `SOURCE_RECONCILIATION` bind until ratified |
+| FDP — Product / Experience ratification | **10** | Rows marked **FDP: Product ratify** in §I.1 |
+| FDP — Forward ADR + programme acceptance (atomic) | **2** | EIS-CUR, EIS-ALIGN (**FDP: Forward ADR**) |
+| Promoted to **APPROVED_AGREED** without ratification | **0** | |
+
+**Forbidden misread:** **12 ID_ADDRESSED ≠ 12 RSF=Y ≠ 12 atomic contracts.** Teacher ENG-A11Y does **not** establish Student a11y; TLM packaging OQ does **not** establish SDK; no Founder analytics spec @ pin.
+
+### I.1 — Per-requirement register (Issue #64 fields)
+
+#### RB01-TOS-LOOP
+
+| Field | Value |
+|-------|-------|
+| Original sources | [PA-LOOP-001 `DAILY_LEARNING_LOOP.md`](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/product-architecture/teacher-os/DAILY_LEARNING_LOOP.md) L1–41; [ADR-AIEOS-057](../decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) L36–44; RB01 K.8 |
+| Authority | PA loop **Draft**; ADR-057 **Frozen/Approved** (DEV10 boundary only) |
+| Code / test @ pin | Backend `src/aieos/domains/teaching/` (DEV04–DEV10); tests e.g. `tests/domains/teaching/test_tos_dev10_i04_http_postgres.py` @ `637583f42…`; FE teacher-os shell @ `569ef8be…`; **EVIDENCE_GAP:** loop-complete Product E2E not re-run @ RB02 pin |
+| Acceptance (+ negatives) | **Accept:** named Product E2E or closeout replay proves Intent→Prepare→Teach→Assess→Improve for one governed scenario; tenant-safe; no cross-class leakage. **Reject:** broken stage handoff; answer-key surfacing in teacher primary UI |
+| Size | **M** · confidence **RB01-aligned** |
+| Prerequisite / next packet | Ratify PA-LOOP-001; SRC-03 Indian mission brief; Experience Depth tranche |
+| Unresolved | Observe nav (TLM-001 OQ #4); PPT/sketch/week-plan gaps in PA table |
+| Owner / domain | Product Architecture · Teacher OS |
+| Next gate | Founder SRC-03 + PA sign-off |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify** |
+
+#### RB01-TOS-A11Y
+
+| Field | Value |
+|-------|-------|
+| Original sources | [ENG-A11Y-001](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/engineering/ACCESSIBILITY_STANDARDS.md) L9–36; [ENGINEERING_CONSTITUTION.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/engineering/ENGINEERING_CONSTITUTION.md) L109 |
+| Authority | Engineering standards **Draft** — not frozen ADR |
+| Code / test @ pin | FE `src/features/teacher-os/teach/execution.a11y.test.tsx` (TOS-DEV07-I03 Teach); docs cite `tosDev02.a11y.test.tsx` — **EVIDENCE_GAP:** Mission + Review Queue + primary nav axe CI @ pin **NOT_CHECKED** in RB02 |
+| Acceptance (+ negatives) | **Accept:** ENG-A11Y surfaces pass axe in CI + keyboard pass recorded; WCAG AA contrast on primary CTAs. **Reject:** icon-only controls without names; lifecycle by colour alone |
+| Size | **M** · **RB01-aligned** |
+| Prerequisite / next packet | Approve ENG-A11Y-001 as binding; FE CI axe expansion packet |
+| Unresolved | AA vs AAA; waiver policy |
+| Owner / domain | Frontend + Product |
+| Next gate | Product Architecture approves ENG-A11Y-001 |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify** |
+
+#### RB01-TOS-IND
+
+| Field | Value |
+|-------|-------|
+| Original sources | [school-context.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/context/school-context.md) L18–29 (**Draft** — calendar/board/medium); [ADR-AIEOS-062 §4](../decisions/ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md) **four ports only** |
+| Authority | Product context **Draft**; ADR-062 **Frozen** — **does not** authorize calendar/board/medium API |
+| Code / test @ pin | Backend [`DevelopmentCoherentSchoolContextProvider`](https://github.com/eduvijna-ai/eduvijna-aieos-backend/blob/637583f42b7c475ef83f6f99bca7e65e665a253d/src/aieos/development/coherent_school_context.py) — ClassRef / membership / Principal scope / Parent learner access only; tests `tests/development/test_aieos360_s04_i01_coherent_school_context.py`, `test_aieos360_s04_i02_architecture.py` @ `637583f42…` — **no** term/holiday/board/medium contract |
+| Acceptance (+ negatives) | **Future (post forward ADR/port):** governed **institutional read-model** (or ERP-LIVE adapter) exposes term/holiday/board/medium to Teacher OS without widening ADR-062 four ports; teacher does not re-type institutional facts. **Reject:** silently extending S04 ports; competing roster SoR (ADR-062 external master). **Today @ pin:** assert only four-port coherence — **not** Indian calendar UX complete |
+| Size | **M** · **hypothesis** (UX) + **XL** if new port/adapter (**UNKNOWN** split until ADR) |
+| Prerequisite / next packet | SRC-03 ratification → **separate** architecture decision for institutional read-model / ERP-LIVE; **not** S04 port expansion by implication |
+| Unresolved | ERP field SoT (TLM-001 OQ #3); vernacular-medium P0 (OQ #7) |
+| Owner / domain | Product + Architecture (Admin/ERP programme) |
+| Next gate | Forward ADR for read-model; ERP-LIVE charter |
+| RSF / NMAS / FDP | **Y** (Draft product intent) / **Y** (no atomic port spec) / **Y — Product ratify + forward ADR** |
+
+#### RB01-STU-A11Y
+
+| Field | Value |
+|-------|-------|
+| Original sources | ENG-A11Y-001 scope = Teacher OS only @ Product pin; **no** Student ENG-A11Y addendum |
+| Authority | **No matching atomic standard** — constitution principles only |
+| Code / test @ pin | FE `src/features/student-os/` routes @ `569ef8be…`; **EVIDENCE_GAP:** no `*.a11y.test.tsx` under student-os @ pin; **NOT_CHECKED** |
+| Acceptance (+ negatives) | **Accept:** Student assign→attempt→submit keyboard-complete; focus order; no PII in AT labels; timed-attempt policy documented. **Reject:** focus trap without policy; hint/answer leakage via AT (ADR-063 posture) |
+| Size | **M** · **hypothesis** |
+| Prerequisite / next packet | Founder approves Student scope on ENG-A11Y-001 + FE axe tests |
+| Unresolved | Parity target with Teacher; accommodation rules |
+| Owner / domain | Product + Frontend |
+| Next gate | Product Architecture addendum |
+| RSF / NMAS / FDP | **N** / **Y** / **Y — Product ratify** |
+
+#### RB01-PRI-UX
+
+| Field | Value |
+|-------|-------|
+| Original sources | [personas/principal.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/personas/principal.md) (**Draft**); ADR-060 frozen aggregates |
+| Authority | Persona **Draft**; S02 API **Frozen** |
+| Code / test @ pin | FE `src/features/principal-os/school-intelligence/` + `school-intelligence.page.test.tsx`; Backend principal-os OpenAPI @ pin; S02 programme closeout cited RB01 K.1 — **EVIDENCE_GAP:** UX-depth UAT @ pin |
+| Acceptance (+ negatives) | **Accept:** privacy-safe school intelligence IA; empty/error states; **no** learner drill-down rows. **Reject:** individual learner identifiers/scores (ADR-060); cross-tenant scope bleed |
+| Size | **M** · **RB01-aligned** |
+| Prerequisite / next packet | SRC-03 role-depth brief → Experience Depth FE packet |
+| Unresolved | Hindi/English copy (SRC-03) |
+| Owner / domain | Product Architecture · Principal OS |
+| Next gate | SRC-03 ratification |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify** |
+
+#### RB01-PAR-UX
+
+| Field | Value |
+|-------|-------|
+| Original sources | [personas/parent.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/personas/parent.md); ADR-061 |
+| Authority | Persona **Draft**; ADR-061 **Frozen** |
+| Code / test @ pin | FE `src/features/parent-os/` + `parent-home.page.test.tsx`, `parent-child.page.test.tsx`; S03 API @ pin — **EVIDENCE_GAP:** consent/copy depth vs persona |
+| Acceptance (+ negatives) | **Accept:** ADR-061-permitted lifecycle vocabulary only; teacher-approved comms drafts. **Reject:** `EVALUATION_EXISTENCE=NO` violations; score disclosure |
+| Size | **M** · **RB01-aligned** |
+| Prerequisite / next packet | SRC-03 multilingual/comms scope → Experience Depth |
+| Unresolved | Multilingual parent drafts vs ADR-061 |
+| Owner / domain | Product Architecture · Parent OS |
+| Next gate | SRC-03 + PAR-SCORE remains forbidden |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify** |
+
+#### RB01-EIS-CUR
+
+| Field | Value |
+|-------|-------|
+| Original sources | [AIEOS-ROADMAP.md](AIEOS-ROADMAP.md) EIS family; [PRODUCT_VISION.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/vision/PRODUCT_VISION.md) **Draft** |
+| Authority | Roadmap family **Approved**; competency graph **not frozen** |
+| Code / test @ pin | **NOT_STARTED** @ Backend pin — no curriculum graph SoR module; **EVIDENCE_GAP** |
+| Acceptance (+ negatives) | **Accept (post ADR):** tenant-scoped graph SoR; import for one board/grade pilot; no shadow roster. **Reject:** cross-tenant graph reads; auto student profiling without policy |
+| Size | **XL** · **RB01-aligned** |
+| Prerequisite / next packet | Forward ADR (SoR + API) → EIS programme charter post-V1 |
+| Unresolved | Native graph vs external CMS; ADR-024 SoR alignment |
+| Owner / domain | Architecture + Product |
+| Next gate | **Forward ADR** + Founder programme acceptance |
+| RSF / NMAS / FDP | **Y** (family) / **Y** / **Y — Forward ADR** |
+
+#### RB01-EIS-ALIGN
+
+| Field | Value |
+|-------|-------|
+| Original sources | Roadmap EIS programme; capability-mapping references — **no** ALIGN ADR or atomic spec @ pin |
+| Authority | Roadmap family only |
+| Code / test @ pin | **NOT_STARTED** — **EVIDENCE_GAP** |
+| Acceptance (+ negatives) | **Accept:** alignment output is reviewable report; teacher approval before publish; ContentVersion path enforced. **Reject:** auto-publish; bypass review queue |
+| Size | **XL** · **hypothesis** |
+| Prerequisite / next packet | EIS-CUR ADR → ALIGN engine programme |
+| Unresolved | ML vs rules-first |
+| Owner / domain | Product + Architecture |
+| Next gate | **Forward ADR** after EIS-CUR |
+| RSF / NMAS / FDP | **Y** (family) / **Y** / **Y — Forward ADR** |
+
+#### RB01-EIS-ML
+
+| Field | Value |
+|-------|-------|
+| Original sources | [NORTH_STAR.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/vision/NORTH_STAR.md) L61; school-context language layer (**Draft**) |
+| Authority | Vision **Draft** / SRC-03 |
+| Code / test @ pin | Backend `StructuredModelGateway` (Fake/Groq dev paths) — **no** governed multilingual product tests @ pin; **EVIDENCE_GAP** |
+| Acceptance (+ negatives) | **Accept:** explicit supported-medium list; human-reviewed parent/artifact language quality rubric. **Reject:** unchecked MT to parents; cross-tenant language profile leakage |
+| Size | **L** · **hypothesis** |
+| Prerequisite / next packet | SRC-03 workshop → content/policy ADR or Product standard |
+| Unresolved | P0 languages for Indian schools |
+| Owner / domain | Founder + Product |
+| Next gate | SRC-03 ratification |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify** |
+
+#### RB01-ECO-SDK
+
+| Field | Value |
+|-------|-------|
+| Original sources | [TLM-001 OPEN_QUESTIONS §Ecosystem](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/reviews/review-packages/TLM-001/OPEN_QUESTIONS.md) — **no** SDK spec |
+| Authority | Open question only — **not** an SDK contract |
+| Code / test @ pin | **NOT_STARTED** — no SDK package in Backend/Frontend/Product @ pin |
+| Acceptance (+ negatives) | **Accept (post scope ADR):** documented SDK boundary, OAuth/tenant model, versioning. **Reject:** marketplace monetization without TO_RATIFY ADR; write access without authz kernel |
+| Size | **XL** · **UNKNOWN** |
+| Prerequisite / next packet | SRC-02 evidence → ecosystem ADR |
+| Unresolved | Packaging narrative (OQ #17) |
+| Owner / domain | Founder / Product |
+| Next gate | SRC-02 checklist |
+| RSF / NMAS / FDP | **N** / **Y** / **Y — Product ratify + SRC-02** |
+
+#### RB01-ECO-AN
+
+| Field | Value |
+|-------|-------|
+| Original sources | **SOURCE_NOT_ACCESSIBLE** @ pin — no Founder analytics spec in governed repos |
+| Authority | **SOURCE_REQUIRED** |
+| Code / test @ pin | **NOT_STARTED** — **EVIDENCE_GAP** |
+| Acceptance (+ negatives) | **Accept (post spec):** Founder read-only ops dashboard; tenant-level aggregates; PII minimization. **Reject:** student-level rows in Founder views |
+| Size | **L** · **UNKNOWN** |
+| Prerequisite / next packet | SRC-02 Founder evidence → Product Architecture brief |
+| Unresolved | Overlap with module analytics |
+| Owner / domain | Founder |
+| Next gate | SRC-02 item |
+| RSF / NMAS / FDP | **N** / **Y** / **Y — SRC-02 + Product ratify** |
+
+#### RB01-QA-OBS
+
+| Field | Value |
+|-------|-------|
+| Original sources | [ENG-OBS-001](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/engineering/OBSERVABILITY_STANDARDS.md); ADR-037 defers prod observability backend |
+| Authority | ENG standards **Draft**; **[PROD]** SLOs separate |
+| Code / test @ pin | Backend audit/correlation patterns (e.g. `platform/security/audit/`); **EVIDENCE_GAP:** `mission.viewed` / ENG-OBS event table emission **NOT_CHECKED** @ pin; no product SLO dashboards |
+| Acceptance (+ negatives) | **DEV:** emit ENG-OBS Teacher OS events PII-safe in dev; smoke latency budgets. **PROD ([PROD] gate):** SLO/alert contract per SRC-05 — out of V1 dev CP. **Reject:** PII in logs; silent publish-without-approved |
+| Size | **M** (DEV instrumentation) · **L** ([PROD] SLO) · **hypothesis** |
+| Prerequisite / next packet | DEV telemetry packet ∥ **[PROD]** observability charter (SRC-05) |
+| Unresolved | DEV vs PROD boundary |
+| Owner / domain | Platform engineering |
+| Next gate | Split DEV vs PROD acceptance |
+| RSF / NMAS / FDP | **Y** / **N** / **Y — Product ratify (DEV) + [PROD] charter** |
 
 *All twelve rows retain programme intent under **NO_CUT**; none removed.*
-
-### I.1 — Reconciliation table
-
-| Req-ID | Original sources (repo @ `b4b3048f…` / Architecture @ pin) | Authority | Implementation @ pin | Missing behavior & acceptance proposal | Unresolved decision | Owner / domain | Next gate | Disposition |
-|--------|--------------------------------------------------------------|-----------|----------------------|----------------------------------------|---------------------|----------------|-----------|-------------|
-| **RB01-TOS-LOOP** | [PA-LOOP-001 `DAILY_LEARNING_LOOP.md`](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/product-architecture/teacher-os/DAILY_LEARNING_LOOP.md) L1–41 (Prepare→Improve); [ADR-AIEOS-057](https://github.com/eduvijna-ai/eduvijna-architecture/blob/1fbbc3567f6955b11d3fa24c3bf2258b8f1c1f30/decisions/ADR-AIEOS-057-aieos-teacher-os-development-complete-experience-authority.md) L36–44 DEV10 loop boundary; RB01 K.8 | PA loop doc **Draft**; ADR-057 **Frozen/Approved** for DEV10 boundary | TOS-DEV04–DEV10 domains @ Backend pin; FE teacher-os nav; DEV10 closeout cited RB01 K.1 | **Accept:** Product E2E proves Intent→Prepare→Teach→Assess→Improve handoffs for **one** governed scenario @ pin; **Indian-school Today’s Mission** copy/calendar/context reflects S04 fields without teacher re-entry (see TOS-IND). **Reject:** generic non-Indian mission text when school context populated; broken stage handoff | Observe as first-class nav vs inside Teach (TLM-001 OQ #4); PPT/sketch/week-plan gaps in PA loop table | Product Architecture + Teacher OS | Ratify PA-LOOP-001 + Indian mission checklist (SRC-03) | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-TOS-A11Y** | [ENG-A11Y-001 `ACCESSIBILITY_STANDARDS.md`](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/engineering/ACCESSIBILITY_STANDARDS.md) L9–36; `ENGINEERING_CONSTITUTION.md` L109 | Engineering **Draft/standards** — not frozen ADR | FE `teacher-os/teach/execution.a11y.test.tsx` @ `569ef8be…`; **EVIDENCE_GAP** for Mission/Queue axe gate on all listed surfaces | **Accept:** axe (or equivalent) in CI for Mission, Review Queue, primary nav; manual keyboard pass recorded; WCAG AA contrast on primary CTAs. **Reject:** icon-only controls without accessible names; lifecycle by colour alone | WCAG **AA vs AAA** for Indian deployments; waiver policy for polish-only changes | Frontend + Product | Approve ENG-A11Y-001 as binding for Experience Depth tranche | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-TOS-IND** | [MODEL-SCHOOL-CONTEXT-001 `context/school-context.md`](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/context/school-context.md) L18–29 calendar/curriculum/language; ADR-062 S04 dev provider @ Backend pin | Product context **Draft**; ADR-062 **Frozen** (external ERP master, dev synthetic) | `DevelopmentCoherentSchoolContextProvider` + S04 E2E @ Backend pin — **not** production Indian calendar UX | **Accept:** Teacher Prepare/Today displays inherited **term/holiday/board/medium** from school context API without manual re-entry; dates respect configured holiday week in dev fixture. **Reject:** teacher must re-type board/term for each generate | Which ERP fields are SoT (TLM-001 OQ #3); vernacular-medium P0 (OQ #7) | Product + Admin/ERP programme | SRC-03 ratification + ERP-LIVE boundary (not roster SoR) | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-STU-A11Y** | ENG-A11Y-001 applies to “All Teacher OS UI” only @ Product pin — **no Student-specific ENG doc**; Student shell @ FE pin | **SOURCE gap** for Student atomic standard; constitution principles only | Student-os routes @ FE pin; **no** dedicated student a11y spec or axe suite found @ pin | **Accept:** extend ENG-A11Y-001 scope to Student attempt/submit flows; keyboard-complete assign→submit; focus order on attempt UI; no PII in AT labels. **Reject:** trap focus in timed attempt without escape policy | Parity with Teacher WCAG target; timed assessment accommodations | Product + Frontend | Founder approves Student a11y addendum to ENG-A11Y-001 | **STILL_SOURCE_REQUIRED** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-PRI-UX** | [Principal persona](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/personas/principal.md); PA DRAFT shells — no frozen Principal PA package @ Product pin | **PA DRAFT** / roadmap family | FE `principal-os` shell + OpenAPI S02 aggregates @ pin (ADR-060) | **Accept:** Principal dashboard presents **privacy-safe** school intelligence with role-appropriate IA (no learner drill-down); loading/error/empty states; Hindi/English labels TBD in SRC-03. **Reject:** individual learner rows or scores | Drill-down forbidden unless forward ADR | Product Architecture | Experience Depth tranche after SRC-03 role-depth brief | **SOURCE_FOUND** (persona only) + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-PAR-UX** | [Parent persona](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/personas/parent.md); ADR-061 lifecycle vocabulary | **PA DRAFT** + ADR-061 **Frozen** | FE `parent-os` + S03 API @ pin | **Accept:** Parent sees ADR-061-permitted lifecycle signals with consent/access copy; multilingual message **draft** surfaces remain teacher-approved only. **Reject:** evaluation scores / existence leaks | Multilingual parent comms scope (jobs-to-be-done) vs ADR-061 | Product Architecture | SRC-03 + PAR-SCORE remain forbidden | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-EIS-CUR** | [AIEOS-ROADMAP.md](AIEOS-ROADMAP.md) post-Dec EIS family; [PRODUCT_VISION.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/vision/PRODUCT_VISION.md) **Draft** | Roadmap **Approved** family; atomic graph **not frozen** | **NOT_STARTED** — no curriculum graph SoR @ Backend pin | **Accept:** ADR defining competency graph SoR, tenant boundaries, read APIs, and **no** automatic student profiling without policy; seed import for **one** board grade pilot. **Reject:** shadow roster or cross-tenant graph leakage | Native graph vs external CMS; alignment to ADR-024 SoR rules | Architecture + Product | Forward ADR + programme charter post-V1 | **SOURCE_FOUND** (family) + **STILL_SOURCE_REQUIRED** (atomic) |
-| **RB01-EIS-ALIGN** | Roadmap EIS programme; capability-mapping references — no ALIGN ADR | Roadmap **Approved** family only | **NOT_STARTED** | **Accept:** alignment job produces **reviewable** mapping report teacher approves before publish; no auto-publish. **Reject:** alignment bypassing ContentVersion review | ML vs rules-first alignment | Product + Architecture | Depends on EIS-CUR ADR | **SOURCE_FOUND** (family) + **STILL_SOURCE_REQUIRED** (atomic) |
-| **RB01-EIS-ML** | [NORTH_STAR.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/vision/NORTH_STAR.md) L61 multilingual; [school-context.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/context/school-context.md) L28 language; jobs-to-be-done multilingual drafts | Vision **Draft** / SRC-03 | Model Gateway Fake/Groq @ dev — **no** governed multilingual product acceptance | **Accept:** defined list of **supported mediums** for generated artifacts + parent drafts with human review; measurable quality rubric per language. **Reject:** unchecked machine translation to parents | Which languages P0 for Indian schools | Founder + Product | SRC-03 ratification workshop | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-ECO-SDK** | TLM-001 [OPEN_QUESTIONS.md](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/reviews/review-packages/TLM-001/OPEN_QUESTIONS.md) §Ecosystem; **no** SDK spec @ Product pin | **SOURCE_REQUIRED** / Vision | **NOT_STARTED** — no public SDK package @ repos @ pin | **Accept:** documented SDK scope (read-only integrations vs write); OAuth/tenant model; versioning — **after** Founder defines ecosystem boundary. **Reject:** marketplace monetization without TO_RATIFY ADR | Staged packaging vs single narrative (OQ #17) | Founder / Product | SRC-02 evidence + ecosystem ADR | **STILL_SOURCE_REQUIRED** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-ECO-AN** | No Founder analytics spec in GitHub @ pin; Product vision mentions analytics engines reused, not Founder cockpit | **SOURCE_REQUIRED** | **NOT_STARTED** | **Accept:** role-gated Founder **read-only** operational dashboard spec (tenants, release health, education quality signals) with PII minimization. **Reject:** student-level analytics in Founder views | Overlap with existing module analytics vs new product | Founder | SRC-02 checklist item | **STILL_SOURCE_REQUIRED** + **NEEDS_FOUNDER_RATIFICATION** |
-| **RB01-QA-OBS** | [ENG-OBS-001 `OBSERVABILITY_STANDARDS.md`](https://github.com/eduvijna-ai/eduvijna-product/blob/b4b3048fb7a6a1c50ae8619dc490743714f2e3e2/engineering/OBSERVABILITY_STANDARDS.md) L9–54; ADR-037 defers prod observability backend | Engineering standards **Draft**; **[PROD]** observability ADR family separate | Partial structured logging patterns @ Backend; **no** product SLO dashboards @ pin | **Accept (DEV tranche):** Teacher OS telemetry events in ENG-OBS-001 table emitted with PII-safe fields in dev; smoke on mission p95. **Accept ([PROD]):** SLO/alert contract per SRC-05 — **out of V1 dev CP**. **Reject:** PII in logs; publish-without-approved alert silence | DEV vs PROD observability boundary | Platform + **[PROD]** charter | Split acceptance: DEV instrumentation vs PROD SLO gate | **SOURCE_FOUND** + **NEEDS_FOUNDER_RATIFICATION** |
 
 ---
 
@@ -235,7 +412,7 @@ Per RB01 §J / ADR-063: **Backend-only** `education.worksheet@2` registration, g
 | Theme | Product authority @ pin | Linked Req-IDs | RB02 note |
 |-------|-------------------------|----------------|-----------|
 | Daily loop / Mission | PA-LOOP Draft; vision TEACHER_OS Draft | TOS-LOOP | DEV10 implements generic loop; Indian contextual mission **not ratified** |
-| Calendar / periods | school-context Draft | TOS-IND | S04 dev inheritance only |
+| Calendar / periods | school-context Draft | TOS-IND | **Not** implemented as S04 calendar API — requires **forward ADR** read-model / ERP-LIVE |
 | Language / medium | school-context; NORTH_STAR Draft | EIS-ML, PAR-UX (comms) | No governed multilingual acceptance |
 | Board / curriculum | school-context; journeys academic-year Draft | TOS-IND, EIS-CUR | No graph SoR |
 | Accessibility | ENG-A11Y Draft | TOS-A11Y, STU-A11Y | Teacher partial test; Student standard missing |
@@ -288,14 +465,15 @@ Per RB01 §J / ADR-063: **Backend-only** `education.worksheet@2` registration, g
 
 ## L — Traceability summary, blockers, STOP
 
-### L.1 — RB02 reconciliation scorecard
+### L.1 — RB02 reconciliation scorecard (aligned with §I.0)
 
 | Metric | Value |
 |--------|------:|
-| `SOURCE_RECONCILIATION` IDs addressed | **12 / 12** |
-| IDs with reproducible GitHub source (any authority) | **12** |
-| IDs with **STILL_SOURCE_REQUIRED** atomic acceptance | **5** (STU-A11Y, EIS-CUR, EIS-ALIGN, ECO-SDK, ECO-AN) |
-| IDs promoted to **APPROVED_AGREED** without Founder ratification | **0** |
+| **ID_ADDRESSED** | **12 / 12** |
+| **RELATED_SOURCE_FOUND (RSF=Y)** | **9 / 12** |
+| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **5 / 12** |
+| **FOUNDER_DECISION_PENDING (FDP=Y)** | **12 / 12** (10 Product ratify · 2 Forward ADR) |
+| Promoted to **APPROVED_AGREED** without ratification | **0** |
 | Silent scope removals | **0** |
 | Exact delivery dates ratified | **0** |
 | Product code authorized | **0** |
@@ -319,6 +497,6 @@ Architecture **FROZEN** on `main` @ merge `ebd0f5c…`; implementation **NOT STA
 
 ---
 
-**End RB02-P01 — await Chief exact-head review; no date ratified; no merge; no code authorized.**
+**End RB02-P01R1 — await Chief exact-head re-review; no date ratified; no merge; no code authorized.**
 
-**STOP LINE:** `RB02 SOURCE RECONCILIATION/CAPACITY PREFLIGHT DRAFT DEPOSITED / FOUNDER FULL SCOPE PRESERVED / NO EXACT DATES RATIFIED / NO PRODUCT CODE OR PR MERGE AUTHORIZED / CHIEF EXACT-HEAD REVIEW PENDING`
+**STOP LINE:** `RB02-P01R1 EVIDENCE ACCOUNTING CORRECTED / FULL SCOPE PRESERVED / NO EXACT DATES RATIFIED / NO PRODUCT CODE OR PR MERGE AUTHORIZED / CHIEF EXACT-HEAD REVIEW PENDING`
