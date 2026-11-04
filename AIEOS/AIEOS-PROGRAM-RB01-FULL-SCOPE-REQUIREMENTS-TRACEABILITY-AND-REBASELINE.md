@@ -3,11 +3,11 @@ id: AIEOS-PROGRAM-RB01
 title: Full-Scope Requirements Traceability & Programme Rebaseline (Founder No-Scope-Cut)
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: draft
-version: 1.2.0
+version: 1.2.1
 created: 2026-11-04
 last_updated: 2026-11-04
-workday: AIEOS-PROGRAM-RB01-P01R2
-authorization: Founder 2026-11-04 quality-first timeline extension — planning only (Chief RB01R2 correction)
+workday: AIEOS-PROGRAM-RB01-P01R3
+authorization: Founder 2026-11-04 quality-first timeline extension — planning only (Chief RB01R3 record accuracy)
 parent_issue: https://github.com/eduvijna-ai/eduvijna-architecture/issues/62
 draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 ---
@@ -16,9 +16,9 @@ draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 
 **Governance:** **FOUNDER-APPROVED QUALITY-FIRST, NO-SILENT-SCOPE-CUT REBASELINE DIRECTION** ([Issue #62](https://github.com/eduvijna-ai/eduvijna-architecture/issues/62)). **DESIGN / PLANNING ONLY.** No product code, merge, production, or UAT authorized by this correction.
 
-**Deposit chain (Git — record exact SHAs in PR completion comment only, not self-referential commit IDs in this file):** P01 initial → R1 correction → **R2 correction (this revision)** on [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63).
+**Deposit chain (Git — record exact SHAs in PR completion comment only, not self-referential commit IDs in this file):** P01 → R1 → R2 → **R3 (this revision)** on [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63).
 
-**STOP (R2 end-state):** `RB01-P01R2 CORRECTION DEPOSITED / NO SCOPE CUT / EXACT DATES UNVALIDATED / CHIEF RE-REVIEW PENDING / NO PRODUCT CODE AUTHORIZED`
+**STOP (R3 end-state):** `RB01-P01R3 RECORD ACCURACY CORRECTION / NO SCOPE CUT / DATES UNVALIDATED / CHIEF RE-REVIEW PENDING / NO PRODUCT CODE AUTHORIZED`
 
 ---
 
@@ -27,16 +27,16 @@ draft_pr: https://github.com/eduvijna-ai/eduvijna-architecture/pull/63
 | Field | Value |
 |-------|-------|
 | Programme | AIEOS-PROGRAM-RB01 |
-| Packet | **AIEOS-PROGRAM-RB01-P01R2** — narrow Chief correction on draft [PR #63](https://github.com/eduvijna-ai/eduvijna-architecture/pull/63) |
 | Founder authorization | **2026-11-04** (policy unchanged) |
 | Mode | Edit **only** this Markdown file on branch `cursor/aieos-program-rb01-traceability-7b2f` |
-| PR base (`main`) | `ebd0f5c67550638852c12d32a60d1671b130ae85` (post ADR-063 merge) |
-| Prior reviewed deposit | P01 `ca21ca36214a8be56b5544d8522c6afff95fd1b0` → R1 `d3acca7973d6bd11ac993a3ac88753d72a8b4f77` (parent = P01) |
-| R2 parent (expected) | R1 HEAD `d3acca7973d6bd11ac993a3ac88753d72a8b4f77` — **exact new commit SHA reported only in PR comment after push** |
+| Packet | **AIEOS-PROGRAM-RB01-P01R3** — narrow record-accuracy correction |
+| PR base (`main`) | `ebd0f5c67550638852c12d32a60d1671b130ae85` |
+| Prior reviewed deposits | P01 → R1 → R2 (exact SHAs in PR comment only) |
+| R3 direct parent (expected) | R2 HEAD `9198633250e8a6f3e70f03ba7c263ce9557da694` |
 
 ---
 
-## B — Exact-source gate (re-verified before R2 write)
+## B — Exact-source gate (re-verified before R3 write)
 
 Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `git ls-remote` + `gh pr view`.
 
@@ -59,7 +59,7 @@ Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `g
 | Arch **#57, #55, #53, #51** | OPEN | YES | Issue #62 historical heads |
 | Product **#3** | OPEN | YES | `90511df0358dcee1236adcde73659bfb2be95e37` |
 
-**Gate:** **PASS** — R2 write authorized.
+**Gate:** **PASS** — R3 write authorized.
 
 **Architecture Actions:** `.github/workflows/.gitkeep` only — **NO CI CONFIGURED** on this repo.
 
@@ -71,7 +71,7 @@ Re-verification **2026-11-04** (post Chief review): `git fetch origin main` + `g
 |-------|-------|
 | Branch | `cursor/aieos-program-rb01-traceability-7b2f` |
 | PR merge base | `ebd0f5c67550638852c12d32a60d1671b130ae85` (Architecture `main`) |
-| Deposit ancestry | P01 → R1 → R2 additive commits; **each correction’s parent is the prior deposit HEAD** |
+| Deposit ancestry | P01 → R1 → R2 → R3 additive commits |
 | Diff vs `main` | **One file only:** this document |
 
 ---
@@ -112,6 +112,8 @@ Rows tagged **`[DEV]`** belong to development-readiness / V1 critical path. Rows
 | **ROLLUP_NON_ADDITIVE** | Summary row only (phase/hint rollup) | No — do not double-count children | No |
 | **SOURCE_RECONCILIATION** | SRC register / missing GitHub source | No until reconciled | No |
 | **DISCOVERY_DRAFT** | Draft PR backlog (DR01/EX01/SP01) | No until reconciled | No |
+
+**Evidence confidence (R3):** Rows whose **Authority** is `PA DRAFT`, `Product DRAFT`, or **roadmap family only** without atomic frozen/approved acceptance must use **SOURCE_RECONCILIATION** for **Bind** even when the programme direction is preserved under **NO_CUT**.
 
 **Completion reporting:** **Never** cite `DONE_VERIFIED / 100` as “% of AIEOS complete.” Report **`DONE_VERIFIED` among `APPROVED_AGREED` + `[DEV]` rows only** (§L.2).
 
@@ -194,8 +196,9 @@ Prior P01 dates (e.g. **2027-04-17**, **2027-12-18**) were **Saturday** checkpoi
 
 **Throughput translation (example units → time — not calendar promises):**
 
-- Assume **1 M-equivalent = 2 units** and **~5–7 engineering days per M-equivalent** (single serial lane, excludes review/integration unknowns).
-- **V1 notional 50 units** ≈ **25 M-equivalents** ≈ **125–175 engineering days** ≈ **25–35 five-day workweeks** serial **before** QA/integration/review latency — **not** 11–15 weeks.
+- The **50** V1 **buffered** units in the table **already include** the illustrative **+25% QA/integration ceiling** on raw counts — **do not add another 25%** when translating to weeks.
+- Assume **1 M-equivalent = 2 units** and **~5–7 engineering days per M-equivalent** (single serial lane). The **25–35 workweek** band **includes that illustrative buffer**; **additional** Chief review, Founder UAT scheduling, and cross-repo integration latency remain **unmodeled**.
+- **V1 notional 50 units** ≈ **25 M-equivalents** ≈ **125–175 engineering days** ≈ **25–35 five-day workweeks** serial — **not** 11–15 weeks and **not** a feasible date commitment without **SRC-04**.
 - **Two parallel non-colliding lanes** might halve **eligible** M-equivalents only where dependency DAG allows — **not** a guaranteed 6–8 week calendar; dependencies, staffing (**SRC-04**), and integration gates dominate.
 
 **Critical path [DEV] (qualitative):** ADR-063 hint DAG (§J) ∥ CX01 verification/UAT residuals ∥ EX01/DR01 reconciliation → cross-role regression → later tranches. **[PROD]** off V1 dev CP.
@@ -208,7 +211,7 @@ Prior P01 dates (e.g. **2027-04-17**, **2027-12-18**) were **Saturday** checkpoi
 |----|-------|----------------|
 | SRC-01 | Post-Dec family acceptance checklists | Maps to PHASE rows + K.8–K.14 |
 | SRC-02 | External vision / conversations | RB01-ECO-* ; TO_RATIFY list |
-| SRC-03 | Indian-school UX beyond Draft Product docs | RB01-UX-IN-* |
+| SRC-03 | Indian-school UX / role-depth specifics beyond Draft Product docs | `RB01-TOS-IND`, `RB01-TOS-A11Y`, `RB01-TOS-LOOP`, `RB01-STU-A11Y`, `RB01-PRI-UX`, `RB01-PAR-UX`, `RB01-EIS-ML` |
 | SRC-04 | Team capacity / FTE | Section H.3 — **blocks date ratification** |
 | SRC-05 | Production provider spend | **[PROD]** charter only |
 
@@ -280,7 +283,8 @@ flowchart TD
 | RB01-ADR-029 … RB01-ADR-051 (PROD rows) | APPROVED_AGREED (**[PROD]** — out of V1 dev CP) |
 | RB01-PHASE-ED … RB01-PHASE-ECO (5) | ROLLUP_NON_ADDITIVE |
 | RB01-PHASE-FULL | ROLLUP_NON_ADDITIVE |
-| RB01-TOS-LOOP, RB01-TOS-REVIEW, RB01-TOS-AI | APPROVED_AGREED |
+| RB01-TOS-REVIEW, RB01-TOS-AI | APPROVED_AGREED |
+| RB01-TOS-LOOP | SOURCE_RECONCILIATION (programme intent APPROVED; detailed Indian-school UX **SRC-03**) |
 | RB01-TOS-PLAN | VISION_TO_RATIFY |
 | RB01-TOS-A11Y | SOURCE_RECONCILIATION |
 | RB01-TOS-IND | SOURCE_RECONCILIATION |
@@ -290,12 +294,12 @@ flowchart TD
 | RB01-STU-FB, RB01-STU-MAST | VISION_TO_RATIFY |
 | RB01-PRI-AGG, RB01-PAR-AGG | APPROVED_AGREED |
 | RB01-PRI-DRILL, RB01-PAR-SCORE | FUTURE_CONDITIONAL_ADR (forbidden under frozen ADR-060/061 until forward ADR) |
-| RB01-PRI-UX, RB01-PAR-UX | APPROVED_AGREED |
+| RB01-PRI-UX, RB01-PAR-UX | SOURCE_RECONCILIATION (`PA DRAFT` — family UX depth, not atomic approved contract) |
 | RB01-ADM-S04 | APPROVED_AGREED |
 | RB01-ADM-OS, RB01-ERP-LIVE | APPROVED_AGREED (future `[DEV]` — not S04 synthetic) |
 | RB01-ERP-ROSTER | **FORBIDDEN_CURRENT_AUTHORITY** (not a missing agreed feature; ADR-062 external master) |
 | RB01-EIS-DET | APPROVED_AGREED |
-| RB01-EIS-CUR, RB01-EIS-ALIGN | APPROVED_AGREED (programme — source partly DRAFT) |
+| RB01-EIS-CUR, RB01-EIS-ALIGN | SOURCE_RECONCILIATION (roadmap/programme — detailed graph/alignment acceptance not frozen) |
 | RB01-EIS-ML | SOURCE_RECONCILIATION |
 | RB01-AGT-GW | APPROVED_AGREED |
 | RB01-AGT-MCP, RB01-AGT-SAFE | APPROVED_AGREED (deferred programme) |
@@ -404,7 +408,7 @@ flowchart TD
 | RB01-PHASE-EIS | EIS + Knowledge | Roadmap APPROVED | NOT_STARTED | See K.12 |
 | RB01-PHASE-AGENT | Agents/MCP | Roadmap + ADR-044 DEFER | NOT_STARTED | See K.13 |
 | RB01-PHASE-ECO | Ecosystem | Roadmap + **SRC-02** | SOURCE_REQUIRED | See K.14 |
-| RB01-PHASE-FULL | Full original dev complete (rollup) | Roadmap APPROVED | NOT_STARTED | Child REQ rows | **Non-additive summary** | — | — |
+| RB01-PHASE-FULL | Full original dev complete (rollup) | Roadmap APPROVED | NOT_STARTED | Non-additive summary of child REQ rows |
 
 ### K.8 — Teacher experience depth **[DEV]** (atomic)
 
@@ -510,17 +514,17 @@ UI-only auth · answer-key/hint leaks · fake ERP · Parent scores · Principal 
 
 | Bind | Count |
 |------|------:|
-| APPROVED_AGREED | 74 |
+| APPROVED_AGREED | 69 |
 | ARCHITECTURE_AUTHORITY_ONLY | 1 |
 | FUTURE_CONDITIONAL_ADR | 2 |
 | VISION_TO_RATIFY | 5 |
 | FORBIDDEN_CURRENT_AUTHORITY | 1 |
 | ROLLUP_NON_ADDITIVE | 7 |
-| SOURCE_RECONCILIATION | 7 |
+| SOURCE_RECONCILIATION | 12 |
 | DISCOVERY_DRAFT | 3 |
 | **Total** | **100** |
 
-Of **APPROVED_AGREED**, **18** are `[PROD]` platform rows (K.5) — **excluded from V1 dev-ready critical path**. Of the remainder, **18** rows are **`DONE_VERIFIED`** (§L.1) — report progress only against **APPROVED_AGREED [DEV]** children, **never** `18/100`.
+**APPROVED_AGREED [DEV] progress accounting (R3-Q1):** **18** `[PROD]` rows in K.5 are **APPROVED_AGREED** but **off V1 dev CP**. **69 − 18 = 51** `APPROVED_AGREED` **[DEV]** rows after R3 binding corrections (**56** at R2 before five rows moved to **SOURCE_RECONCILIATION**). Intersection with **`DONE_VERIFIED` Class** = **17** (the 18th Class **`DONE_VERIFIED`** is `RB01-HINT-ARCH` = **`ARCHITECTURE_AUTHORITY_ONLY`**). **Forbidden:** treating **17/51**, **17/56**, or **18/100** as unique-feature completion percentages.
 
 **ADR-063 product code @ pin:** **NOT STARTED** (hint routes absent @ OpenAPI pin).
 
@@ -544,4 +548,4 @@ Of **APPROVED_AGREED**, **18** are `[PROD]` platform rows (K.5) — **excluded f
 
 ---
 
-**End RB01-P01R2 — await Chief exact-head re-review; no date ratified; no code authorized.**
+**End RB01-P01R3 — await Chief exact-head re-review; no date ratified; no merge; no code authorized.**
