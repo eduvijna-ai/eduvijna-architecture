@@ -1,8 +1,8 @@
 # AIEOS-V1-SP02A — Learner Hints Scenario Validation
 
-**Status:** **PROPOSED / SCENARIO VALIDATION — CHIEF REVIEW PENDING**  
-**Workday:** AIEOS-V1-SP02-FR01R2 — schema tuple, payload type, decision-sheet consistency on FR01R1 head `198ed77…`.  
-**Candidate ADR:** [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md) (**PROPOSED / NOT FROZEN**)  
+**Status:** **ARCHITECTURE SCENARIO VALIDATION — CHIEF REVIEW PASS / FOUNDER ADR-063 FREEZE APPROVED — NO RUNTIME TESTS**  
+**Workday:** AIEOS-V1-SP02-FZ01 ([Architecture Issue #61](https://github.com/eduvijna-ai/eduvijna-architecture/issues/61)) — architecture freeze-status recording for previously reviewed exact HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`.  
+**Founder-approved ADR:** [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md) (**FROZEN / APPROVED 2026-11-04; PR #59 DRAFT / NOT MERGED**)  
 **Feature name:** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1`  
 **Disclosure pattern under test:** **R1** — `GET /api/v1/learning/attempts/{attempt_id}/learner-hints` (architecture proposal only; **not implemented**)
 
@@ -20,14 +20,14 @@
 
 | Status | Meaning |
 |--------|---------|
-| **PASS_CANDIDATE** | ADR-AIEOS-063 proposal, if frozen and implemented as specified, handles the case without frozen ADR conflict |
+| **PASS_CANDIDATE** | The frozen ADR-063 describes the expected behavior if subsequently implemented; architecture-level assessment only (NOT a runtime PASS) |
 | **CONFLICT** | Would violate a frozen ADR unless Founder revises frozen authority |
 | **OPEN** | Requires freeze-time decision before implementation |
 | **DEFER** | Out of December worksheet-first proposal scope |
 
 **Method:** Static architecture validation against frozen ADRs and pinned repository facts. **No code executed.** Adversarial cases name direct HTTP intent for future E2E.
 
-**Important:** **PASS_CANDIDATE** means the PROPOSED ADR **would** handle the case if frozen and implemented as specified — **not** a executed runtime PASS. **OPEN** scenarios require Founder freeze decisions before implementation.
+**Important:** **PASS_CANDIDATE** means a static architecture-level expected outcome judged consistent with Founder-frozen ADR-063, **not an executed runtime test or product readiness claim**. All future HTTP/E2E scenarios remain to be implemented under a separately authorized workday.
 
 ---
 
@@ -47,7 +47,7 @@
 
 ## Scenario matrix
 
-| ID | Scenario | Class | Source / evidence | Expected outcome (R1 + ADR-063 proposal) |
+| ID | Scenario | Class | Source / evidence | Expected future outcome (frozen ADR-063; not implemented) |
 |----|----------|-------|-------------------|------------------------------------------|
 | SP02-S01 | Eligible student starts worksheet assignment; attempt `IN_PROGRESS`; version contains optional `learner_hint` on Q3 | **PASS_CANDIDATE** | ADR-058 §7–8; ADR-063 §4 | Gated hint GET returns Q3 hint text; assignment GET still has **no** hint fields |
 | SP02-S02 | Same as S01 but question has **no** hint field | **PASS_CANDIDATE** | ADR-063 §3 schema optional | Hint list empty or omits question; Student experience unchanged from today |
@@ -185,7 +185,7 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 | Review/publish revocation | §7.3 | S48, S54, S60, S62–S64 |
 | worksheet@2 convergence | §3.1 | S39–S43, S57 |
 
-**Founder ratification required** before ADR freeze. **NOT FROZEN** in this deposit.
+**Founder freeze approved 2026-11-04** at substantive reviewed PR #59 HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`; the freeze record is on a **draft/unmerged branch**. All 67 scenarios remain architecture-only expectations, not executed tests.
 
 ---
 
@@ -193,4 +193,4 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 
 Passing this scenario validation **does not** authorize code, OpenAPI edits, schema registration, UI, merge of ADR-063, or December delivery. **Chief review** of exact PR head → **Founder freeze** → **separate engineering workday**.
 
-**Related STOP line:** `AIEOS-V1-SP02-FR01R1 — FREEZE-CANDIDATE CONTRACT CORRECTION DEPOSITED / CHIEF EXACT-HEAD REVIEW PENDING / PR #59 DRAFT NOT MERGED / ADR-AIEOS-063 NOT FROZEN / PRODUCT CODE NOT AUTHORIZED`.
+**Related STOP line:** `AIEOS-V1-SP02-FZ01 — ADR-063 FOUNDER FROZEN/APPROVED ON UNMERGED PR #59 / FREEZE RECORD COMMIT EXACT-HEAD VERIFICATION REQUIRED / MERGE NOT AUTHORIZED / PRODUCT CODE NOT AUTHORIZED`.

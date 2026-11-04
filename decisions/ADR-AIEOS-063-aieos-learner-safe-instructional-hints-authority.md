@@ -2,8 +2,8 @@
 id: ADR-AIEOS-063
 title: AIEOS Learner-Safe Instructional Hints Authority
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
-status: proposed
-version: 1.0.0
+status: approved
+version: 1.0.1
 created: 2026-11-03
 last_updated: 2026-11-04
 reviewers:
@@ -13,21 +13,24 @@ reviewers:
 
 # ADR-AIEOS-063 — AIEOS Learner-Safe Instructional Hints Authority
 
-**Status:** **PROPOSED / CHIEF REVIEW PENDING / FOUNDER FREEZE REQUIRED**  
-**Freeze readiness:** **FREEZE-CANDIDATE POLICIES SELECTED — FOUNDER RATIFICATION REQUIRED** (O63-02 §7, O63-03 §5, concurrency §8.2). **NOT FROZEN / NOT IMPLEMENTED.** This workday **does not grant** kernel capabilities or merge PR #59.  
-**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → SP02-FR01 (`1501668…`) → SP02-FR01R1 (`198ed77…`) → **SP02-FR01R2** (schema/decision-sheet consistency).  
+**Status:** **Frozen / Approved — Founder authorization 2026-11-04**  
+**Founder freeze:** **APPROVED 2026-11-04** at independently reviewed exact substantive HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`. O63-02, O63-03, worksheet@2, hint-read §8.2 and privacy boundaries are **frozen architecture authority**, **not implemented**. No kernel grants or PR merge authorized.  
+**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → SP02-FR01 (`1501668…`) → SP02-FR01R1 (`198ed77…`) → SP02-FR01R2 (reviewed `12044afa…`) → **SP02-FZ01 Founder freeze record** ([Issue #61](https://github.com/eduvijna-ai/eduvijna-architecture/issues/61)).  
 **Implementation:** **NOT AUTHORIZED**  
 **Date:** 2026-11-04  
-**Revision:** SP02-FR01R2 contract consistency (Chief FR01R2 hold 2026-11-04)  
+**Revision:** SP02-FZ01 architecture-only Founder freeze recording; normative technical policy unchanged from reviewed HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`.  
+**Chief Architect independent exact-head review:** [FR01R2 — PASS (2026-11-04)](https://github.com/eduvijna-ai/eduvijna-architecture/pull/59#issuecomment-6625686737).  
+**Founder approval provenance:** [Verbatim Founder freeze decision, 2026-11-04](https://github.com/eduvijna-ai/eduvijna-architecture/pull/59#issuecomment-6625754142).  
+**Repository status:** PR #59 **OPEN / DRAFT / NOT MERGED** — a separate exact-head merge authorization is required; freeze approval is not a merge instruction.  
 
-**Founder product-direction authorization (2026-11-03):** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1` is the **approved proposed worksheet-first December 18, 2026 development-ready scope** for this feature family. That authorization permits **this architecture deposit and scenario validation only**. It is **not** ADR freeze, **not** Backend/Frontend/Product implementation authorization, **not** OpenAPI authorization, **not** a production or UAT guarantee, and **not** permission to merge [PR #57 SP01R1](https://github.com/eduvijna-ai/eduvijna-architecture/pull/57).
+**Founder product-direction authorization (2026-11-03):** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1` was approved as the proposed worksheet-first December 18, 2026 development scope. **Separate Founder architecture freeze (2026-11-04): APPROVED** at exact reviewed PR #59 HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`. Both authorizations preserve **December development readiness AT RISK**, and do **not** authorize Backend/Frontend/Product/Infrastructure code, OpenAPI, kernel grants, migrations, provider actions, deployment, UAT, or PR #57/#59 merge.
 
 **Workday:** **AIEOS-V1-SP02** — ADR candidate + scenario validation ([Issue #58](https://github.com/eduvijna-ai/eduvijna-architecture/issues/58)).  
 **Lineage:** [SP01 Issue #56](https://github.com/eduvijna-ai/eduvijna-architecture/issues/56); [SP01R1 PR #57](https://github.com/eduvijna-ai/eduvijna-architecture/pull/57) head `5182f99d028f32bcd55570c5d44f5c1f64ad5277` (read-only; **not merged**); Chief SP01R1 acceptance ([PR #57 comment](https://github.com/eduvijna-ai/eduvijna-architecture/pull/57#issuecomment-6603867945)).
 
 **Related:** [ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md) · [ADR-AIEOS-028](ADR-AIEOS-028-security-audit-mutation-accountability.md) · [ADR-AIEOS-053](ADR-AIEOS-053-aieos-teaching-assignment-classroom-delivery-authority.md) · [ADR-AIEOS-055](ADR-AIEOS-055-aieos-assessment-learning-evidence-authority.md) · [ADR-AIEOS-056](ADR-AIEOS-056-aieos-improve-remediation-authority.md) · [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) · [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) · [ADR-AIEOS-060](ADR-AIEOS-060-aieos-principal-school-intelligence-authority.md) · [ADR-AIEOS-061](ADR-AIEOS-061-aieos-parent-intelligence-learner-access-authority.md) · [ADR-AIEOS-062](ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md)
 
-**Catalogue note:** **PROPOSED** is architecture candidate status only. No frozen ADR is modified by this deposit. **Frozen / Approved ≠ implemented.** December 18, 2026 is a **development readiness target**, not Founder UAT or deployment. **December 18 remains AT RISK** until ADR freeze, teacher authoring journey, schema/review path, semantic QA, gated read API, Student UI, and negative HTTP tests are separately authorized and delivered.
+**Catalogue note:** **Frozen / Approved = ARCHITECTURE AUTHORITY ONLY.** The selected worksheet-first P1 learner hints policy is approved by Founder 2026-11-04; the freeze record is on **unmerged Draft Architecture PR #59**, not yet on `origin/main`. No pre-existing frozen ADR is modified. **Freeze ≠ implementation, CI success, production readiness, merge authorization, or UAT.** December 18, 2026 remains a **development-readiness target AT RISK** until separately authorized teacher authoring, Content/Learning/Assessment worksheet@2 support, guarded hint API, Student UI and adversarial E2E are delivered.
 
 **Exact governed pins (SP02 preflight — 2026-11-03):**
 
@@ -94,9 +97,9 @@ Any hint design that relies on UI hiding, unconditional assignment GET payloads,
 
 ## Alternatives considered
 
-### R1 — Attempt-scoped gated hint GET (**recommended candidate**)
+### R1 — Attempt-scoped gated hint GET (**frozen architecture choice**)
 
-**Proposal:** Introduce a **separate read contract** (conceptual):
+**Frozen architecture contract (not implemented):** Introduce a **separate read contract** (conceptual):
 
 ```http
 GET /api/v1/learning/attempts/{attempt_id}/learner-hints
@@ -125,17 +128,17 @@ Hints are returned **only** when **all** authoritative checks pass at request ti
 **Pros:** Fewer HTTP calls.  
 **Cons:** Easy to regress when DTO fields are reused; couples Content payload parsing to Student OS read façade; higher risk of NOT_STARTED/SUBMITTED leakage via cache, partial projections, or future fields; weaker separation from `LearnerResource` learner-safe rules in [ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) §22.
 
-**Disposition:** **R1 recommended** for freeze candidacy. R2 remains documented as **rejected for primary design** due to leakage and maintenance risk (SP01R1 R1-F1).
+**Disposition:** **R1 selected / Frozen / Approved**. R2 remains documented as **rejected for primary design** due to leakage and maintenance risk (SP01R1 R1-F1).
 
 ---
 
-## Decision proposal
+## Founder-approved architecture decision (implementation not authorized)
 
-**If frozen**, AIEOS adopts **R1** as the authoritative learner hint **disclosure** pattern for **`V1-EXPAND-STUDENT-LEARNER-HINTS-V1`**, with the content, authoring, and lifecycle rules below. Until freeze, this section is **proposal only**.
+**Frozen / Approved 2026-11-04:** AIEOS adopts **R1** as the authoritative learner hint **disclosure** pattern for **`V1-EXPAND-STUDENT-LEARNER-HINTS-V1`**, with the content, authoring and lifecycle rules below. **Architecture authority only; none of these new functions is implemented by this freeze.**
 
 ### 1. Feature boundary (December development target)
 
-| In scope (proposal) | Out of scope (proposal) |
+| Founder-approved architecture scope | Explicit exclusions |
 |---------------------|-------------------------|
 | **Worksheet baseline:** existing `@1` assignments unchanged (no hints) | Quiz / Homework hint schemas unless separately approved |
 | **Hint-bearing versions:** new `education.worksheet@2` only | In-place mutation of committed versions |
@@ -144,7 +147,7 @@ Hints are returned **only** when **all** authoritative checks pass at request ti
 | Optional Student UI when server returns hints | Parent / Principal hint disclosure |
 | Audit of hint read disclosure (conceptual) | Changing Assessment or Parent DTOs |
 
-### 2. Authority / SoR table (proposal)
+### 2. Authority / SoR table (frozen architecture)
 
 | Concern | Authority |
 |---------|-----------|
@@ -158,7 +161,7 @@ Hints are returned **only** when **all** authoritative checks pass at request ti
 | Assessment intelligence | [ADR-AIEOS-059](ADR-AIEOS-059-aieos-learner-assessment-intelligence-teacher-improve-handoff-authority.md) — **no** student-facing evaluation or hint coupling |
 | Parent reads | [ADR-AIEOS-061](ADR-AIEOS-061-aieos-parent-intelligence-learner-access-authority.md) — **no** extension |
 
-**New invariant (proposal):**
+**Frozen invariant:**
 
 ```text
 Authored Instructional Hint  ≠  Answer Key
@@ -175,7 +178,7 @@ IN_PROGRESS Gated Read       ≠  Historic Hint Read after SUBMITTED
 
 **Canonical registry tuple (normative):** Human-readable **`education.worksheet@2`** means Content API fields **`schema_id == "education.worksheet"`** AND **`schema_version == 2`** (Backend pin: `WORKSHEET_SCHEMA_ID` / separate `schema_version` on append — **not** a single `schema_id` literal `@2`).
 
-**Proposal (preferred):** Register **`education.worksheet@2`** as a **forward** schema that adds an **optional** per-question string field:
+**Frozen design (implementation pending):** Register **`education.worksheet@2`** as a **forward** schema that adds an **optional** per-question string field:
 
 ```json
 "learner_hint": "Think about the common denominator."
@@ -187,16 +190,16 @@ IN_PROGRESS Gated Read       ≠  Historic Hint Read after SUBMITTED
 - Adding hints to content that already shipped as v1 ⇒ **new ContentVersion** on the same Content aggregate (GCI-G02), new schema registration, full review cycle, explicit publish.
 - **Rejected:** Silent extra fields on v1 (forbidden by `extra=forbid` anyway) or post-commit JSON mutation.
 
-**Reader / projection rules (proposal):**
+**Frozen reader / projection rules (implementation pending):**
 
 - **Learner-safe assignment/attempt resource projection** continues to **exclude** `answer`, `explanation`, `teacher_notes`, `teacher_summary`, and any hint fields.
 - **Gated hint endpoint** reads each non-empty `learner_hint` string from the attempt-bound `content_version_id` and returns a **minimal HTTP DTO**: `{ question_id, hint_text }` where `hint_text` is the stored string (+ optional display metadata without pedagogical leakage). **No** raw `@2` payload or teacher-only fields on Student assignment/attempt DTOs.
 
-#### 3.1 `education.worksheet@2` compatibility / convergence matrix (pinned facts + proposal)
+#### 3.1 `education.worksheet@2` compatibility / convergence matrix (pinned facts + frozen future contract)
 
 At Backend pin `637583f42b7c475ef83f6f99bca7e65e665a253d`, **`education.worksheet@2` is not registered and is not consumable** on the existing AIEOS360 worksheet vertical without additional engineering. Hint fields alone are insufficient; **Learning** and **Assessment** adapters must converge with Content registration before December development can claim end-to-end safety.
 
-| Stage / consumer | Pinned `@1` behavior | Pinned `@2` behavior | **Proposed** post-implementation requirement |
+| Stage / consumer | Pinned `@1` behavior | Pinned `@2` behavior | **Required** post-implementation behavior |
 |------------------|---------------------|----------------------|-----------------------------------------------|
 | **Content schema registry** | `education.worksheet@1` registered; strict `extra=forbid` on V1 models (`src/aieos/domains/education/schema.py`, `worksheet_v1.py`) | **Not registered** — v2 payload cannot be validated/stored as typed v2 without registry work | Register `education.worksheet@2` with optional `learner_hint`; retain **GCI-G03** reader for `@1` immutable history |
 | **Teacher authoring / review / publish** | Prepare → review → approve → publish for `@1` worksheets | No hint editor; no `@2` commands | T0/T1: structured hint fields on **new version** only; same ReviewDecision / publish separation ([ADR-AIEOS-027](ADR-AIEOS-027-aieos-generic-content-implementation-baseline.md)) |
@@ -233,9 +236,9 @@ Teacher authors hint-bearing worksheet version (P1)
 
 **Membership loss after SUBMITTED:** own submitted answers may remain readable; **hints denied**.
 
-### 5. Semantic QA and leakage controls — O63-03 **FREEZE-CANDIDATE** (FOUNDER RATIFICATION REQUIRED)
+### 5. Semantic QA and leakage controls — O63-03 **FROZEN / APPROVED (2026-11-04)**
 
-**Status:** Selected minimum policy for Founder freeze vote. **NOT FROZEN. NOT IMPLEMENTED.**
+**Status:** Founder-approved frozen architecture minimum. **NOT IMPLEMENTED.**
 
 Hints are **instructional scaffolding**, not stealth answer keys. Applies to **each optional** per-question `learner_hint` on `education.worksheet@2`.
 
@@ -298,7 +301,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 **Prohibited carriers:** Review Queue free-text, TeachingWork notes, Answer Key (GCI-G06).
 
-### 6. Authorization / visibility matrix (proposal)
+### 6. Authorization / visibility matrix (frozen architecture)
 
 | Actor / state | Assignment GET (no hints in resource) | Gated hint GET |
 |---------------|--------------------------------------|----------------|
@@ -317,7 +320,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 | Backend School Context error | Fail closed on membership-dependent routes | **Deny** — no hint body |
 | Content read error | Learner resource degradation per existing rules | **Deny** — no partial hint leak |
 
-#### 6.1 Teacher hint authoring fail-closed matrix (O63-02 freeze-candidate)
+#### 6.1 Teacher hint authoring fail-closed matrix (O63-02 frozen policy)
 
 | Actor / condition | Append hint-bearing version |
 |-------------------|----------------------------|
@@ -330,9 +333,9 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 | Author = reviewer on hint version APPROVE | **Deny** |
 | APPROVE/Publish without §5.3 attestation | **Deny** |
 
-### 7. P1 teacher authoring — O63-02 **FREEZE-CANDIDATE** (FOUNDER RATIFICATION REQUIRED)
+### 7. P1 teacher authoring — O63-02 **FROZEN / APPROVED (2026-11-04)**
 
-**Status:** **ONE selected policy** (below). **NOT FROZEN. NOT IMPLEMENTED.** This workday **does not** register kernel grants, mutate AuthorizationKernel catalogs, or authorize Backend routes.
+**Status:** **Founder-approved frozen architecture policy** (below). **NOT IMPLEMENTED.** The freeze does **not** register kernel grants, mutate AuthorizationKernel catalogs, or authorize Backend routes.
 
 **Pinned gap:** Frontend hint editor **NOT IMPLEMENTED** (`569ef8be…`).
 
@@ -340,7 +343,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 **Rejected for minimum governance:** a new purpose-scoped kernel capability (e.g. `content.worksheet_hint.author`) as the **primary** gate — adds catalog surface without reducing risk if domain checks are skipped.
 
-**Selected freeze-candidate:** Continue to require existing kernel capability **`content.version.create`** (`CONTENT_VERSION_CREATE` in `ports.py`) **plus** a **new domain command/port** (conceptual: `AppendWorksheetLearnerHintsContentVersion`) that enforces **all** checks below **before** append. Kernel grant of `content.version.create` remains a **separate future tenant-admin action** — **not performed in SP02-FR01**.
+**Frozen design:** Continue to require existing kernel capability **`content.version.create`** (`CONTENT_VERSION_CREATE` in `ports.py`) **plus** a **new domain command/port** (conceptual: `AppendWorksheetLearnerHintsContentVersion`) that enforces **all** checks below **before** append. Kernel grant of `content.version.create` remains a **separate future tenant-admin action** — **not performed in SP02-FR01**.
 
 **No silent grant:** Teachers without tenant grant for `content.version.create` **fail closed** at kernel check. Non-owner principals **fail closed** even with capability unless a **future** steward-delegation ADR exists (none frozen here — **owner-only**).
 
@@ -361,7 +364,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 Capabilities are **distinct** — `content.review.decide` **≠** `content.publish` (Backend `publish.py` authorizes **publisher’s** `content.publish` only).
 
-| Step | Capability | Actor rule (freeze-candidate) |
+| Step | Capability | Actor rule (frozen architecture) |
 |------|------------|-------------------------------|
 | Append hint-free `@2` or `@1` version | `content.version.create` + owner (+ generic append rules) | Owner author |
 | Append **hint-bearing** `@2` | `content.version.create` + §7.2 guarded command only | Owner author + valid `authoring_class_ref` |
@@ -369,7 +372,7 @@ Capabilities are **distinct** — `content.review.decide` **≠** `content.publi
 | Record attestation + APPROVE | `content.review.decide` | Reviewer **≠ author** when any hint present; §5.3 digest binding in same txn |
 | Publish | `content.publish` | **Current** publisher principal only |
 
-**Who may publish hint-bearing versions (frozen candidate text):**
+**Who may publish hint-bearing versions (frozen architecture rule):**
 
 - Publisher **must** hold **`content.publish`** at publish time (matches existing `publish.py`).
 - Publisher **must not** equal **author** or **reviewer** when any question has a **valid non-empty** `learner_hint` string.
@@ -416,7 +419,7 @@ The strict `@2` schema MAY additionally reject invalid hint shapes; the generic 
 
 **Future negative tests:** direct HTTP generic append with `learner_hint` key (any value) on `@2` tuple → **400/403**; guarded command with valid strings → success path; APPROVE without attestation → deny even if version exists.
 
-### 8. Concurrency, idempotency, TOCTOU — **FREEZE-CANDIDATE** (§8.2)
+### 8. Concurrency, idempotency, TOCTOU — **FROZEN DESIGN** (§8.2)
 
 Hint GET is read-only but requires **explicit Learning-domain authorization linearization** consistent with submit ([ADR-AIEOS-058](ADR-AIEOS-058-aieos-student-assignment-consumption-learner-attempt-authority.md) §16; Backend `submit_attempt.py`).
 
@@ -473,7 +476,7 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 
 **Caching:** `Cache-Control: private, no-store` on hint responses.
 
-### 9. Conceptual OpenAPI / DTO (proposal — NOT AUTHORIZED)
+### 9. Conceptual OpenAPI / DTO (frozen architecture — OpenAPI implementation NOT AUTHORIZED)
 
 **Dec18 endpoint shape (O63-07 selected):** **`GET /api/v1/learning/attempts/{attempt_id}/learner-hints`** returning all allowlisted hints for the attempt (optional future per-question sub-path — **deferred**).
 
@@ -507,7 +510,7 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 | **061** | Parent allowlist; EVALUATION_EXISTENCE=NO | No Parent hint API |
 | **062** | Current membership façade | Membership revalidated on hint GET |
 
-**Conflicts requiring Founder freeze clarification:** None identified that **block** candidacy; several **OPEN** implementation choices remain (§12).
+**Frozen authority compatibility:** No frozen-ADR conflict was identified at architecture review. Residual engineering choices below do not grant authority to change this approved contract.
 
 ---
 
@@ -534,29 +537,29 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 
 **December 18 development:** **AT RISK** — T1b/T1c are **not optional**; hint GET alone is insufficient.
 
-**Programme preservation (proposal acknowledgment):** Nov 20, 2026 showcase (integrated non-production stack); Dec 18, 2026 **development** client target for this feature; Jan 29, 2027 experience depth; full AIEOS programme through May 28, 2027 — **unchanged commitments**, not replaced by hints scope.
+**Programme preservation (Founder-approved scope boundary):** Nov 20, 2026 showcase (integrated non-production stack); Dec 18, 2026 **development** client target for this feature; Jan 29, 2027 experience depth; full AIEOS programme through May 28, 2027 — **unchanged commitments**, not replaced by hints scope.
 
 ---
 
-## Open issues (explicit)
+## Frozen policies and deferred implementation choices
 
 | ID | Topic | Status |
 |----|-------|--------|
-| O63-01 | Optional field on worksheet@2 vs parallel schema registry naming | **PROPOSED** — worksheet@2 preferred |
-| O63-02 | Teacher hint authoring authorization | **FREEZE-CANDIDATE SELECTED** — §7.1–§7.2; **FOUNDER RATIFICATION REQUIRED**; **no grant in this workday** |
-| O63-03 | Semantic QA + attestation minimum | **FREEZE-CANDIDATE SELECTED** — §5; **FOUNDER RATIFICATION REQUIRED** |
-| O63-07 | Hint GET shape | **SELECTED** — list GET for Dec18 (§9) |
-| O63-04 | Hint revision after publish | **PROPOSED** — new version only |
+| O63-01 | Optional field on worksheet@2 vs parallel schema registry naming | **FROZEN / APPROVED** — education.worksheet schema version 2 |
+| O63-02 | Teacher hint authoring authorization | **FROZEN / APPROVED** — §7.1–§7.5; **no capability grant made** |
+| O63-03 | Semantic QA + attestation minimum | **FROZEN / APPROVED** — §5.1–§5.3; not implemented |
+| O63-07 | Hint GET shape | **FROZEN / APPROVED** — list GET for Dec18 (§9) |
+| O63-04 | Hint revision after publish | **FROZEN / APPROVED** — new version only |
 | O63-05 | P2 AI-suggested hints | **DEFERRED** |
 | O63-06 | Quiz/Homework hints | **DEFERRED** |
 
-**Founder ratification** must explicitly adopt §5.3, §7 (incl. §7.5), §8.2, and §7.3 publish rules (or substitute equivalent frozen text). **Until Founder freeze commit, ADR-AIEOS-063 remains PROPOSED only.**
+**Founder ratification:** **APPROVED on 2026-11-04** — §5.3, §7 (including §7.5 and §7.3 actor separation), §8.2 and worksheet@2 schema/list GET are frozen architecture policy. **PR #59 remains Draft/Unmerged.** No implementation authorization follows from freeze.
 
 ---
 
-## Founder freeze decision sheet (FR01-14)
+## Founder freeze decision record (SP02-FZ01 — approved 2026-11-04)
 
-**If Founder approves ADR-AIEOS-063 freeze**, they would be ratifying at minimum:
+**Founder approved the following architecture policies on 2026-11-04 at reviewed substantive PR #59 HEAD `12044afa310c559f56022c86ad7cddf85138eb5d`:**
 
 | # | Policy | Implication |
 |---|--------|-------------|
@@ -578,13 +581,13 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 
 | Item | Status at pin |
 |------|----------------|
-| ADR-AIEOS-063 freeze | **NOT FROZEN — PROPOSED** |
+| ADR-AIEOS-063 freeze | **FROZEN / APPROVED (2026-11-04; PR #59 DRAFT / NOT MERGED)** |
 | Hint fields in Worksheet schema | **NOT PRESENT** (`worksheet@1` only) |
 | Gated hint HTTP route | **NOT IN OpenAPI** (`4042FB27…C1D0`) |
 | Teacher hint authoring UI | **NOT IMPLEMENTED** |
 | Student hint UI | **NOT IMPLEMENTED** |
 
-**STOP LINE:** Chief review of this PROPOSED ADR → Founder freeze decision → **separate** implementation workday authorization required before any product code.
+**STOP LINE:** Founder architecture freeze approved; this freeze-record commit requires exact-head verification. PR #59 merge remains separately controlled, and a **separate implementation workday authorization** is required before any product code.
 
 ---
 
