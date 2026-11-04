@@ -1,7 +1,7 @@
 # AIEOS-V1-SP02A — Learner Hints Scenario Validation
 
 **Status:** **PROPOSED / SCENARIO VALIDATION — CHIEF REVIEW PENDING**  
-**Workday:** AIEOS-V1-SP02-FR01R1 — contract corrections on FR01 head `1501668…`.  
+**Workday:** AIEOS-V1-SP02-FR01R2 — schema tuple, payload type, decision-sheet consistency on FR01R1 head `198ed77…`.  
 **Candidate ADR:** [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md) (**PROPOSED / NOT FROZEN**)  
 **Feature name:** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1`  
 **Disclosure pattern under test:** **R1** — `GET /api/v1/learning/attempts/{attempt_id}/learner-hints` (architecture proposal only; **not implemented**)
@@ -33,15 +33,15 @@
 
 ## Summary
 
-**Derivation rule:** Counts are the exact tally of the **Classification** column in rows **SP02-S01 through SP02-S64** below.
+**Derivation rule:** Counts are the exact tally of the **Classification** column in rows **SP02-S01 through SP02-S67** below.
 
 | Classification | Count |
 |----------------|------:|
-| PASS_CANDIDATE | 62 |
+| PASS_CANDIDATE | 65 |
 | CONFLICT | 0 |
 | OPEN | 0 |
 | DEFER | 2 |
-| **Total scenarios** | **64** |
+| **Total scenarios** | **67** |
 
 ---
 
@@ -70,7 +70,7 @@
 | SP02-S19 | Hint paraphrases answer (semantic duplicate) | **PASS_CANDIDATE** | ADR-063 §5.2–§5.3 | **FLAG** + attestation `human_review_pass` required; lint alone insufficient |
 | SP02-S20 | MCQ hint eliminates three distractors by name | **PASS_CANDIDATE** | ADR-063 §5 forbidden content | Review/QA should reject; server still only returns hint text — no grade |
 | SP02-S21 | Student replays captured hint GET response after submit | **PASS_CANDIDATE** | ADR-063 §4 retroactive secrecy | Client may retain stale body; **server** denies new reads; architecture does not promise erasure |
-| SP02-S22 | Concurrent hint GET and submit POST (same attempt) | **PASS_CANDIDATE** | ADR-063 §8.2; `submit_attempt.py` lock order | Serialize on assignment→attempt **`FOR UPDATE`**; submit-first ⇒ hint **deny** at step 7; no bogus “one HTTP winner” rule |
+| SP02-S22 | Concurrent hint GET and submit POST (same attempt) | **PASS_CANDIDATE** | ADR-063 §8.2; `submit_attempt.py` | Serialize assignment→attempt **`FOR UPDATE`**; submit-first ⇒ hint **deny** at B8 |
 | SP02-S23 | School Context membership provider timeout/error | **PASS_CANDIDATE** | ADR-062 fail-closed | Hint GET **deny** without membership affirmation |
 | SP02-S24 | ContentVersion read failure mid-request | **PASS_CANDIDATE** | ADR-063 §6 | **Deny** — no partial hint leak from error payload |
 | SP02-S25 | Parent authenticated GET on student attempt hint route | **PASS_CANDIDATE** | ADR-061 Parent allowlist | **Deny** — no Parent hint extension |
@@ -80,7 +80,7 @@
 | SP02-S29 | Teacher lost class membership calls hint GET | **PASS_CANDIDATE** | ADR-058 teacher routes separate | **Deny** |
 | SP02-S30 | P2 AI-suggested hint without teacher approval workflow | **DEFER** | Founder scope P2 deferred | Must not ship in V1-EXPAND P1; **DEFER** |
 | SP02-S31 | Quiz content type hint request | **DEFER** | ADR-063 December worksheet-only | **DEFER** until separate approval |
-| SP02-S32 | R2 design: hint embedded in assignment GET with server strip | **PASS_CANDIDATE** (as **negative design**) | SP01R1 R1-F1 | Documented as **rejected** primary pattern; if implemented, regression risk → fail future review |
+| SP02-S32 | R2 design: hint embedded in assignment GET with server strip | **PASS_CANDIDATE** | SP01R1 R1-F1 | Rejected primary pattern; regression risk if implemented |
 | SP02-S33 | Two sequential hint GETs; authority unchanged between requests | **PASS_CANDIDATE** | ADR-063 §8.2 | Each GET repeats full gate + lock path; identical body only while still authorized |
 | SP02-S34 | LearnerAssessmentEvaluation exists; student requests hint | **PASS_CANDIDATE** | ADR-059 evaluation ≠ feedback | Hint path independent; evaluation DTOs **unmodified** |
 | SP02-S35 | Attempt uses `LearnerResource` projection — verify `answer`/`explanation` still excluded | **PASS_CANDIDATE** | Backend learner projection; ADR-058 §22 | Assignment/attempt resource **must not** add answer/explanation/hints |
@@ -106,13 +106,16 @@
 | SP02-S55 | Suspended/inactive HUMAN author at guarded append | **PASS_CANDIDATE** | §7.2 step 1 | Append **deny** |
 | SP02-S56 | MCQ hint contains option string (mechanical hard block) | **PASS_CANDIDATE** | ADR-063 §5.2 | Block before review |
 | SP02-S57 | Full `@2` vertical: assign → attempt → hint GET → submit → evaluate → Improve (architecture) | **PASS_CANDIDATE** | ADR-063 §3.1 T1a–T1c | Requires all adapters; pin today **incomplete** — **not runtime PASS** |
-| SP02-S58 | Direct generic `POST …/contents/{id}/versions` with hint-bearing `@2` payload | **PASS_CANDIDATE** | ADR-063 §7.5 | **Reject** — only guarded append may create hints |
+| SP02-S58 | Direct generic `POST …/contents/{id}/versions` with `@2` tuple and any question **`learner_hint` key present** (non-empty hint) | **PASS_CANDIDATE** | ADR-063 §7.5 | **Reject** — only guarded append may create hint strings |
 | SP02-S59 | Hint-bearing version exists without attestation (legacy path); reviewer APPROVE | **PASS_CANDIDATE** | ADR-063 §5.3 defense in depth | **Deny** APPROVE |
 | SP02-S60 | Hint-bearing APPROVED version; publisher lacks `content.publish` | **PASS_CANDIDATE** | ADR-063 §7.3 | Publish **deny** |
 | SP02-S61 | Hint GET with only `attempt_id`; assignment/class from **stored** attempt preview | **PASS_CANDIDATE** | ADR-063 §8.2 Phase A | No client-supplied assignment/class authority |
 | SP02-S62 | Author equals publisher on hint-bearing version publish attempt | **PASS_CANDIDATE** | ADR-063 §7.3 | **Deny** |
 | SP02-S63 | Reviewer loses `content.review.decide` before APPROVE retry | **PASS_CANDIDATE** | §7.3 revocation matrix | **Deny** |
 | SP02-S64 | Suspended/inactive HUMAN **publisher** at publish | **PASS_CANDIDATE** | §7.3 | Publish **deny** |
+| SP02-S65 | Generic append `@2` tuple with `learner_hint: ""` or whitespace-only string key present | **PASS_CANDIDATE** | ADR-063 §7.5 FR01R2-C1 | **Reject** on key presence — not guarded path |
+| SP02-S66 | Generic append `@2` tuple with `learner_hint: null` key present | **PASS_CANDIDATE** | ADR-063 §7.5 | **Reject** — fail closed before schema-only validation |
+| SP02-S67 | Generic append with literal `schema_id == "education.worksheet@2"` (wrong tuple) and hint key | **PASS_CANDIDATE** | ADR-063 §3 canonical tuple | Registry/validation **reject** — no bypass of §7.5 |
 
 ---
 
@@ -146,7 +149,7 @@ These map to mandatory adversarial coverage from Issue #58 / SP01R1:
 | Assignment cancel during hint lock | S53 | deny |
 | Revoked publisher grant | S60, S64 | deny |
 | Author create revoked; separate publisher | S54 | allow publish |
-| Generic append hint bypass | S58 | reject |
+| Generic append hint bypass | S58, S65–S67 | reject |
 | Attestation/digest on APPROVE | S49, S59, S50 | deny |
 | Trusted preview hint GET | S61 | Phase A stored fields |
 | Author=publisher hint version | S62 | deny |

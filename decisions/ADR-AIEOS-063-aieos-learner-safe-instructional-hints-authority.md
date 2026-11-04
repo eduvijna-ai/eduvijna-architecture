@@ -5,7 +5,7 @@ owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: proposed
 version: 1.0.0
 created: 2026-11-03
-last_updated: 2026-11-03
+last_updated: 2026-11-04
 reviewers:
   - Chief AI Enterprise Architect
   - Founder / Product Architecture
@@ -15,10 +15,10 @@ reviewers:
 
 **Status:** **PROPOSED / CHIEF REVIEW PENDING / FOUNDER FREEZE REQUIRED**  
 **Freeze readiness:** **FREEZE-CANDIDATE POLICIES SELECTED — FOUNDER RATIFICATION REQUIRED** (O63-02 §7, O63-03 §5, concurrency §8.2). **NOT FROZEN / NOT IMPLEMENTED.** This workday **does not grant** kernel capabilities or merge PR #59.  
-**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → SP02-FR01 (`1501668…`) → **SP02-FR01R1** (Chief contract hold).  
+**Workday lineage:** SP02 → SP02R1 (`e82cd5b…`) → SP02-FR01 (`1501668…`) → SP02-FR01R1 (`198ed77…`) → **SP02-FR01R2** (schema/decision-sheet consistency).  
 **Implementation:** **NOT AUTHORIZED**  
-**Date:** 2026-11-03  
-**Revision:** SP02R1 corrective deposit (Chief exact-head review 2026-11-03)  
+**Date:** 2026-11-04  
+**Revision:** SP02-FR01R2 contract consistency (Chief FR01R2 hold 2026-11-04)  
 
 **Founder product-direction authorization (2026-11-03):** `V1-EXPAND-STUDENT-LEARNER-HINTS-V1` is the **approved proposed worksheet-first December 18, 2026 development-ready scope** for this feature family. That authorization permits **this architecture deposit and scenario validation only**. It is **not** ADR freeze, **not** Backend/Frontend/Product implementation authorization, **not** OpenAPI authorization, **not** a production or UAT guarantee, and **not** permission to merge [PR #57 SP01R1](https://github.com/eduvijna-ai/eduvijna-architecture/pull/57).
 
@@ -173,13 +173,16 @@ IN_PROGRESS Gated Read       ≠  Historic Hint Read after SUBMITTED
 
 **Pinned fact:** `WorksheetV1` / `WorksheetQuestionV1` use `model_config = ConfigDict(extra="forbid")` (Backend pin).
 
-**Proposal (preferred):** Register **`education.worksheet@2`** (or equivalent registered schema id) as a **forward** schema that adds an **optional** per-question field, conceptually:
+**Canonical registry tuple (normative):** Human-readable **`education.worksheet@2`** means Content API fields **`schema_id == "education.worksheet"`** AND **`schema_version == 2`** (Backend pin: `WORKSHEET_SCHEMA_ID` / separate `schema_version` on append — **not** a single `schema_id` literal `@2`).
+
+**Proposal (preferred):** Register **`education.worksheet@2`** as a **forward** schema that adds an **optional** per-question string field:
 
 ```json
-"learner_hint": { "text": "..." }
+"learner_hint": "Think about the common denominator."
 ```
 
-- **Absent** `learner_hint` on a question ⇒ behavior identical to today (no hint for that question).
+- **Absent** `learner_hint` key on a question ⇒ behavior identical to today (no hint for that question).
+- **Present** key ⇒ value MUST be a **plain JSON string** (trimmed **1–500** Unicode scalars after validation); **not** `null`, not an object, not whitespace-only (§5.1).
 - **Existing** immutable `education.worksheet@1` versions **remain readable** via GCI-G03 retained reader; no retrofit.
 - Adding hints to content that already shipped as v1 ⇒ **new ContentVersion** on the same Content aggregate (GCI-G02), new schema registration, full review cycle, explicit publish.
 - **Rejected:** Silent extra fields on v1 (forbidden by `extra=forbid` anyway) or post-commit JSON mutation.
@@ -187,7 +190,7 @@ IN_PROGRESS Gated Read       ≠  Historic Hint Read after SUBMITTED
 **Reader / projection rules (proposal):**
 
 - **Learner-safe assignment/attempt resource projection** continues to **exclude** `answer`, `explanation`, `teacher_notes`, `teacher_summary`, and any hint fields.
-- **Gated hint endpoint** reads hint text **only** from the attempt-bound `content_version_id` and returns a **minimal DTO**: `{ question_id, hint_text }` (+ optional display metadata without pedagogical leakage).
+- **Gated hint endpoint** reads each non-empty `learner_hint` string from the attempt-bound `content_version_id` and returns a **minimal HTTP DTO**: `{ question_id, hint_text }` where `hint_text` is the stored string (+ optional display metadata without pedagogical leakage). **No** raw `@2` payload or teacher-only fields on Student assignment/attempt DTOs.
 
 #### 3.1 `education.worksheet@2` compatibility / convergence matrix (pinned facts + proposal)
 
@@ -240,9 +243,9 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 | Rule | Requirement |
 |------|-------------|
-| Presence | Field **absent** ⇒ no hint (identical to today). **Empty string forbidden** — treat as authoring validation error. |
-| Type | Single plain-text `hint_text` string only (no markdown/HTML, no embedded objects). |
-| Length | **1–500** Unicode scalars after trim (implementation MAY normalize whitespace once). |
+| Presence | Key **absent** ⇒ no hint (identical to today). Key **present** with `null`, object, whitespace-only, or empty string ⇒ **validation error** on guarded append; generic HTTP append **rejects key presence** regardless of value (§7.5). |
+| Type | Optional per-question **`learner_hint`** JSON **string** only in stored worksheet `@2` payload (no markdown/HTML, no embedded objects). Hint GET maps the same value to response field **`hint_text`**. |
+| Length | **1–500** Unicode scalars after trim when hint is non-empty (implementation MAY normalize whitespace once). |
 | Prohibited tokens | No HTTP(S) URLs, no `mailto:`, no score/grade/mastery/evaluation vocabulary, no answer-key artifact references. |
 | Isolation | Must not duplicate `teacher_notes`, `explanation`, or `answer` fields. |
 
@@ -250,10 +253,10 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 
 | Check | Result |
 |-------|--------|
-| `hint_text` equals `answer` (case-insensitive trim) | **HARD BLOCK** — cannot submit for review |
-| `hint_text` equals full `explanation` | **HARD BLOCK** |
-| `hint_text` contains any MCQ `option` string verbatim (multiple_choice) | **HARD BLOCK** |
-| `hint_text` contains URL / email pattern | **HARD BLOCK** |
+| `learner_hint` equals `answer` (case-insensitive trim) | **HARD BLOCK** — cannot submit for review |
+| `learner_hint` equals full `explanation` | **HARD BLOCK** |
+| `learner_hint` contains any MCQ `option` string verbatim (multiple_choice) | **HARD BLOCK** |
+| `learner_hint` contains URL / email pattern | **HARD BLOCK** |
 | Token overlap with `answer` or `explanation` above configured similarity flag threshold | **FLAG** — requires human attestation (§5.3) |
 | Profanity / obvious PII pattern | **FLAG** or **BLOCK** (implementation choice; default **FLAG** + human) |
 | Reading-level heuristic vs declared worksheet difficulty | **FLAG** only |
@@ -272,7 +275,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 |-------|-------------|
 | `content_id` | Parent Content aggregate |
 | `content_version_id` | Exact immutable version under review (**unique** attestation per version) |
-| `payload_digest` | **SHA-256** of canonical serialized hint-bearing worksheet `@2` payload (stable ordering) at attestation time |
+| `payload_digest` | **SHA-256** of canonical serialized worksheet `@2` payload (`schema_id` + `schema_version` + questions including each present `learner_hint` string; stable ordering) at attestation time |
 | `qa_policy_version` | Frozen string id of mechanical/human checklist (e.g. `O63-03-v1`) |
 | `author_principal_id` | HUMAN who appended the hint-bearing version |
 | `reviewer_principal_id` | HUMAN safety reviewer (**≠ author** when any hint non-empty) |
@@ -349,7 +352,7 @@ Hints are **instructional scaffolding**, not stealth answer keys. Applies to **e
 4. Load Content; **`owner_principal_id == effective_actor_id`** (non-owner deny).
 5. Command carries explicit **`authoring_class_ref`** (opaque string) — **not** `TeachingWork.class_label`.
 6. **`SchoolContextClassAuthority.require_assignable_class_ref(tenant, teacher_principal_id, authoring_class_ref)`** — current teacher–class authority ([ADR-AIEOS-062](ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md)).
-7. Payload = **new immutable** `education.worksheet@2` version with optional hints; schema/ mechanical QA §5.2 **hard blocks** before review submit.
+7. Payload = **new immutable** version with **`schema_id == "education.worksheet"`**, **`schema_version == 2`**, and optional per-question **`learner_hint` strings**; schema + mechanical QA §5.2 **hard blocks** before review submit.
 8. **Idempotent append** + audit (actor, class_ref, content_id, version_id).
 
 **ClassRef binding:** `authoring_class_ref` is **provenance metadata** on the version command/recording only; ERP/SIS remains master; Content is **not** a roster SoR.
@@ -369,7 +372,7 @@ Capabilities are **distinct** — `content.review.decide` **≠** `content.publi
 **Who may publish hint-bearing versions (frozen candidate text):**
 
 - Publisher **must** hold **`content.publish`** at publish time (matches existing `publish.py`).
-- Publisher **must not** equal **author** or **reviewer** when any `learner_hint` is non-empty.
+- Publisher **must not** equal **author** or **reviewer** when any question has a **valid non-empty** `learner_hint` string.
 - **Author’s** `content.version.create` grant **need not** still be present at publish — publish authorization is **publisher-centric**, not creator-revalidation (aligns with pinned Backend).
 - Publisher **need not** hold `content.review.decide`.
 - Version **must** be APPROVED with valid §5.3 attestation and matching `payload_digest`.
@@ -390,24 +393,28 @@ Capabilities are **distinct** — `content.review.decide` **≠** `content.publi
 
 Hints **never** stored in Review free-text, TeachingWork notes, or Answer Key.
 
-#### 7.5 Generic append bypass closure (**FR01R1-F1**)
-
-**Selected invariant:** The existing generic route `POST /api/v1/contents/{content_id}/versions` / `HttpAppendContentVersionService.append` **MUST reject** (validation error, fail closed) any payload where:
-
-- `schema_id == education.worksheet@2` **and**
-- **any** question contains a **non-empty** `learner_hint`.
-
-**Only** the guarded domain command `AppendWorksheetLearnerHintsContentVersion` (§7.2) may create hint-bearing `@2` versions. Hint-free `@2` and all `@1` appends may continue via generic append subject to existing Content rules.
-
-**Defense in depth:** `content.review.decide` APPROVE and `content.publish` **independently** require §5.3 attestation + `payload_digest` match for hint-bearing versions **regardless of append entry path**.
-
-**Future negative tests:** direct HTTP generic append with hints → **400/403**; guarded command → success path; APPROVE without attestation → deny even if version exists.
-
 #### 7.4 Minimal Teacher path (unchanged flow, gated)
 
 Author with §7.2 checks → new version → review submit → structured hint panel + attestation → independent reviewer APPROVE → publish → **future** assignment pin.
 
 **Audit:** append / review / publish / attestation events with principal + class_ref + version id.
+
+#### 7.5 Generic append bypass closure (**FR01R1-F1 / FR01R2-C1**)
+
+**Selected invariant:** The existing generic route `POST /api/v1/contents/{content_id}/versions` / `HttpAppendContentVersionService.append` **MUST reject** (validation error, fail closed) any payload where:
+
+- **`schema_id == "education.worksheet"` AND `schema_version == 2`** **and**
+- **any** question object **contains the `learner_hint` key at all** (including `null`, empty string, whitespace-only, or object — not only truthy/non-empty values).
+
+The strict `@2` schema MAY additionally reject invalid hint shapes; the generic route MUST fail closed on **key presence** before guarded checks run.
+
+**Only** the guarded domain command `AppendWorksheetLearnerHintsContentVersion` (§7.2) may append `@2` versions with **present, validated** `learner_hint` strings after §5.1–§5.2. **Hint-free `@2`** (no `learner_hint` keys on any question) and all `@1` appends may continue via generic append subject to existing Content rules.
+
+**Mis-typed registry tuple:** A client sending `schema_id == "education.worksheet@2"` (family notation as a literal id) **MUST NOT** bypass this guard — registry lookup fails or rejects; no hint-bearing version via wrong tuple (SP02A S67).
+
+**Defense in depth:** `content.review.decide` APPROVE and `content.publish` **independently** require §5.3 attestation + `payload_digest` match for hint-bearing versions **regardless of append entry path**.
+
+**Future negative tests:** direct HTTP generic append with `learner_hint` key (any value) on `@2` tuple → **400/403**; guarded command with valid strings → success path; APPROVE without attestation → deny even if version exists.
 
 ### 8. Concurrency, idempotency, TOCTOU — **FREEZE-CANDIDATE** (§8.2)
 
@@ -443,7 +450,7 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 | B4 | **`attempts.get_for_update(attempt_id)`** |
 | B5 | Revalidate owner; attempt matches locked assignment; `content_version_id` equals preview; `class_ref` equals preview |
 | B6 | `lifecycle_state == IN_PROGRESS` |
-| B7 | Load hint allowlist from ContentVersion (after locks held) |
+| B7 | Load hint allowlist from ContentVersion `learner_hint` strings (after locks held); map to `{ question_id, hint_text }` |
 | B8 | **Authorization linearization point:** re-read `lifecycle_state` on locked attempt; if not `IN_PROGRESS` → **deny** |
 | B9 | Emit allowlisted DTO; **commit** (release locks) before completing HTTP |
 
@@ -543,7 +550,7 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 | O63-05 | P2 AI-suggested hints | **DEFERRED** |
 | O63-06 | Quiz/Homework hints | **DEFERRED** |
 
-**Founder ratification** must explicitly adopt §5, §7, and §8.2 (or substitute equivalent frozen text). **Until Founder freeze commit, ADR-AIEOS-063 remains PROPOSED only.**
+**Founder ratification** must explicitly adopt §5.3, §7 (incl. §7.5), §8.2, and §7.3 publish rules (or substitute equivalent frozen text). **Until Founder freeze commit, ADR-AIEOS-063 remains PROPOSED only.**
 
 ---
 
@@ -563,7 +570,7 @@ Hint GET is read-only but requires **explicit Learning-domain authorization line
 
 **Still unauthorized after ADR freeze:** Backend/Frontend implementation, OpenAPI change, kernel grants, UI, provider AI (P2), PR #59 merge, deployment, UAT.
 
-**Residual implementation details (not architecture authority):** attestation storage table vs ReviewDecision attachment; exact similarity flag thresholds; publisher=author when zero hints.
+**Residual implementation details (not architecture authority):** physical SQL table/column layout for Content-owned **`WorksheetLearnerHintVersionAttestationV1`** (logical ownership, immutability, and digest binding per §5.3 are **fixed**); exact similarity flag thresholds; publisher=author when zero hints.
 
 ---
 
