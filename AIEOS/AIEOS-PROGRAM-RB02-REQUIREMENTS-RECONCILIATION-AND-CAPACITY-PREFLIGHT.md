@@ -184,11 +184,13 @@ Per RB01 §J / ADR-063: **Backend-only** `education.worksheet@2` registration, g
 |--------|------:|------|
 | **ID_ADDRESSED** | **12** | Every RB01 `SOURCE_RECONCILIATION` ID has exactly one §I.1 block |
 | **RELATED_SOURCE_FOUND (RSF=Y)** | **9** | Rows with reproducible related GitHub source — **not** 12 atomic contracts |
-| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **5** | STU-A11Y, EIS-CUR, EIS-ALIGN, ECO-SDK, ECO-AN |
+| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **6** | TOS-IND, STU-A11Y, EIS-CUR, EIS-ALIGN, ECO-SDK, ECO-AN |
 | **FOUNDER_DECISION_PENDING (FDP=Y)** | **12** | All rows remain `SOURCE_RECONCILIATION` bind until ratified |
 | FDP — Product / Experience ratification | **10** | Rows marked **FDP: Product ratify** in §I.1 |
 | FDP — Forward ADR + programme acceptance (atomic) | **2** | EIS-CUR, EIS-ALIGN (**FDP: Forward ADR**) |
 | Promoted to **APPROVED_AGREED** without ratification | **0** | |
+
+**Count interpretation:** RSF, NMAS, and FDP are independent, overlapping flags. **Three** requirements (TOS-IND, EIS-CUR, EIS-ALIGN) need a forward architecture decision; **two** (EIS-CUR, EIS-ALIGN) use Forward ADR as their *primary* FDP category, while TOS-IND's primary FDP category is Product ratification with an additional forward-ADR dependency.
 
 **Forbidden misread:** **12 ID_ADDRESSED ≠ 12 RSF=Y ≠ 12 atomic contracts.** Teacher ENG-A11Y does **not** establish Student a11y; TLM packaging OQ does **not** establish SDK; no Founder analytics spec @ pin.
 
@@ -471,7 +473,7 @@ Per RB01 §J / ADR-063: **Backend-only** `education.worksheet@2` registration, g
 |--------|------:|
 | **ID_ADDRESSED** | **12 / 12** |
 | **RELATED_SOURCE_FOUND (RSF=Y)** | **9 / 12** |
-| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **5 / 12** |
+| **NO_MATCHING_ATOMIC_SOURCE (NMAS=Y)** | **6 / 12** |
 | **FOUNDER_DECISION_PENDING (FDP=Y)** | **12 / 12** (10 Product ratify · 2 Forward ADR) |
 | Promoted to **APPROVED_AGREED** without ratification | **0** |
 | Silent scope removals | **0** |
