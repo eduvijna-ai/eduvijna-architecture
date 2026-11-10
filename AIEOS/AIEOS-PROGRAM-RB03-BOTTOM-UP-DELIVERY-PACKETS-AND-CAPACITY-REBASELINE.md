@@ -3,10 +3,10 @@ id: AIEOS-PROGRAM-RB03
 title: Bottom-Up Delivery Packets & Capacity-Gated Rebaseline (Founder No-Scope-Cut)
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: draft
-version: 1.0.2
+version: 1.0.3
 created: 2026-11-09
 last_updated: 2026-11-10
-workday: AIEOS-PROGRAM-RB03-P01R2
+workday: AIEOS-PROGRAM-RB03-P01R3
 authorization: Founder "RB03 Authorized" — 2026-11-09 (Issue #66)
 parent_issue: https://github.com/eduvijna-ai/eduvijna-architecture/issues/66
 parent_register:
@@ -20,7 +20,7 @@ parent_register:
 
 **Upstream (merged @ Architecture `main` `a4edadc…`):** [RB01](AIEOS-PROGRAM-RB01-FULL-SCOPE-REQUIREMENTS-TRACEABILITY-AND-REBASELINE.md) · [RB02](AIEOS-PROGRAM-RB02-REQUIREMENTS-RECONCILIATION-AND-CAPACITY-PREFLIGHT.md) (PR #65 reviewed head `8793ab81f987fd8d4adc9fa19669479085c1a667`).
 
-**STOP (RB03 end-state):** `RB03-P01R2 DOCUMENT CORRECTION DEPOSITED / PR #67 DRAFT / MERGE NOT AUTHORIZED / NO DATES RATIFIED / NO PRODUCT CODE / CHIEF EXACT-HEAD RE-REVIEW PENDING`
+**STOP (RB03 end-state):** `RB03-P01R3 EDITORIAL PRECISION CORRECTION / PR #67 DRAFT / CHIEF EXACT-HEAD CHECK PENDING / NO DATES RATIFIED / NO PRODUCT CODE`
 
 ---
 
@@ -31,7 +31,7 @@ parent_register:
 | Programme | AIEOS-PROGRAM-RB03 |
 | Founder authorization | **2026-11-09** — "RB03 Authorized" |
 | Mode | Read-only on five pinned `main` trees + linked Product/ADR/draft PRs; **write only this file** |
-| Packet | **AIEOS-PROGRAM-RB03-P01R2** |
+| Packet | **AIEOS-PROGRAM-RB03-P01R3** |
 | Architecture parent (`main`) | `a4edadc979248d7abedc4d7c679b348033c57eb5` (RB02 PR #65 merge) |
 | Branch | `cursor/aieos-program-rb03-bottom-up-delivery-rebaseline-437e` |
 | Workday issue | [#66](https://github.com/eduvijna-ai/eduvijna-architecture/issues/66) (controlling scope — **not** a PR) |
@@ -82,8 +82,10 @@ Re-verification **2026-11-10 (P01R2)**: `git fetch origin main`, `gh pr view 65`
 | **P01 HEAD** (first RB03 deposit) | `21aa9f3193c7653630fa061e9532f3a725bc05c5` |
 | **P01R1 direct parent** | `21aa9f3193c7653630fa061e9532f3a725bc05c5` |
 | **P01R1 HEAD** (Chief-reviewed prior to R2) | `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
-| **P01R2 direct parent** (required before this write) | `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
-| **P01R2 HEAD** | Recorded on push receipt / PR #67 — **not** embedded in this file (avoid recursive SHA commit) |
+| **P01R2 direct parent** | `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
+| **P01R2 HEAD** | `5ea2c5867ded42e08eda9ae2e87ec4683c393d2a` |
+| **P01R3 direct parent** (required before this write) | `5ea2c5867ded42e08eda9ae2e87ec4683c393d2a` |
+| **P01R3 HEAD** | Recorded on push receipt / PR #67 — **not** embedded in this file (avoid recursive SHA commit) |
 | Diff vs `main` | **One file only:** this document |
 | Other repos / files / draft PRs / ADRs | **Untouched** |
 
@@ -287,7 +289,7 @@ Each **approved** uncompleted **[DEV]** row maps to ≥1 packet. Fields below us
 |-------|-----|-------|-------|-------------|----------|-----------------|--------------|---------|-----------------|-------|------|
 | PK-V1-AGT-GW | AGT-GW | Backend | be | ADR-AI-044 binding clarity | Dev `StructuredModelGateway` paths @ pin — **only if** residual proved | **Prod** routing (SRC-05); MCP runtime (see PK-FD-AGT-MCP) | Teachers get governed AI in dev | Fake/Groq paths work | Live prod keys in dev UI | BE tests @ proved residual | **UNKNOWN** · EVIDENCE_GAP unless pin delta list |
 
-**H.3 effort accounting (R2-F2):** **11** platform ADR index rows + **QA-E2E** + **QA-CI** + **AGT-GW** = **14** packets. Only **PK-V1-QA-E2E** (verification) and **PK-V1-QA-CI** (governance doc) carry defensible **S/M** bands @ pin. **All `PK-V1-PLT-*` and `PK-V1-AGT-GW` remain `SIZE_UNKNOWN` pending evidence deposits** — **not** V1 CP commitments until residuals are established. **No grouped 13-unit rollup.** Counterfactual only: if every H.3 row were wrongly treated as independent **M** true work, H.1 **20** + H.2 **12** + H.3 **27** = **59** raw → `ceil(59×1.25)=74` buffered — **not adopted as a forecast** (R2-F2).
+**H.3 effort accounting (R2-F2):** **11** platform ADR index rows + **QA-E2E** + **QA-CI** + **AGT-GW** = **14** packets. Only **PK-V1-QA-E2E** (verification) and **PK-V1-QA-CI** (governance doc) carry defensible **S/M** bands @ pin. **All `PK-V1-PLT-*` and `PK-V1-AGT-GW` remain `SIZE_UNKNOWN` pending evidence deposits** — **not** V1 CP commitments until residuals are established. **No grouped 13-unit rollup.** Counterfactual only: if all **14** H.3 packets were wrongly banded as **13×M + 1×S** (`PK-V1-QA-CI` = **S**; not **14×M**) → **27** raw, then H.1 **20** + H.2 **12** + **27** = **59** raw / **74** buffered — **NOT ADOPTED** as a V1 forecast (R2-F2 / P01R3).
 
 ### H.4 — Conditional programme rows (**SOURCE_RECONCILIATION** — not in 34)
 
@@ -456,7 +458,7 @@ Weights: S=1, M=2, L=4, XL=8. Buffer: `ceil(raw × 1.25)` **only where size is e
 
 **Defensible partial sum (hypothesis only):** H.1 **20** + H.2 **12** + QA **3** = **35** raw → **44** buffered — **hints + CX01 + QA verification only**; **excludes all unresolved platform ADR residuals**. **Not** a complete V1 bottom-up estimate.
 
-**Counterfactual (not adopted):** if all 14 H.3 packets were independent proven **M** work → +**27** raw → **59** raw / **74** buffered with H.1+H.2 — **rejected as forecast** until each ADR row is reclassified with pin evidence (R2-F2).
+**Counterfactual (not adopted):** if all **14** H.3 packets were wrongly banded as **13 M + 1 S** (`PK-V1-QA-CI`) = **27** raw (not **14×M**), then H.1 **20** + H.2 **12** + **27** = **59** raw / **74** buffered — **NOT ADOPTED** as V1 forecast until each ADR row is reclassified with pin evidence (R2-F2 / P01R3).
 
 **SRC-04:** capacity and calendar binding remain **HOLD**; review/integration latency **unmodeled**.
 
@@ -571,6 +573,6 @@ Only **#1** is a first **feature-code** candidate. **#2–#3** are validation/re
 
 ---
 
-**End AIEOS-PROGRAM-RB03-P01R2 — R2-F1…F4 narrow corrections deposited; PR #67 draft; no date ratified; no merge; no code authorized.**
+**End AIEOS-PROGRAM-RB03-P01R3 — §H.3.3 / §L.1 counterfactual wording precision (13 M + 1 S = 27); PR #67 draft; no date ratified; no merge; no code authorized.**
 
-**STOP LINE:** `RB03-P01R2 DOCUMENT CORRECTION DEPOSITED / PR #67 DRAFT / MERGE NOT AUTHORIZED / NO DATES RATIFIED / NO PRODUCT CODE / CHIEF EXACT-HEAD RE-REVIEW PENDING`
+**STOP LINE:** `RB03-P01R3 EDITORIAL PRECISION CORRECTION / PR #67 DRAFT / CHIEF EXACT-HEAD CHECK PENDING / NO DATES RATIFIED / NO PRODUCT CODE`
