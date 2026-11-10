@@ -3,10 +3,10 @@ id: AIEOS-PROGRAM-RB03
 title: Bottom-Up Delivery Packets & Capacity-Gated Rebaseline (Founder No-Scope-Cut)
 owner: EduVijna Enterprise Architecture Office · Chief AI Enterprise Architect
 status: draft
-version: 1.0.1
+version: 1.0.2
 created: 2026-11-09
 last_updated: 2026-11-10
-workday: AIEOS-PROGRAM-RB03-P01R1
+workday: AIEOS-PROGRAM-RB03-P01R2
 authorization: Founder "RB03 Authorized" — 2026-11-09 (Issue #66)
 parent_issue: https://github.com/eduvijna-ai/eduvijna-architecture/issues/66
 parent_register:
@@ -20,7 +20,7 @@ parent_register:
 
 **Upstream (merged @ Architecture `main` `a4edadc…`):** [RB01](AIEOS-PROGRAM-RB01-FULL-SCOPE-REQUIREMENTS-TRACEABILITY-AND-REBASELINE.md) · [RB02](AIEOS-PROGRAM-RB02-REQUIREMENTS-RECONCILIATION-AND-CAPACITY-PREFLIGHT.md) (PR #65 reviewed head `8793ab81f987fd8d4adc9fa19669479085c1a667`).
 
-**STOP (RB03 end-state):** `RB03 BOTTOM-UP PLAN DEPOSITED / FULL AGREED SCOPE PRESERVED / CAPACITY & FOUNDER RATIFICATION PENDING / NO DATES RATIFIED / NO PRODUCT CODE / NO PR MERGE / CHIEF EXACT-HEAD REVIEW PENDING`
+**STOP (RB03 end-state):** `RB03-P01R2 DOCUMENT CORRECTION DEPOSITED / PR #67 DRAFT / MERGE NOT AUTHORIZED / NO DATES RATIFIED / NO PRODUCT CODE / CHIEF EXACT-HEAD RE-REVIEW PENDING`
 
 ---
 
@@ -31,17 +31,17 @@ parent_register:
 | Programme | AIEOS-PROGRAM-RB03 |
 | Founder authorization | **2026-11-09** — "RB03 Authorized" |
 | Mode | Read-only on five pinned `main` trees + linked Product/ADR/draft PRs; **write only this file** |
-| Packet | **AIEOS-PROGRAM-RB03-P01** |
+| Packet | **AIEOS-PROGRAM-RB03-P01R2** |
 | Architecture parent (`main`) | `a4edadc979248d7abedc4d7c679b348033c57eb5` (RB02 PR #65 merge) |
 | Branch | `cursor/aieos-program-rb03-bottom-up-delivery-rebaseline-437e` |
-| Issue | [#66](https://github.com/eduvijna-ai/eduvijna-architecture/issues/66) (workday — not a PR) |
-| Draft PR (this deposit) | [#67](https://github.com/eduvijna-ai/eduvijna-architecture/pull/67) @ HEAD `21aa9f3193c7653630fa061e9532f3a725bc05c5` |
+| Workday issue | [#66](https://github.com/eduvijna-ai/eduvijna-architecture/issues/66) (controlling scope — **not** a PR) |
+| Draft PR (this deposit) | [#67](https://github.com/eduvijna-ai/eduvijna-architecture/pull/67) — pre-R2 branch tip `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
 
 ---
 
-## B — Exact-source gate (re-verified before P01R1 write)
+## B — Exact-source gate (re-verified before P01R2 write)
 
-Re-verification **2026-11-10 (P01R1)**: `git fetch origin main`, `gh pr view 65`, `gh pr view 67`, `gh api` commit SHAs, OpenAPI SHA-256 check.
+Re-verification **2026-11-10 (P01R2)**: `git fetch origin main`, `gh pr view 65`, `gh pr view 67`, five-repo `main` SHAs, OpenAPI SHA-256 check.
 
 | Authority | Expected | Verified |
 |-----------|----------|----------|
@@ -65,20 +65,25 @@ Re-verification **2026-11-10 (P01R1)**: `git fetch origin main`, `gh pr view 65`
 | Arch **#53** DR01 | OPEN | YES | `70986a013ce776257f739eff6ab89727d6715df9` | Decision dependency |
 | Arch **#51** CX01 pack | OPEN | YES | `87725067d3aa9f39dff05e634f71b05d8da85cd0` | Acceptance dependency (I08) |
 | Product **#3** | OPEN | YES | `90511df0358dcee1236adcde73659bfb2be95e37` | Acceptance dependency |
-| Arch **#67** RB03 (this deposit) | OPEN | YES | `21aa9f3193c7653630fa061e9532f3a725bc05c5` | Planning only — **not merged** |
+| Arch **#67** RB03 (this deposit) | OPEN | YES | `66208f462df8dbabf50c23d6345ddc1daa6ad303` @ pre-R2 write | Planning only — **not merged** |
 
-**Gate:** **PASS** — RB03 P01R1 correction write authorized.
+**Gate:** **PASS** — RB03 P01R2 correction write authorized.
 
 **Architecture Actions:** `.github/workflows/.gitkeep` only — **NO CI CONFIGURED**. Backend/Frontend CI **not re-run** in RB03.
 
 ---
 
-## C — Git branch and diff scope
+## C — Git branch, provenance chain, and diff scope (R2-F4)
 
 | Field | Value |
 |-------|-------|
 | Branch | `cursor/aieos-program-rb03-bottom-up-delivery-rebaseline-437e` |
-| Sole parent | `a4edadc979248d7abedc4d7c679b348033c57eb5` |
+| Architecture **branch base** (from `main`) | `a4edadc979248d7abedc4d7c679b348033c57eb5` |
+| **P01 HEAD** (first RB03 deposit) | `21aa9f3193c7653630fa061e9532f3a725bc05c5` |
+| **P01R1 direct parent** | `21aa9f3193c7653630fa061e9532f3a725bc05c5` |
+| **P01R1 HEAD** (Chief-reviewed prior to R2) | `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
+| **P01R2 direct parent** (required before this write) | `66208f462df8dbabf50c23d6345ddc1daa6ad303` |
+| **P01R2 HEAD** | Recorded on push receipt / PR #67 — **not** embedded in this file (avoid recursive SHA commit) |
 | Diff vs `main` | **One file only:** this document |
 | Other repos / files / draft PRs / ADRs | **Untouched** |
 
@@ -256,31 +261,33 @@ Each **approved** uncompleted **[DEV]** row maps to ≥1 packet. Fields below us
 | PK-V1-QA-E2E | QA-E2E | Cross | fe, be | I07 rehearsal stable | Cross-role regression harness; fresh CI rerun | Net-new features | Stable showcase regression | Harness green @ fresh run | Cross-tenant fixture data | FE/BE CI receipt | **M** · verification |
 | PK-V1-QA-CI | QA-CI | Platform | arch, be, fe | — | Document required checks per packet; Arch **no CI** honest | Claim Arch CI green | Maintainers know gate map | Checklist matches repo reality | N/A | Doc + manual audit | **S** · governance |
 
-#### H.3.2 — Platform ADR partials (**one packet per index row** — no silent bundle closeout)
+#### H.3.2 — Platform ADR partials (**one packet per index row** — frozen ADR fidelity, R2-F1)
 
-| PK-ID | Req | Owner | Repos | Deps / gate | In scope | Out / negatives | User outcome | E2E (+) | Adversarial (−) | Proof | Size |
-|-------|-----|-------|-------|-------------|----------|-----------------|--------------|---------|-----------------|-------|------|
-| PK-V1-PLT-022 | ADR-022 | Backend | be, infra | ADR frozen @ pin | Identity kernel dev gaps per ADR text | PROD identity | AuthZ consistent in dev | Tests @ pin + delta list | Privilege escalation | BE tests | **M** · partial |
-| PK-V1-PLT-023R1 | ADR-023R1 | Backend | be | — | ContentVersion dev residuals | Bypass immutability | Publishers safe draft path | Version immutability tests | Cross-tenant version read | BE tests | **M** · partial |
-| PK-V1-PLT-024 | ADR-024 | Backend | be | — | SoR boundary dev alignment | Competing SoR | Clear ownership in code | Contract tests | Roster SoR in AIEOS | BE tests | **M** · partial |
-| PK-V1-PLT-026 | ADR-026 | Backend | be | — | Audit trail dev completeness | PROD log shipping | Operators trace actions | Audit emit tests | PII in audit blob | BE tests | **M** · partial |
-| PK-V1-PLT-028 | ADR-028 | Backend | be, infra | — | Tenant isolation dev proof | Cross-tenant join | Tenants isolated in dev | Isolation tests | Cross-tenant query | BE/integration | **M** · partial |
-| PK-V1-PLT-033 | ADR-033 | Backend | be | — | Asset model residual | Prod CDN policy | Assets referenced safely | Model tests | Unsigned asset fetch | BE tests | **M** · DESIGN residual |
-| PK-V1-PLT-034 | ADR-034 | Backend | be | — | Asset security residual | Unsupported MIME exec | Safe asset handling | Security tests | Path traversal | BE tests | **M** · DESIGN residual |
-| PK-V1-PLT-035 | ADR-035 | Backend | be | — | Processing pipeline residual | Unbounded transcode | Governed processing | Pipeline tests | DoS via upload | BE tests | **M** · DESIGN residual |
-| PK-V1-PLT-036 | ADR-036 | Backend | be | — | Delivery residual | Public bucket leak | Signed delivery path | Delivery tests | Token reuse | BE tests | **M** · DESIGN residual |
-| PK-V1-PLT-046R1 | ADR-046R1 | Backend | be | — | Outbox / dev event semantics | Prod broker | Reliable dev events | Outbox tests | Cross-tenant event | BE tests | **M** · partial |
-| PK-V1-PLT-AI-044 | ADR-AI-044 | Architecture | arch, be | Forward ADR scope clarity | Agent/MCP **architecture** binding for dev gateway | MCP prod surface | Architects know tool boundary | ADR traceability | Unauthorized tools | Arch review + BE stub tests | **M** · **DECISION_BLOCKED** partial |
+**Rule:** Trace the **actual frozen ADR subject**; do **not** invent identity, ContentVersion, audit, tenancy, MIME, transcode, signed delivery, or dev-outbox work from a `PARTIAL` RB01 row. **ADR-AIEOS-042** forbids presigned/signed provider URLs — authenticated API-mediated streaming only. Where a V1 dev residual cannot be proven @ pin → **`EVIDENCE_GAP` / `RESIDUAL_NOT_ESTABLISHED` / `NOT A V1 CP COMMITMENT`**.
 
-*Rolling “one L bundle closes five ADRs” is **forbidden** — each row needs demonstrable acceptance or explicit **DESIGN/DECISION_BLOCKED** (R1-F2).*
+| PK-ID | Req | Frozen ADR subject | V1 class | In scope (authority-faithful) | Excluded / adversarial (−) | Proof expectation | Size |
+|-------|-----|--------------------|---------|-------------------------------|---------------------------|-------------------|------|
+| PK-V1-PLT-022 | ADR-022 | **Platform Technology Baseline** (Python/FastAPI/Pydantic/Postgres/React/GHA/OCI/OTel/OpenTofu) | EVIDENCE_GAP | Gap list vs baseline pin (toolchain, CI matrix, local dev parity) — **not** identity kernel | Identity/tenant ownership (ADR-023R1); PROD infra (SRC-05) | Pin audit + checklist | **UNKNOWN** |
+| PK-V1-PLT-023R1 | ADR-023R1 | **Identity, Tenant & Security canonical restatement** (Principal, membership, current authority, actor/delegation) | EVIDENCE_GAP | Contract gaps vs ADR-023R1 only | ContentVersion immutability (ADR-027); roster SoR (ADR-062) | BE contract tests if residual proved | **UNKNOWN** |
+| PK-V1-PLT-024 | ADR-024 | **Data, Resource & SoR** (content/tenant/RLS/aggregate/version boundaries) | EVIDENCE_GAP | SoR boundary alignment in generic domains | Competing roster/enrollment SoR | Contract/RLS tests if residual proved | **UNKNOWN** |
+| PK-V1-PLT-026 | ADR-026 | **Temporal workflow** (durable execution, activities, replay, authorization) | EVIDENCE_GAP | Workflow identity / activity contract gaps @ pin | Full audit authority (ADR-028); PROD Temporal plane (SRC-05) | Workflow integration tests if proved | **UNKNOWN** |
+| PK-V1-PLT-028 | ADR-028 | **Security audit & mutation accountability** (append-only evidence, same-transaction protected mutations) | EVIDENCE_GAP | Mutation audit emit completeness vs ADR-028 | General tenancy ADR ownership; cross-tenant reads | Same-tx audit tests if proved | **UNKNOWN** |
+| PK-V1-PLT-033 | ADR-033 | **Asset/File domain** (physical bytes, metadata ownership, boundaries) | EVIDENCE_GAP | Domain model / ownership boundary deltas @ pin | CDN/prod delivery policy (SRC-05) | Model tests if proved | **UNKNOWN** |
+| PK-V1-PLT-034 | ADR-034 | **Asset current-use authority decision semantics** (denial vocabulary, precedence, BlobStore fail-closed) | EVIDENCE_GAP | Exact denial paths when BlobStore unavailable | MIME execution sandboxes; generic “asset security” | Fail-closed decision tests if proved | **UNKNOWN** |
+| PK-V1-PLT-035 | ADR-035 | **Asset mutation & revision activation** (create/register/activate/locking/BlobStore inspect) | EVIDENCE_GAP | Revision activation semantics gaps | Transcode pipelines; unbounded processing | BlobStore inspect tests if proved | **UNKNOWN** |
+| PK-V1-PLT-036 | ADR-036 | **Asset authorization & transactional security audit** (capabilities, same-transaction audit) | EVIDENCE_GAP | Capability matrix + same-tx audit gaps | **Presigned/signed URLs** (ADR-042); public bucket delivery | Authz + audit tests if proved | **UNKNOWN** |
+| PK-V1-PLT-046R1 | ADR-046R1 | **Production event plane multi-domain publisher ACL** (Content+Teaching prefixes) | PRODUCTION_CLASSIFICATION / EVIDENCE_GAP | Dev **classification** only — is publisher ACL residual truly [DEV] or charter drift? | Dev transactional outbox (ADR-025); treating as dev outbox | Arch classification review | **UNKNOWN** |
+| PK-V1-PLT-AI-044 | ADR-AI-044 | **AI platform behind stable product services** | DECISION_BLOCKED | Architecture traceability for gateway behind product APIs | Automatic MCP tool/runtime implementation | Arch review + SRC-01 option | **UNKNOWN** |
+
+*Forbidden:* compressing rows 022…028 into one L while keeping per-row M sizes; inventing signed delivery, transcode, or identity kernels (R2-F2).*
 
 #### H.3.3 — Dev Model Gateway
 
 | PK-ID | Req | Owner | Repos | Deps / gate | In scope | Out / negatives | User outcome | E2E (+) | Adversarial (−) | Proof | Size |
 |-------|-----|-------|-------|-------------|----------|-----------------|--------------|---------|-----------------|-------|------|
-| PK-V1-AGT-GW | AGT-GW | Backend | be | ADR-AI-044 clarity | Dev `StructuredModelGateway` paths @ pin | **Prod** routing (SRC-05) | Teachers get governed AI in dev | Fake/Groq paths work | Live prod keys in dev UI | BE tests | **M** · partial |
+| PK-V1-AGT-GW | AGT-GW | Backend | be | ADR-AI-044 binding clarity | Dev `StructuredModelGateway` paths @ pin — **only if** residual proved | **Prod** routing (SRC-05); MCP runtime (see PK-FD-AGT-MCP) | Teachers get governed AI in dev | Fake/Groq paths work | Live prod keys in dev UI | BE tests @ proved residual | **UNKNOWN** · EVIDENCE_GAP unless pin delta list |
 
-**H.3 planning rollup (band math only — §L.1):** treat PK-V1-PLT-022…028 as **one L**; PK-V1-PLT-033…036 as **one M**; PK-V1-PLT-046R1 + PK-V1-PLT-AI-044 as **one M**; PK-V1-AGT-GW as **one M**; QA-CI **S**; QA-E2E **M** → **1 S / 4 M / 1 L = 13 raw**. Per-ADR rows above remain binding for acceptance traceability (R1-F2).
+**H.3 effort accounting (R2-F2):** **11** platform ADR index rows + **QA-E2E** + **QA-CI** + **AGT-GW** = **14** packets. Only **PK-V1-QA-E2E** (verification) and **PK-V1-QA-CI** (governance doc) carry defensible **S/M** bands @ pin. **All `PK-V1-PLT-*` and `PK-V1-AGT-GW` remain `SIZE_UNKNOWN` pending evidence deposits** — **not** V1 CP commitments until residuals are established. **No grouped 13-unit rollup.** Counterfactual only: if every H.3 row were wrongly treated as independent **M** true work, H.1 **20** + H.2 **12** + H.3 **27** = **59** raw → `ceil(59×1.25)=74` buffered — **not adopted as a forecast** (R2-F2).
 
 ### H.4 — Conditional programme rows (**SOURCE_RECONCILIATION** — not in 34)
 
@@ -295,8 +302,8 @@ Each **approved** uncompleted **[DEV]** row maps to ≥1 packet. Fields below us
 | PK-ID | Req | Owner | Repos | Deps / gate | In scope | Out / negatives | User outcome | E2E (+) | Adversarial (−) | Proof | Size |
 |-------|-----|-------|-------|-------------|----------|-----------------|--------------|---------|-----------------|-------|------|
 | PK-FD-ADM-OS | ADM-OS | Cross | product, be, fe | SRC-01 + ERP charter | Admin OS product surface beyond S04 four ports | Roster SoR (ADR-062) | School operators use Admin OS | Role workflows | ERP master violation | Product E2E (future) | **XL** · hypothesis |
-| PK-FD-ERP-LIVE | ERP-LIVE | Cross | be, infra | SRC-01, SRC-05, forward ADR | External ERP/SIS **read/write adapter** | AIEOS competing enrollment SoR | Live institutional sync | Adapter contract tests | Cross-tenant ERP bleed | Integration + charter | **XL** · hypothesis |
-| PK-FD-AGT-MCP | AGT-MCP | Backend | be | `DEC-RB02-10` + forward ADR | Governed MCP tool surface in dev | Prod MCP without SRC-05 | Extensible tools w/ authz | Tool registration tests | Tool privilege escalation | BE + Arch review | **XL** · blocked |
+| PK-FD-ERP-LIVE | ERP-LIVE | Cross | be, infra | SRC-01, ADR-062, forward Admin ADR | **Synchronous current-authority read/query** via domain-facing provider adapter (ERP/SIS external master) | **Arbitrary ERP/SIS writes**; AIEOS competing enrollment SoR; prod Admin mutation API (ADR-062) | Operators query institutional master safely | Read adapter contract tests; fail-closed on write attempts without future ADR | Cross-tenant ERP bleed; write without authorization | Integration + charter | **XL** · hypothesis |
+| PK-FD-AGT-MCP | AGT-MCP | Backend | be | **`DEC-AGT-MCP-01`** and/or SRC-01 post-Dec checklist — **not** `DEC-RB02-10` (ECO-SDK) | Governed MCP tool surface in dev **only after** MCP forward ADR / Founder auth | Prod MCP without SRC-05; implied MCP runtime @ pin | Extensible tools w/ authz | Tool registration tests | Tool privilege escalation | BE + Arch review | **XL** · blocked |
 | PK-FD-AGT-SAFE | AGT-SAFE | Cross | be, product | SRC-01 | Eval/safety/provenance pipeline | Unchecked model deploy | Safe model lifecycle | Eval harness | PII in training logs | BE tests + policy | **L** · hypothesis |
 
 *`EIS-CUR` / `EIS-ALIGN` execution packets **removed** — both remain `PK-CND-EIS-*` until Forward ADR (§F).*
@@ -313,7 +320,7 @@ Each **approved** uncompleted **[DEV]** row maps to ≥1 packet. Fields below us
 |--------|---------------------:|---------------------|
 | V1 hint atomic (H.1) | **8** | **High** DAG; **Medium** T0/F UX |
 | V1 CX01 verification (H.2) | **8** | **High** baseline; **Medium** CI rerun |
-| V1 platform/QA (H.3) | **14** packets → **11+2+1** index rows | **Medium** — per-ADR acceptance required |
+| V1 platform/QA (H.3) | **14** packets → **11+2+1** index rows | **Low** for ADR rows (**EVIDENCE_GAP** dominant); **Medium** for QA verification only |
 | Full-original (H.5) | **4** | **Low** until SRC-01 / forward ADRs |
 | Conditional SRC (F + H.4) | **12** + TOS-LOOP plan | **Blocked** — no approved code |
 | Discovery (H.6) | 1 reconciliation | **Decision** only |
@@ -431,23 +438,27 @@ flowchart LR
 
 ## L — Engineering effort & capacity model (no dates)
 
-### L.1 — Bottom-up size roll-up (illustrative — SRC-04 blocks ratification; R1-F3/F4)
+### L.1 — Bottom-up size roll-up (R2-F2 — partial quantification only; SRC-04 HOLD)
 
-Weights: S=1, M=2, L=4, XL=8. Buffer: `ceil(raw × 1.25)`.
+Weights: S=1, M=2, L=4, XL=8. Buffer: `ceil(raw × 1.25)` **only where size is evidence-backed**.
 
-| Segment | S | M | L | XL | Raw units | +25% buffer |
-|---------|--:|--:|--:|---:|----------:|------------:|
-| V1 hints (H.1) | 0 | 6 | 2 | 0 | **20** | 25 |
-| V1 CX01 (H.2) | **4** | **4** | 0 | 0 | **12** | 15 |
-| V1 QA/platform (H.3 — approved only) | **1** | **4** | **1** | 0 | **13** | 17 |
-| **Approved V1 subtotal (H.1–H.3)** | **5** | **14** | **3** | 0 | **45** | **57** |
-| Conditional TOS-LOOP plan (H.4) | 0 | 1 | 0 | 0 | **2** | 3 |
-| *Mixed narrative error (prior P01)* | *4* | *15* | *4* | *0* | *50* | *59* |
-| Full-original (H.5) | 0 | 0 | 1 | 3 | **28** | 35 |
+| Segment | Quantified packets | Size basis | Raw (if counted) | Buffered | Programme forecast? |
+|---------|-------------------|------------|------------------|----------|---------------------|
+| V1 hints (H.1) | 8 atomic hint rows | RB01-aligned / hypothesis per row | **20** (hypothesis) | **25** | **Illustrative only** — not ratified schedule |
+| V1 CX01 (H.2) | 8 verification/polish rows | RB01-aligned @ showcase pin | **12** (hypothesis) | **15** | **Illustrative only** |
+| V1 QA (H.3.1) | QA-E2E **M**, QA-CI **S** | Verification @ pin | **3** | **4** | Checklist/harness — not feature delivery |
+| V1 platform ADRs (H.3.2) | 11 `PK-V1-PLT-*` | **`SIZE_UNKNOWN` — EVIDENCE_GAP** | **—** | **—** | **Not counted** until residual proved |
+| V1 AGT-GW (H.3.3) | 1 row | **`SIZE_UNKNOWN` — EVIDENCE_GAP** | **—** | **—** | **Not counted** |
+| Conditional TOS-LOOP (H.4) | 1 plan packet | Not in approved 34 denominator | **2** (if sized) | **3** | **Excluded** from V1 CP effort |
+| Full-original (H.5) | 4 post-V1 rows | Hypothesis XL/L | **28** | **35** | Post-V1 — SRC-01 gated |
 
-**Do not** use the prior “4 S / 15 M / 4 L = 47” line — that sums to **50** raw, not 47 (R1-F3).
+**Withdrawn (R2-F2):** prior **45 raw / 57 buffered** “approved V1 subtotal” and **~143–200 engineering-day / ~29–40 workweek** sensitivity — those arithmetic depended on unsupported H.3 compression or unproven ADR coding work.
 
-**Engineering-day sensitivity (conditional — not a schedule):** **57** buffered units ≈ **28.5** M-equivalents at dominant M=2 weighting. At **5–7 engineering-days per M-equivalent** (RB01 hypothesis band) → **~143–200 engineering-days** → **~29–40** five-day workweeks in a **single serial lane**, **before** Chief/Founder PR latency, Product Architecture review, or integration stewardship. **Do not** map this to RB01’s historical **25–35 workweek** illustration (that band assumed **50** buffered units and different packet mix). Review/integration latency **unmodeled** until SRC-04.
+**Defensible partial sum (hypothesis only):** H.1 **20** + H.2 **12** + QA **3** = **35** raw → **44** buffered — **hints + CX01 + QA verification only**; **excludes all unresolved platform ADR residuals**. **Not** a complete V1 bottom-up estimate.
+
+**Counterfactual (not adopted):** if all 14 H.3 packets were independent proven **M** work → +**27** raw → **59** raw / **74** buffered with H.1+H.2 — **rejected as forecast** until each ADR row is reclassified with pin evidence (R2-F2).
+
+**SRC-04:** capacity and calendar binding remain **HOLD**; review/integration latency **unmodeled**.
 
 ### L.2 — Capacity scenarios (conditional)
 
@@ -521,6 +532,7 @@ Only **#1** is a first **feature-code** candidate. **#2–#3** are validation/re
 | DEC-RB02-08 | EIS-ALIGN | Accept forward ADR for alignment engine after EIS-CUR? | Draft ADR / rules-first / HOLD | Alignment blocked | Founder + Arch | After DEC-RB02-07 | Forward ADR |
 | DEC-RB02-09 | EIS-ML | Ratify P0 languages + ML policy for Indian schools? | SRC-03 list / human-only / HOLD | ML row stays conditional | Founder | Content quality | SRC-03 |
 | DEC-RB02-10 | ECO-SDK | Accept SDK boundary ADR after SRC-02 evidence? | TLM-001 OQ path / new ADR / HOLD | Ecosystem SDK blocked | Founder | Post-V1 ECO | SRC-02 checklist |
+| DEC-AGT-MCP-01 | AGT-MCP | Authorize forward ADR / SRC-01 scope for governed **dev** MCP tool surface? | Draft MCP ADR / defer / HOLD | PK-FD-AGT-MCP blocked | Founder + Arch | Post-V1 agents | **Not** DEC-RB02-10 |
 | DEC-RB02-11 | ECO-AN | Deposit Founder analytics spec (SRC-02)? | Provide brief / defer / HOLD | Analytics row SOURCE_REQUIRED | Founder | Post-V1 ECO | SRC-02 item |
 | DEC-RB02-12 | QA-OBS | Split DEV telemetry from [PROD] observability charter? | ENG-OBS Draft path / PROD-only / HOLD | Observability scope ambiguity | Founder + Eng | SRC-05 boundary | ENG-OBS-001 status |
 | DEC-SRC-01 | SRC-01 | Ratify post-Dec family checklist for PK-FD-* tranches? | Approve list / amend / HOLD | Post-V1 calendar binding | Founder | CP-4 | SRC-01 workshop |
@@ -559,6 +571,6 @@ Only **#1** is a first **feature-code** candidate. **#2–#3** are validation/re
 
 ---
 
-**End AIEOS-PROGRAM-RB03-P01R1 — Chief R1 corrections deposited; await re-review; PR #67 draft; no date ratified; no merge; no code authorized.**
+**End AIEOS-PROGRAM-RB03-P01R2 — R2-F1…F4 narrow corrections deposited; PR #67 draft; no date ratified; no merge; no code authorized.**
 
-**STOP LINE:** `RB03-P01R1 CORRECTION DEPOSITED / PR #67 DRAFT / MERGE NOT AUTHORIZED / NO DATES RATIFIED / NO PRODUCT CODE / CHIEF EXACT-HEAD RE-REVIEW PENDING`
+**STOP LINE:** `RB03-P01R2 DOCUMENT CORRECTION DEPOSITED / PR #67 DRAFT / MERGE NOT AUTHORIZED / NO DATES RATIFIED / NO PRODUCT CODE / CHIEF EXACT-HEAD RE-REVIEW PENDING`
