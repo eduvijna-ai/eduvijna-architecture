@@ -436,7 +436,33 @@ Conflict preference:
 | **What was implemented** | Architecture records only: [AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md](AIEOS360-CX01-W01-CLIENT-SHOWCASE-GAP-BASELINE.md) — showcase acceptance contract; capability matrix (bounded v1 agentic baseline **A**; broad Agents/MCP **E**); scenario `AIEOS360-CX-SCENARIO-01`; ADR-AIEOS-062 **Option A** with `DevelopmentCoherentSchoolContextProvider` as Option A specialization; proof map separating **S04-I03-E2E** (assign → evaluate → Principal/Parent) from **S01-I05-E2E** (Improve handoff); unified showcase launcher **REQUIRED**; UX gap map; ordered **AIEOS360-CX01-I01…I08**; governed source gate including Product `b4b3048fb7a6a1c50ae8619dc490743714f2e3e2` **MATCH**. **No new ADR.** Chief Architect correction pass applied on PR #48. |
 | **What was deliberately NOT implemented** | Any Backend / Frontend / Product / Infrastructure source change; migrations; OpenAPI change; cloud mutation; production authorization; first CX01 implementation slice. |
 | **Governing decisions** | Existing Frozen / Approved ADR-AIEOS-052…062 and TOS-CX01-C01; ADR bodies unchanged. |
-| **Current status** | **W01 BASELINE READY — PR OPEN — NOT MERGED.** **AIEOS360-CX01-I01 = NOT STARTED / NOT AUTHORIZED.** Development Slice Complete (S01–S04) ≠ AIEOS 360 Client Showcase Ready. |
+| **Current status** | **W01 MERGED** at Architecture `491295c3cf0a151f31686a6a2e1a2176cd92c782`. **CX01-I01–I07 = ENGINEERING COMPLETE** (Frontend `569ef8be46617ab1412ddb3f5a0214c40bdb946b`). **AIEOS360-CX01-I08 = ACCEPTANCE DOSSIER DRAFT — FOUNDER SIGN-OFF PENDING.** Development Slice Complete (S01–S04) ≠ AIEOS 360 Client Showcase Ready. |
+
+---
+
+## 33. AIEOS360-CX01-I07 — Integrated showcase rehearsal proof
+
+| Field | Content |
+|-------|---------|
+| **Objective** | Close engineering gap for integrated cross-role showcase rehearsal: human script, automated guard, mandatory Fake proof, 10-phase I07 integrated run on shared PostgreSQL 18 with zero Product `/api` mocks. |
+| **Architectural reason** | W01 ordered package I07; extends S04-I03 proof class with I01–I06 showcase environment, launcher, UX continuity, presentation uplift, and mode governance without reopening ADR-AIEOS-058…062. |
+| **What was implemented** | Frontend [PR #47](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/pull/47) **MERGED** `569ef8be46617ab1412ddb3f5a0214c40bdb946b`; Issue #46 **CLOSED**; post-merge CI [41410487754](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/actions/runs/41410487754) **SUCCESS** 9/9 including I07 **10/10 PASS** and mandatory Backend Fake PreparationKit proof; CodeQL [41410487287](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/actions/runs/41410487287) **SUCCESS**. Presenter preflight and cue sheet at Frontend pin. **Deterministic Fake proof class; REAL_AI live cross-role generation PENDING.** |
+| **What was deliberately NOT implemented** | Founder in-person acceptance; whole-AIEOS360 paid live-provider generation proof; production readiness; SSO. |
+| **Governing decisions** | Frozen ADR-AIEOS-052…062 unchanged; W01 acceptance contract §1.3 remains governing for **Client Showcase Ready**. |
+| **Current status** | **I07 ENGINEERING COMPLETE / CLOSED.** **Not** AIEOS 360 Client Showcase Ready until I08 Founder acceptance. |
+
+---
+
+## 34. AIEOS360-CX01-I08 — Founder acceptance evidence & conditional closeout (draft)
+
+| Field | Content |
+|-------|---------|
+| **Objective** | Prepare Founder-run acceptance dossier and conditional CX01-C01 programme closeout after I07; synchronize Architecture and Product records. |
+| **Architectural reason** | W01 package I08; separates **engineering proof** from **Founder/client demonstration** and **programme-ready** declaration. |
+| **What was implemented** | Architecture records: [AIEOS360-CX01-I08-FOUNDER-ACCEPTANCE-EVIDENCE.md](AIEOS360-CX01-I08-FOUNDER-ACCEPTANCE-EVIDENCE.md) (`acceptance-pending`); [AIEOS360-CX01-C01-CLIENT-SHOWCASE-CLOSEOUT.md](AIEOS360-CX01-C01-CLIENT-SHOWCASE-CLOSEOUT.md) (`proposed-pending-founder-acceptance`); narrow current-state / roadmap / journey / changelog sync. Product acceptance record in paired Product PR. **No application code.** |
+| **What was deliberately NOT implemented** | Founder sign-off; CLIENT SHOWCASE READY declaration; PR merges; issue closure; Dec18 workday start. |
+| **Governing decisions** | Founder authorization **2026-11-02** “Go ahead I08 implementation, tasklist.” |
+| **Current status** | **ACCEPTANCE DOSSIER READY — FOUNDER SIGN-OFF PENDING — DRAFT PRS — NOT MERGED.** [Issue #50](https://github.com/eduvijna-ai/eduvijna-architecture/issues/50) **OPEN.** |
 
 ---
 
