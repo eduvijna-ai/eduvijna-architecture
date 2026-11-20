@@ -80,7 +80,7 @@ reviewers:
 | Repository | `eduvijna-ai/eduvijna-architecture` |
 | Branch | `cursor/sp01-adr063-t0-reconciliation-90bb` |
 | Base | `de6f104e9a57ab65b8fdfd4364d8beedce3db3d5` |
-| Commit | `7e774a00e4c9ce6249d166e98edde6b545662c57` (sole parent `de6f104e9a57ab65b8fdfd4364d8beedce3db3d5`) |
+| Initial deposit commit | `860807af08d9b1d3c45f307d2b0740777f206092` (sole parent `de6f104e9a57ab65b8fdfd4364d8beedce3db3d5`); **PR #69 current HEAD is authoritative in GitHub, not self-pinned inside this document**. |
 | Changed files | **Only** `AIEOS/AIEOS-V1-SP01-ADR063-T0-AUTHORING-RECONCILIATION.md` |
 
 ### A.5 Architecture CI
