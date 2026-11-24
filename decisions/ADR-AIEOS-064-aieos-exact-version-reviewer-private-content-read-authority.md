@@ -88,7 +88,7 @@ Normative restatement of approved R3 §§3.2–3.6. JWT supplies identity claims
 | 3 | Caller == current Content **owner** == immutable hint-version **`created_by_principal_id`** (guarded append @ pin: `worksheet_hint_append.py` @ `5bbc09bc…`) |
 | 4 | **Current tenant membership** for issuer |
 | 5 | **`content.review.assign` ALLOW** (proposed capability — **not at pin**; **no production grant** without separate authorization) |
-| 6 | **Submit-for-review** authority facts satisfied for version |
+| 6 | Current **`content.review.submit` ALLOW** and submit-for-review authority facts satisfied for version |
 | 7 | Issuer **current class authority** for mandatory **`class_ref`** from **immutable governed authoring provenance** (not client label) |
 | 8 | Version: **current**, hint-bearing **`education.worksheet` `schema_version == 2`**, **`IN_REVIEW`**, **no terminal decision**, **no unconsumed attestation**, slot rules in O64-04 permit new bind |
 | 9 | Designatee: **ACTIVE HUMAN**, **current tenant membership**, **`content.review.decide` ALLOW**, passes **Content-facing School Context reviewer-eligibility port** for mandatory `class_ref`, designatee **≠** issuer/creator |
@@ -103,7 +103,7 @@ Normative restatement of approved R3 §§3.2–3.6. JWT supplies identity claims
 
 | # | Gate |
 |---|------|
-| 1 | Same issuer identity/authority as O64-03-A (current owner-issuer with assign capability) |
+| 1 | Current ACTIVE HUMAN direct actor == original owner-issuer, still current Content owner and immutable version creator, current tenant membership, submit/assign capability and issuer class authority; target reviewer eligibility and new-issuance lifecycle predicates are NOT revoke prerequisites |
 | 2 | Target **`assignment_id`** valid for `(tenant, content_id, content_version_id)` |
 | 3 | Emit **`REVOKED`** referencing **exact issuance** `assignment_id` (never version/reviewer alone); clear/update slot per O64-04 |
 
@@ -111,7 +111,7 @@ Revoke is **not** blocked because designatee is already ineligible or version is
 
 #### O64-03-C — Reviewer-use predicate (assigned-reviews GET, attestation, **APPROVE / REJECT / REQUEST_CHANGES**)
 
-**Identical core** for read and all mutation commands. **No worksheet private payload before step 3 succeeds.**
+**Identical core** for read and all mutation commands. **No worksheet private payload may be disclosed until ALL gates succeed.**
 
 | # | Gate |
 |---|------|
@@ -122,7 +122,7 @@ Revoke is **not** blocked because designatee is already ineligible or version is
 | 5 | Slot **non-revoked**, **non-expired** (server time under lock at effect); issuer consumption eligibility or assignment void rules satisfied |
 | 6 | **`content.review.decide` ALLOW**; **current** reviewer membership, kind, decide, and **class eligibility** revalidated |
 | 7 | **`principal_id != created_by_principal_id`** when any non-empty hint |
-| 8 | Version: **exact current** `content_version_id`, **`IN_REVIEW`**, undecided for **new** read/mutation effects (lawful terminal replay per O64-05) |
+| 8 | Version: **exact current** `content_version_id`, **`IN_REVIEW`**, hint-bearing registered `education.worksheet` schema version 2 with validated hints, undecided for **new** read/mutation effects (lawful terminal replay per O64-05) |
 | 9 | **Deny** any third party with `decide` who is **not** the assigned reviewer (class-eligible but unassigned → **DENY**) |
 
 **Chief acceptance (a):** **ALL** gates above before any private payload — not caller match alone.
@@ -165,10 +165,10 @@ Revoke is **not** blocked because designatee is already ineligible or version is
 | Rule | Requirement |
 |------|-------------|
 | Assignment on mutations | **Inside transaction** before attestation and **all** review decisions (including negative): full O64-03-C + exact **`assignment_id`** on active slot |
-| GET vs mutate | Prior successful GET **insufficient**; GET is not authorization proof |
-| Attestation binding | Preserve immutable ADR-063 attestation schema/digest/QA; bind decisions to **original `assignment_id`** + principal (`assignment_id` persistence field = implementation detail) |
-| APPROVE | Attestation reviewer == slot reviewer; digest/QA interlocks unchanged |
-| Idempotency replay | Same principal + exact command fingerprint + **same non-revoked/non-expired `assignment_id`** + **current authority** → **metadata-only receipt**; **no** duplicate business attestation/decision/outbox (**Chief acceptance (d)** preserves **independent security denial audit** on deny) |
+| GET vs mutate | Prior GET neither required nor sufficient; GET is not authorization proof |
+| Attestation binding | Preserve immutable ADR-063 attestation schema/digest/QA; bind attestation, all decisions and idempotency receipts to **original `assignment_id`** + authenticated principal (`assignment_id` persistence field = implementation detail) |
+| APPROVE | Attestation reviewer == slot reviewer AND attestation's original assignment_id == active slot assignment_id; digest/QA interlocks unchanged |
+| Idempotency replay | Same principal + exact command fingerprint + **same non-revoked/non-expired `assignment_id`** + **current authority** → **metadata-only receipt**; **no** duplicate business attestation/decision/audit/outbox (**Chief acceptance (d)** preserves **independent security denial audit** on deny) |
 | Terminal replay | Completed/consumed assignment may return lawful terminal outcome **without** current `IN_REVIEW` but **does not** grant read/new decisions (**Chief acceptance (f)**) |
 | Denied/unauthorized replay | **No** extra attestation, decision, business audit, or outbox; denial audit **not** suppressed |
 | Reassign after attestation | **Prohibited** |
@@ -214,9 +214,9 @@ Future disposable PG18 / adversarial HTTP must cover (minimum): third-party `dec
 | Stage | Status at freeze deposit |
 |-------|---------------------------|
 | (1) D1 proposal + freeze record | **Complete** on Draft PR #71 — **merge to `main` pending** |
-| (2) Pre-freeze read-only inventory + non-prod adversarial characterization | **Not started** (not required to merge freeze text) |
+| (2) Pre-freeze read-only inventory + non-prod adversarial characterization | **Source inventory accepted/closed** (Backend #75); runtime PG18 characterization **NOT_TESTED**, deferred to governed G1 pre/post proof |
 | (3) Canonical ADR on `origin/main` | **Pending** Chief merge verification |
-| (4) **G1** Backend implementation + PG18 HTTP proof | **NOT AUTHORIZED** until (3) complete; **first code packet** = bounded G1 Backend-only ([Backend Issue #76](https://github.com/eduvijna-ai/eduvijna-aieos-backend/issues/75) lineage) per Founder direction — **released by Chief after merge verification**, not by this deposit |
+| (4) **G1** Backend implementation + PG18 HTTP proof | **NOT AUTHORIZED** until (3) complete; **first code packet** = bounded G1 Backend-only ([Backend Issue #76](https://github.com/eduvijna-ai/eduvijna-aieos-backend/issues/76)) per Founder direction — **released by Chief after merge verification**, not by this deposit |
 | (5) G2–G5 | Assignment SoR, assign capability, eligibility port, guarded mutations, dedicated GET/OpenAPI/FE, cross-role E2E, controlled PR #53 resume — **separately scoped**; **do not start** until preceding gate passes |
 
 **Distinguish:** **Architecture freeze approved** ≠ **runtime implemented** ≠ **PG18 PASS** ≠ **production**. No production deployment, production grants, blanket migration authorization, provider actions, or automatic merge. Frontend PR #53 **HELD**. SP02A **65 NOT_TESTED + 2 DEFERRED**.
