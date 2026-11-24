@@ -1,8 +1,8 @@
 # AIEOS-V1-HINT-CI03-D1 — Cross-Owner Reviewer Read-Authority Proposal
 
 **Status:** **PROPOSED / NOT APPROVED / NOT FROZEN / NO CODE AUTHORIZATION**  
-**Revision:** **CI03-D1-R2** (Chief consolidated correction on [Architecture PR #71](https://github.com/eduvijna-ai/eduvijna-architecture/pull/71))  
-**Provenance:** Initial candidate **reconstructed** (2026-11-24) at parent `3c0a66aa…`; prior unreachable commit `cfbed35d…` never on GitHub. **This revision** closes Chief findings F1–F6 in one pass. **Does not modify** frozen [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md), [ADR-048](../decisions/ADR-048-review-queue-owns-approval.md), or [ADR-AIEOS-062](../decisions/ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md).
+**Revision:** **CI03-D1-R3** (final bounded authority clarification on [Architecture PR #71](https://github.com/eduvijna-ai/eduvijna-architecture/pull/71))  
+**Provenance:** Reconstructed (2026-11-24) at parent `3c0a66aa…`; R2 @ `702172f…`; **R3** closes literal contract ambiguities R3-A–C only (no scope growth). **Does not modify** frozen [ADR-AIEOS-063](../decisions/ADR-AIEOS-063-aieos-learner-safe-instructional-hints-authority.md), [ADR-048](../decisions/ADR-048-review-queue-owns-approval.md), or [ADR-AIEOS-062](../decisions/ADR-AIEOS-062-aieos-admin-erp-school-context-current-authority-boundary.md).
 
 **Workday linkage:** [Architecture Issue #70](https://github.com/eduvijna-ai/eduvijna-architecture/issues/70) · [Frontend Issue #52](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/issues/52) · [Frontend Draft PR #53](https://github.com/eduvijna-ai/eduvijna-aieos-frontend/pull/53) (OPEN / DRAFT / RED — **no CI rerun authorized here**)
 
@@ -71,8 +71,8 @@ ADR-063 §5.3 / §7.3: reviewer ≠ immutable author; digest-bound attestation b
 | Subject | Role |
 |---------|------|
 | `execution_tenant_id` | Server-validated tenant; fail closed on mismatch |
-| **Issuer** | ACTIVE HUMAN **Content owner** acting as **direct actor** with verified creator/owner provenance (see §3.2) |
-| **Assigned reviewer** | Exactly **one** ACTIVE HUMAN per version binding; ≠ `created_by_principal_id` when hints present |
+| **Issuer** | ACTIVE HUMAN direct actor == Content owner == hint-version creator (§3.2) |
+| **Assigned reviewer** | Exactly **one** ACTIVE HUMAN per slot; **`caller principal_id` must equal** `reviewer_principal_id` on use; ≠ creator when hints present |
 | `canonical_class_ref` | **Mandatory** — from governed immutable authoring provenance, revalidated at assignment issue and sensitive reads/mutations |
 | `content_id`, `content_version_id` | Exact resource keys |
 | `payload_digest` | Attestation digest (ADR-063) — **separate** from HTTP `ETag` |
@@ -97,14 +97,16 @@ For the **limited hint-bearing worksheet `@2` slice only**:
 
 | Rule | Requirement |
 |------|-------------|
-| Who may issue | Current ACTIVE HUMAN **Content owner** (direct actor; creator provenance verified against `created_by_principal_id` / ownership facts) |
-| Pre-issuer gates | Existing **submit-for-review** authority; current **owner** stewardship; **trusted authoring class authority** for the version’s provenance `class_ref`; new proposed **`content.review.assign`** capability (code-governed; **not registered at pin**; **no production grant** before separate authorization) |
+| Who may issue | Current ACTIVE HUMAN **direct actor** == current **Content owner** == immutable hint-version **creator** (`created_by_principal_id`); guarded append @ pin enforces owner alignment and sets creator (`worksheet_hint_append.py` L136–166, L330 @ `5bbc09bc…`) |
+| Pre-issuer gates | Existing **submit-for-review** capability; new proposed **`content.review.assign`** (not at pin; no production grant); **current** class issuer authority; reviewer-eligibility port for designatee; designatee **≠** issuer/creator |
 | Reviewer count | **ONE** independent eligible HUMAN reviewer designated **explicitly** per exact **current** submitted version |
-| Prohibited | Auto-assignment on submit; self-issuance by reviewer; reviewer self-assignment; tenant admin inference; round-robin; blanket grants; ERP/admin UI expansion in this slice |
+| Prohibited | Auto-assignment on submit; self-issuance by reviewer; reviewer self-assignment; tenant admin inference; round-robin; blanket grants; ERP/admin UI expansion; **delegated read** in this slice |
 
-**Issuer trust rationale:** Only the steward who submitted the version for review can bind a reviewer to **that exact version**, limiting cross-owner read to an owner-initiated, auditable delegation.
+**Issuer trust rationale:** Only the hint-version creator-owner who controls submit can bind a reviewer to **that exact version**.
 
-**Issuer invalidation (fail closed):** If before reviewer action the issuer loses **current** owner status, **`content.review.assign`**, or **authoring/class authority** required at issuance, any **pending** assignment for that version is **ineligible** (deny read/mutations; no implicit persistence). Re-validation at sensitive points (§3.6).
+**Issuer invalidation (fail closed):** Pending entitlement becomes **ineligible** when issuer loses ACTIVE HUMAN status, owner/creator alignment, tenant membership, submit or assign capability, or class authority — **no implicit persistence**, no automatic replacement reviewer, **no admin bypass**. Same re-check applies to reviewer: ACTIVE HUMAN, membership, `content.review.decide`, mandatory `class_ref` eligibility.
+
+**Revocation (issuer-only):** Current owner issuer (with assign authority) may **REVOKED** an issuance **even when** the designatee is already ineligible or version is terminal/stale (ineligibility already blocks **new** reviewer effects). **No** reversible reactivation of a revoked `assignment_id`; fresh issuance only under §3.4 rules. Revoke is **not** blocked because the target reviewer can no longer act.
 
 ### 3.3 School Context reviewer-eligibility port (new, Content-facing)
 
@@ -117,26 +119,31 @@ For the **limited hint-bearing worksheet `@2` slice only**:
 
 Deny when School Context provider unavailable or malformed — **no fallback**.
 
-### 3.4 Assignment SoR — **C-A** (append-only lifecycle)
+### 3.4 Assignment SoR — **C-A** (events + current slot)
 
-**Rejected:** C-B bearer tokens; mutable `revoked_at` on a single “immutable” row; migration-free claims.
+**Rejected:** C-B tokens; mutable fields on immutable event rows; **time-dependent partial unique index** on events alone to represent “active” (expiry/revocation are not index-friendly); migration-free claims; second independent SoR.
 
-**Selected model:** Content-owned **append-only** `content_review_assignment_events` (names indicative):
+**Selected minimal shape (proposed, not at pin):**
 
-| Event | Records |
-|-------|---------|
-| `ASSIGNED` | `tenant_id`, `content_id`, `content_version_id`, `reviewer_principal_id`, `issuer_principal_id`, `class_ref`, server `issued_at`, `valid_until` (**max 7 calendar days** from issuance — proposed policy) |
-| `REVOKED` | Same keys + `revoked_at`, `revoked_by_principal_id` (authorized owner issuer) |
+1. **Immutable event log** `content_review_assignment_events`:
+   - **`ASSIGNED`:** stable unique `assignment_id`, `tenant_id`, `content_id`, `content_version_id`, `reviewer_principal_id`, `issuer_principal_id`, `class_ref`, server `issued_at`, `valid_until` (≤ **7 days** — proposed policy).
+   - **`REVOKED`:** references **exact** `assignment_id` of the issuance (never version/reviewer alone), `revoked_at`, `revoked_by_principal_id`.
 
-**Cardinality:** **ONE active assignment** per exact `content_version_id` (not per reviewer row). Reassign only **before** attestation: revoke/expiry, then fresh explicit `ASSIGNED` under new grant.
+2. **Transactional current slot** `content_review_current_assignment` (Content-owned): PK `(tenant_id, content_id, content_version_id)` → `active_assignment_id` (nullable). **Derived** from event history under lock — **not** a second authority source of truth.
 
-**Enforcement:** PostgreSQL unique partial index / constraint for single active binding; transactional lock **Content aggregate first**, then assignment authority row — consistent for issue, revoke, read, attest, decide.
+**Atomic update rules (under Content-head lock, then slot/authority lock):**
 
-**Automatic ineligibility:** Non-current version; terminal review decision; expiry; revocation; issuer/reviewer authority loss at re-check.
+- Create slot if absent; evaluate **expiry** against server time under lock.
+- **New issuance** only when no unconsumed attestation, prior binding revoked or expired, version still current and eligible (not terminal/stale for **new** issue).
+- Slot points at one `assignment_id`; history remains append-only for audit.
 
-**RLS:** Tenant-safe exact refs. Idempotent assign/revoke. Audit trail append-only.
+**Cardinality:** ONE active slot per exact version. Reassign only **before** attestation per §3.5.
 
-**PG18 / dev:** Explicit non-prod fixture or seed insert **only** under separately governed grant — not authorized here.
+**Lock order:** Content aggregate → current-assignment slot → (read/attest/decide body). Same order for issue/revoke. Re-check external School Context / kernel **immediately before** protected payload disclosure or mutation effect — local DB ordering does **not** imply cross-provider atomicity.
+
+**RLS, idempotent issue/revoke, tenant-consistent FKs**; no cross-domain direct SQL in application layer.
+
+**Race / negative proof cases (future):** two distinct reviewers racing issue on same version; expiry mid-read; **stale revoke** of superseded `assignment_id` after reassignment; issuer authority loss; class-eligible `decide` holder **without** assignment denied.
 
 ### 3.5 Attestation coupling (ADR-063 §5.3 / GCI-G05)
 
@@ -147,19 +154,37 @@ After immutable **unique** attestation exists for a version:
 - Changing reviewer requires **new immutable ContentVersion** and full fresh review cycle.
 - **No** retroactive change to valid completed approval/publication.
 
-### 3.6 Authorization evaluation order (read and mutations)
+### 3.6 Predicates — issuance/revocation vs reviewer use
 
-1. Authenticate → **server** trusted tenant + principal.
-2. ACTIVE HUMAN classification; actor alignment on commands.
-3. `content.review.decide` (reviewer) or `content.review.assign` (issuer on assign only).
-4. Load **current active** assignment for `(tenant, content_id, version_id)` — not expired, not revoked, issuer still eligible.
-5. Reviewer-eligibility port: reviewer + mandatory `class_ref`.
-6. Version: current, `IN_REVIEW`, worksheet `@2` hint-bearing scope.
-7. `reviewer_principal_id != created_by_principal_id` when any non-empty hint.
+**A. Issue predicate** (assign command — **no** pre-existing active assignment required):
 
-**External TOCTOU:** DB locks do **not** make external School Context / kernel providers atomic. Re-evaluate membership, kind, capability, and School Context at sensitive points; deny on staleness.
+1. Authenticate → server trusted tenant + principal.
+2. Caller: ACTIVE HUMAN; `effective_actor_id == principal_id`.
+3. Caller == current Content **owner** == `created_by_principal_id` for the hint version.
+4. `content.review.assign` ALLOW; submit authority facts satisfied; issuer **class authority** current; version current, eligible for **new** bind (not blocked by existing unconsumed attestation / active slot rules in §3.4).
+5. Designatee passes reviewer-eligibility port (`class_ref` from version provenance); designatee **≠** caller/creator.
+6. Append `ASSIGNED` + update slot under Content lock.
 
-**HTTP posture:** Same **404** for authenticated but ineligible/missing assignment/resource. **401/403** only at authentication/tenant boundary. Uniform sanitized **503** when authority infrastructure unavailable (no private payload). No response-body logging.
+**B. Revoke predicate** (issuer only):
+
+1. Same issuer identity/authority as §3.2 (owner-issuer with assign capability).
+2. Target `assignment_id` valid for version; emit `REVOKED` referencing that id; clear/update slot. **Not** denied because designatee already ineligible.
+
+**C. Reviewer-use predicate** (assigned-reviews **GET**, attestation, **APPROVE / REJECT / REQUEST_CHANGES** — identical core):
+
+1. Authenticate → server trusted tenant + principal.
+2. Caller: ACTIVE HUMAN; **`principal_id == effective_actor_id`** (no delegated read in this slice).
+3. **`principal_id == reviewer_principal_id`** on the **active** slot’s `assignment_id` (explicit caller-to-assignee binding — mandatory before any private payload).
+4. `content.review.decide` ALLOW; tenant/content/version/`class_ref` match issuance; slot not expired/revoked; issuer eligibility rules satisfied for **consumption** (or assignment void).
+5. **`principal_id != created_by_principal_id`** when hints present.
+6. Version/stewardship checks (`IN_REVIEW` for **new** read/mutation effects; see §4.5 for lawful terminal replay).
+7. **Deny** if another principal holds `decide` but is **not** the assigned reviewer (third party with class eligibility still **DENY**).
+
+**No worksheet private payload before step 3 succeeds.**
+
+**External TOCTOU:** Re-evaluate membership, kind, capability, School Context at step immediately preceding disclosure/effect; deny on unavailable/malformed authority.
+
+**HTTP posture:** **404** for ineligible/missing assignment/resource; **401/403** at auth/tenant boundary; **503** sanitized when authority infrastructure unavailable; no response-body logging.
 
 ---
 
@@ -199,14 +224,18 @@ Minimal private projection sufficient for semantic QA on PR #53 **WorksheetHintR
 
 **Proposed mandatory enforcement** for hint-bearing worksheet `@2`:
 
-- **Inside transaction** before **attestation record**, **APPROVE**, **REJECT**, and **REQUEST_CHANGES**: recheck **exact active assignment** and current issuer/reviewer authority.
-- **GET is not authorization proof** for mutation; prior successful read **insufficient**.
-- **APPROVE:** same reviewer as immutable attestation; digest/QA; actor alignment.
-- **Idempotency:** identical authorized replay → metadata-only, no duplicate effects; deny when entitlement revoked/expired; distinguish legitimate terminal receipt from unauthorized replay (do not blindly require `IN_REVIEW` on completed decision receipt).
-- **Publisher:** `content.publish` after valid APPROVE — **does not** revalidate expired reviewer assignment; publisher **does not** need reviewer assignment or `content.review.decide`.
-- **Hint-free legacy** review commands: **unaffected**.
+- **Inside transaction** before attestation and **all** review decisions (including negative): recheck reviewer-use predicate (§3.6C) including **`principal_id == reviewer_principal_id`** and **exact `assignment_id`** on active slot.
+- **GET is not authorization proof** for mutation; prior read **insufficient**.
+- **Attestation / decisions** bind to **original `assignment_id`** and authenticated principal. Existing immutable attestation **schema/digest** unchanged (ADR-063); any new `assignment_id` persistence field is **later implementation detail**, not claimed at pin.
+- **APPROVE:** attestation reviewer == slot reviewer; digest/QA interlocks unchanged.
+- **Idempotency replay:** same principal + exact prior command fingerprint + **same non-revoked/non-expired `assignment_id`** + current authority → **metadata-only receipt**, **no** new attestation/decision/audit/outbox side effect. **Deny** on different `assignment_id`, expiry, or revocation.
+- **Completed/consumed assignment:** lawful **terminal decision replay** may return prior outcome **without** requiring current `IN_REVIEW`, but **does not** grant read or new decision access. Distinguish completed receipt from unauthorized command.
+- **Reassignment after attestation:** prohibited — new ContentVersion + fresh cycle (§3.5). Valid completed APPROVE stands.
+- **Publisher:** `content.publish` after valid APPROVE — publisher **≠** author **and** **≠** reviewer; requires `content.publish` only; **no** current reviewer entitlement check.
+- **Denied/replayed unauthorized commands:** **no** extra attestation, decision, audit, or outbox records.
+- **Hint-free legacy** review: **unaffected**.
 
-**Negative HTTP tests (future):** direct POST decide/attest without assignment; reviewer mismatch; revocation/expiry between read and approve; race revoke vs read/attest/approve.
+**Negative HTTP tests (future):** caller ≠ assigned reviewer despite `decide`; direct command bypass; revoke/expiry races; stale revoke of old `assignment_id`.
 
 ---
 
@@ -265,11 +294,12 @@ Other private content types: separate inventory/governance; **no** global read w
 
 ---
 
-## 7. Adversarial acceptance matrix (F2, F3, F4, F8 consolidated)
+## 7. Adversarial acceptance matrix (F2, F3, F4 consolidated)
 
 | Case | Expected |
 |------|----------|
-| Assigned reviewer, active assignment, all gates | **ALLOW** assigned-reviews GET; mutations if decide + assignment |
+| Assigned reviewer (`caller == reviewer_principal_id`), active slot, all gates | **ALLOW** GET; mutations with decide |
+| `content.review.decide` holder, **not** assigned reviewer | **DENY** (even if class-eligible third party) |
 | `content.review.decide` without assignment | **DENY** read and mutations |
 | Issuer lost owner/assign/class authority before reviewer acts | **DENY** (pending assignment void) |
 | Expired assignment (>7d) | **DENY** |
@@ -289,28 +319,31 @@ Other private content types: separate inventory/governance; **no** global read w
 
 ---
 
-## 8. Implementation DAG and freeze readiness (F6)
+## 8. Staged gates (F6 / R3-C — non-circular)
 
-**Nothing authorized by this document.**
+**Nothing authorized by this document.** **Merging Draft PR #71 is not** implementation authority, ADR freeze, or proof of G1 completion.
 
-| Order | Gate |
-|-------|------|
-| **G0** | This proposal reviewed; Founder/authority freeze as applicable (**not** this PR merge) |
-| **G1** | Generic private-read inventory + HTTP negative proof + bounded hardening (**G1 blocks G3–G5**) |
-| **G2** | Assignment SoR (append-only), `content.review.assign`, reviewer-eligibility port, guarded mutations (migration, audit, PG18 fixtures under grant) |
-| **G3** | Assigned-reviews GET + OpenAPI + typed Frontend client |
-| **G4** | Cross-role positive/negative E2E (matrix §7 + §6) |
-| **G5** | Fresh PR #53 re-pin, harness scope correction, controlled resume |
+| Stage | Purpose | Status |
+|-------|---------|--------|
+| **(1) D1 proposal closure** | Chief/Founder review of **this candidate** text | **In progress** (R3) |
+| **(2) Pre-freeze evidence (read-only)** | Separately authorized inventory of private worksheet routes + **non-production** adversarial HTTP characterization to **define** G1 contract | **Not started**; **not** required to merge proposal doc |
+| **(3) Authority / freeze gate** | Explicit Founder/Chief freeze of security contract | **Not started** |
+| **(4) G1 implementation + proof** | Generic private-read hardening per §6 + post-fix negative/positive HTTP proof | **Prerequisite** to enabling assigned-reviews route or resuming PR #53 E2E |
+| **(5) G2–G5 implementation** | Assignment SoR/slot, assign capability, eligibility port, guarded mutations → dedicated GET/OpenAPI/FE → cross-role E2E → PR #53 controlled resume | **Blocked behind (3)+(4)** |
 
-**Held:** Draft PR #53; **65 NOT_TESTED + 2 DEFERRED**; no new grants/production; no fake completion.
+**Held:** Draft PR #53 RED; **65 NOT_TESTED + 2 DEFERRED**; historical CI failures unchanged; no grants/production; **no Architecture CI** claimed (none configured on repo unless separately verified).
 
-**Residual risks (honest):**
+**Residual (proposed vs current source):**
 
-- School Context port semantics need implementation-time ADR-062 alignment proof.
-- Exact assign/revoke HTTP surface not specified here (later implementation packet).
-- Adversarial generic GET outcomes remain **unexecuted** until G1.
+| Item | Classification |
+|------|----------------|
+| Owner-only review queue 404 @ PG18 | **Current source fact** |
+| Generic GET lacks principal gate @ pin | **Current source fact** |
+| `content.review.assign`, slot SoR, eligibility port | **Proposed** (not at pin) |
+| Adversarial generic GET executed | **Not done** |
+| Assign/revoke HTTP operation ids | **Later implementation detail** |
 
-**CI02R1:** `pkV1HintE2e.pins.test.ts` whitelist note on PR #53 — recorded, not edited.
+**CI02R1:** `pkV1HintE2e.pins.test.ts` — recorded, not edited.
 
 ---
 
@@ -320,7 +353,8 @@ Other private content types: separate inventory/governance; **no** global read w
 |------|-------------|
 | Implementation | **NOT_IMPLEMENTED** |
 | ADR freeze | **None** |
-| Option A + C-A | **Chief accepted in principle**; design **not freeze-ready** until G0–G1 evidence |
+| Option A + C-A | **Chief accepted in substance** (R2); R3 clarifies actor/slot/receipt gates — **candidate only**, not frozen |
+| D1 PR merge | **Does not** authorize code, G1, or ADR freeze |
 | Issuer / capability / class rules | **Closed in this doc** (candidate policy) |
 | Dedicated read capability | **Not required** (`decide` + assignment) |
 | Generic GET hardening | **Prerequisite G1**, not parallel optional |
@@ -328,7 +362,9 @@ Other private content types: separate inventory/governance; **no** global read w
 
 ---
 
-## 10. Chief F1–F6 closure map
+## 10. Review closure maps
+
+### 10.1 F1–F6 (R2)
 
 | Finding | Primary sections |
 |---------|------------------|
@@ -337,7 +373,15 @@ Other private content types: separate inventory/governance; **no** global read w
 | **F3** Mutation enforcement, idempotency, publisher separation | §4.5, §7 |
 | **F4** Generic GET inventory, corrected matrix, G1 prerequisite | §6 |
 | **F5** Auth chain, ETag, DTO, PG18 phases/runs, ADR-048 note, FE attribution | §1, §2, §4.2–4.4 |
-| **F6** DAG G0–G5, resolved alternatives, residual risks | §5, §8–9 |
+| **F6** Staged gates, resolved alternatives, residual risks | §5, §8–9 |
+
+### 10.2 R3-A–C (this revision)
+
+| Control | Primary sections |
+|---------|------------------|
+| **R3-A** Caller == assigned reviewer; issue vs use predicates; issuer owner==creator; revoke rules | §3.2, §3.6 |
+| **R3-B** Events + current slot; `assignment_id`; no time-dependent partial index; races | §3.4, §7 |
+| **R3-C** Non-circular stages (1)–(5); source vs proposed; remove F8 label | §8, §7, §9 |
 
 ---
 
@@ -351,10 +395,11 @@ Other private content types: separate inventory/governance; **no** global read w
 | Review queue SQL | `src/aieos/domains/content/infrastructure/persistence/repositories.py` |
 | Review commands | `src/aieos/domains/content/application/review.py` |
 | Hint attestation | `src/aieos/domains/content/application/worksheet_hint_attestation_record.py` |
+| Hint append (owner/creator) | `src/aieos/domains/content/application/worksheet_hint_append.py` |
 | Generic version get | `src/aieos/domains/content/application/http_append.py`, `routes.py` |
 | ETag helper | `src/aieos/platform/api/etag.py` |
 | Teaching class authority | `src/aieos/domains/teaching/application/school_context.py` |
 
 ---
 
-**Terminal classification:** `CI03-D1-R2 — REVIEWER-READ CANDIDATE CORRECTED / NOT FROZEN / NO CODE / PR #53 HELD / STOP FOR CHIEF FINAL EXACT-HEAD REVIEW`
+**Terminal classification:** `CI03-D1-R3 — FINAL PROPOSAL CLARIFIED / DRAFT PR #71 / READY FOR CHIEF CLOSURE / NOT FROZEN / NO CODE`
